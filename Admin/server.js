@@ -10,8 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//routes here
-// app.use("/cart", require("./routes/cartRouter"))
+app.use("/admin", require("./routes/adminRouter"));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
