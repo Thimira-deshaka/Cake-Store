@@ -24,14 +24,15 @@ function Profile() {
       }).then((response) => {
         if (response.ok) {
           response.json().then((data) => {
+            console.log(data);
             setUser(data);
           });
         } else {
-          window.location.href = "/login";
+          // window.location.href = "/login";
         }
       });
     } else {
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
   }, []);
 

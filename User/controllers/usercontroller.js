@@ -1,7 +1,5 @@
 const userService = require("../services/userServices");
-
-const userModel = require("../models/userModel");
-require("dotenv").config();
+// require("dotenv").config();
 
 // const getUsers = async (req, res) => {
 //     // const allusers = await userModel.find();
@@ -9,10 +7,19 @@ require("dotenv").config();
 // }
 
 const getUser = async (req, res) => {
-  const user = await userModel.findById(req.user.id, { password: 0 });
-  // console.log(req.user.id);
-  res.json(user);
-  // res.json({message: `information of user with id ${req.params.id}`})
+  try {
+    const user = await userService.getUser(req.user.id);
+    if (user) {
+      return res.json(user);
+    }
+    res
+      .status(500)
+      .json({ message: "Internal Server Error! Please contact help center." });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error! Please contact help center." });
+  }
 };
 
 const userRegister = async (req, res) => {
@@ -54,7 +61,7 @@ const loginUser = async (req, res) => {
     const accessToken = await userService.loginUser(email, password);
 
     if (accessToken) {
-      res.status(200).json({ accessToken });
+      res.status(200).json({ accessToken: accessToken, role: "customer" });
     } else {
       res.status(401).json({ message: "Wrong email or password" });
     }
