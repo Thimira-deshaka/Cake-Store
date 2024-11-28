@@ -2,30 +2,29 @@ import { Fragment, useState } from "react";
 import "../Style/Login.css";
 import Alert from "../component/Alert";
 function Login() {
-
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
+
     try {
       const response = await fetch("http://localhost:3001/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
-  
+
       if (response.ok) {
-        console.log("Login successful");
+        alert("Log in successfuly.");
+        // console.log("Login successful");
         // window.location.href = "/";
         response.json().then((data) => {
-          window.location.href = "/";
           console.log(data);
-          localStorage.setItem("token", data);
-          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("user", JSON.stringify(data.role));
+          window.location.href = "/";
         });
       } else {
         alert("password or email not correct");
@@ -35,8 +34,6 @@ function Login() {
     } catch (error) {
       console.error("Error:", error);
     }
-
-
   }
   return (
     <Fragment>

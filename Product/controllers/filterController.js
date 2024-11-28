@@ -1,24 +1,45 @@
-const productModel = require('../models/productModel');
+const productModel = require("../models/productModel");
+const filterService = require("../services/filterServices");
 
-const categoryFilter  = async (req, res) =>{
-    // console.log(req.params);
-    const filteredProducts = await productModel.find({category: req.params.category})
-    res.json({filteredProducts})
-}
+// (Not Checked Yet)
+const categoryFilter = async (req, res) => {
+  try {
+    const filteredProducts = await filterService.categoryFilter(
+      req.params.idOrName
+    );
+    res.status(200).json({ filteredProducts });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
-const priceFilter = async (req, res) =>{  
-    const filteredProducts = await productModel.find({price: {$lte: req.params.price}})
+//(Not Checked Yet)
+const priceFilter = async (req, res) => {
+  try {
+    const filteredProducts = await filterService.priceFilter(
+      req.params.idOrName
+    );
+    res.status(200).json(filteredProducts);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
-    res.json(filteredProducts)
-}
-
-const  categorypriceFilter = async (req, res) =>{
-    const filteredProducts = await productModel.find({category: req.params.category, price: {$lte: req.params.price}})
-    res.json(filteredProducts)
-}
+// (Not Checked Yet)
+const categorypriceFilter = async (req, res) => {
+  try {
+    const filteredProducts = await filterService.categorypriceFilter(
+      req.params.category,
+      req.params.price
+    );
+    res.status(200).json(filteredProducts);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
 module.exports = {
-    categoryFilter,
-    priceFilter,
-    categorypriceFilter
-}
+  categoryFilter,
+  priceFilter,
+  categorypriceFilter,
+};
