@@ -5,16 +5,16 @@ const router = express.Router();
 const {
   getUser,
   getUsers,
-  userRegister,
-  loginUser,
+  createAdmin,
+  loginAdmin,
 } = require("../controllers/adminController");
 
 // router.route("/").get( validateToken, getUsers)
 
-// router.route("/").post(userRegister)
+router.route("/").post(createAdmin);
 
 // router.route("/").get(validateToken, getUser)
 
-router.route("/login").post(loginUser);
+router.route("/login").post(loginAdmin);
 
 module.exports = router;

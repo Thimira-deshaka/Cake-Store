@@ -20,10 +20,15 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter your last name"],
     },
+
+    phone: {
+      type: String,
+      required: [true, "Please enter your phone number"],
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Admin", userSchema);

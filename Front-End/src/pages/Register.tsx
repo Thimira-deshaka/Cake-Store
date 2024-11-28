@@ -17,19 +17,28 @@ function Register() {
       const response = await fetch("http://localhost:3001/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, firstName, lastName, age, phone, gender })
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+          age,
+          phone,
+          gender,
+        }),
       });
-  
+
       if (response.ok) {
-        console.log("Registered successful");
+        alert("Registered successful");
         window.location.href = "/";
       } else {
-        console.log("Registered failed");
+        const errorData = await response.json();
+        alert("Register failed: " + errorData.message);
       }
     } catch (error) {
-      console.error("Error:", error);
+      alert("Error:" + error);
     }
 
     if (password === confpassword) {
@@ -40,7 +49,7 @@ function Register() {
         lastName,
         age,
         phone,
-        gender
+        gender,
       };
       const dataString = JSON.stringify(data);
       window.location.href = "/login";
@@ -52,7 +61,11 @@ function Register() {
     <div className="bg-img">
       <div className="registerContent">
         <header>Register Form</header>
-        <form action="http://localhost:3001/users" method="post" onSubmit={handleSubmit}>
+        <form
+          action="http://localhost:3001/users"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           <div className="row">
             <div className="col">
               <h6>First name</h6>
@@ -185,7 +198,11 @@ function Register() {
                 </div>
                 {/* <div className="col inline">
                   <label className="radio-inline">
-                    <input type="radio" name="gender" value="female"/>
+                    <input type="radio" name="gender" value="male" />
+                    Male
+                  </label>
+                  <label className="radio-inline">
+                    <input type="radio" name="gender" value="female" />
                     Female
                   </label>
                 </div> */}
