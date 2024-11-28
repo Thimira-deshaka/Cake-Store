@@ -6,6 +6,7 @@ const userService = require("../services/userServices");
 //     res.json(req.user)
 // }
 
+// Get Personal Infor from Each User
 const getUser = async (req, res) => {
   try {
     const user = await userService.getUser(req.user.id);
