@@ -25,28 +25,21 @@ const Footer: React.FC = () => {
               <a href="#" className="me-4 text-reset text-light">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="#" className="me-4 text-reset text-light">
-                <i className="fab fa-linkedin"></i>
-              </a>
-              <a href="#" className="me-4 text-reset text-light">
-                <i className="fab fa-github"></i>
-              </a>
             </div>
           </section>
 
           {/* Section: Links */}
-          <section>
-            <div className="container text-center text-md-start mt-5">
+          <section className="mt-5">
+            <div className="container text-center text-md-start ">
               <div className="row mt-3">
                 {/* Company Info */}
                 <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                   <h6 className="text-uppercase fw-bold mb-4">
-                    <i className="fas fa-gem me-3"></i>Company Name
+                    <i className="fas fa-birthday-cake me-3"></i>Cake Store
                   </h6>
                   <p>
-                    Here you can use rows and columns to organize your footer
-                    content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                    elit.
+                    Delight in our handcrafted cakes, baked fresh daily with
+                    love and the finest ingredients. Perfect for every occasion!
                   </p>
                 </div>
 
@@ -55,22 +48,22 @@ const Footer: React.FC = () => {
                   <h6 className="text-uppercase fw-bold mb-4">Products</h6>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Angular
+                      Birthday Cakes
                     </a>
                   </p>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      React
+                      Wedding Cakes
                     </a>
                   </p>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Vue
+                      Anniversary Cakes
                     </a>
                   </p>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Laravel
+                      Seasonal Cakes
                     </a>
                   </p>
                 </div>
@@ -80,22 +73,17 @@ const Footer: React.FC = () => {
                   <h6 className="text-uppercase fw-bold mb-4">Useful Links</h6>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Pricing
+                      Home
                     </a>
                   </p>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Settings
+                      Cart
                     </a>
                   </p>
                   <p>
                     <a href="#!" className="text-reset text-light">
-                      Orders
-                    </a>
-                  </p>
-                  <p>
-                    <a href="#!" className="text-reset text-light">
-                      Help
+                      Profile
                     </a>
                   </p>
                 </div>
@@ -104,11 +92,11 @@ const Footer: React.FC = () => {
                 <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                   <h6 className="text-uppercase fw-bold mb-4">Contact</h6>
                   <p>
-                    <i className="fas fa-home me-3"></i> New York, NY 10012, US
+                    <i className="fas fa-home me-3"></i> Moratuwa, No.141, LK
                   </p>
                   <p>
                     <i className="fas fa-envelope me-3"></i>
-                    info@example.com
+                    cakestore@gmail.com
                   </p>
                   <p>
                     <i className="fas fa-phone me-3"></i> + 01 234 567 88
@@ -127,8 +115,8 @@ const Footer: React.FC = () => {
             style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
           >
             © 2024 Copyright:
-            <a className="text-reset fw-bold" href="https://example.com/">
-              YourWebsite.com
+            <a className="text-reset fw-bold" href="https://cakestore.com/">
+              CakeStore.com
             </a>
           </div>
         </footer>
