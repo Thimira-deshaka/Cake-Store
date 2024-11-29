@@ -85,7 +85,7 @@ function Home() {
                       <div className="heading-section">
                         <div className="txt">
                           <h4>
-                            <em>Browse</em> Right Now
+                            <em>Order</em> Right Now
                           </h4>
                         </div>
 
@@ -95,14 +95,19 @@ function Home() {
                             onChange={handleSelectChange}
                           >
                             <option value="idle">ALL</option>
-                            <option value="Action">Action</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Casual">Casual</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Open World">Open World</option>
-                            <option value="Survival">Survival</option>
-                            <option value="Simulation">Simulation</option>
-                            <option value="Shooter">Shooter</option>
+                            <option value="Birthday Cakes">
+                              Birthday Cakes
+                            </option>
+                            <option value="Wedding Cakes">Wedding Cakes</option>
+                            <option value="Anniversary Cakes">
+                              Anniversary Cakes
+                            </option>
+                            <option value="Chocolate Cakes">
+                              Chocolate Cakes
+                            </option>
+                            <option value="Seasonal Cakes">
+                              Seasonal Cakes
+                            </option>
                           </select>
                           <span className="margleft">
                             <i className="fa fa-search"></i>
