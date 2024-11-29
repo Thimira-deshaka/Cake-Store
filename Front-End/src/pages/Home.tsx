@@ -76,16 +76,19 @@ function Home() {
     <Fragment>
       <div className="wid">
         <div className="container">
-          <div className="row">
+          <div className="row pt-5">
             <div className="col-lg-12">
               <div className="page-content">
                 <div className="most-popular">
                   <div className="row">
                     <div className="col-lg-12">
-                      <div className="heading-section inline">
-                        <h4>
-                          <em>Browse</em> Right Now
-                        </h4>
+                      <div className="heading-section">
+                        <div className="txt">
+                          <h4>
+                            <em>Browse</em> Right Now
+                          </h4>
+                        </div>
+
                         <div className="selct">
                           <select
                             value={selectedOption}
@@ -101,8 +104,10 @@ function Home() {
                             <option value="Simulation">Simulation</option>
                             <option value="Shooter">Shooter</option>
                           </select>
-                          <span className="margleft"><i className="fa fa-search"></i></span>
-                          
+                          <span className="margleft">
+                            <i className="fa fa-search"></i>
+                          </span>
+
                           <input
                             className="newSearch"
                             type="text"
@@ -112,15 +117,19 @@ function Home() {
                             value={searchKeyword}
                             onChange={(e) => setSearchKeyword(e.target.value)}
                           />
-                          <button className="searchButton" onClick={handleSearch}>Search</button>
-
+                          <button
+                            className="searchButton"
+                            onClick={handleSearch}
+                          >
+                            Search
+                          </button>
                         </div>
                       </div>
                       <div className="row">
                         {(filteredData.length > 0 ? filteredData : data).map(
                           (product: any) => (
                             <div
-                              className="col-lg-3 col-sm-6"
+                              className="col-lg-3 col-sm-6 pt-5"
                               onClick={() => handleLinkClick(product._id)}
                               style={{ cursor: "pointer" }}
                               key={product._id}

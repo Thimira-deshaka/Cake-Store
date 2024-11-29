@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import NavBar from "./component/NavBar";
+import Footer from "./component/Footer";
 function App() {
   return (
     <Fragment>
@@ -23,6 +24,7 @@ function App() {
           <Route path="/checkout" element={<CheckOut />} />
         </Routes>
       </Router>
+      <Footer />
     </Fragment>
   );
 }
