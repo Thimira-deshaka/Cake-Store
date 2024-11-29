@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&display=swap");
 
-#navbarid{
+#navbarid {
   color: black;
   opacity: 50%;
 }
@@ -13,11 +13,10 @@
   right: 0;
   z-index: 100;
   width: 100%;
-  -webkit-transition: all .5s ease 0s;
-  -moz-transition: all .5s ease 0s;
-  -o-transition: all .5s ease 0s;
-  transition: all .5s ease 0s;
-  
+  -webkit-transition: all 0.5s ease 0s;
+  -moz-transition: all 0.5s ease 0s;
+  -o-transition: all 0.5s ease 0s;
+  transition: all 0.5s ease 0s;
 }
 
 .logo h4 {
@@ -37,7 +36,6 @@
   display: flex;
   padding: 15px 7px;
   border-radius: 15px;
-  
 }
 
 .background-header .main-nav {
@@ -105,7 +103,6 @@
   transition: all 0.3s ease 0s;
   position: relative;
   z-index: 999;
-
 }
 
 .header-area .main-nav .nav li {
@@ -127,7 +124,7 @@
   border: transparent;
   padding: 13px 10px;
   border-radius: 18px;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
 }
 
 .header-area .main-nav .nav li:last-child a {
@@ -260,8 +257,7 @@
   width: 100%;
 }
 
-.newSearch{
-
+.newSearch {
   background-color: #1b1d1d;
   height: 46px;
   border-radius: 23px;
@@ -270,14 +266,13 @@
   font-size: 14px;
   padding: 0px 15px 0px 45px;
   margin-left: 8px;
-
 }
 
-.margleft{
+.margleft {
   margin-left: 20px;
 }
 
-.searchButton{
+.searchButton {
   background-color: #666666;
   height: 46px;
   border-radius: 15px;
