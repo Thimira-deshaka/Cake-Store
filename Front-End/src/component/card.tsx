@@ -15,7 +15,7 @@ const Card = ({ name, price, imgsrc, category }: Props) => {
       <p>{category}</p>
       <ul>
         <li>
-          <i className="fa fa-dollar-sign">{price}</i>
+          <i>Rs.{price}</i>
         </li>
       </ul>
     </div>

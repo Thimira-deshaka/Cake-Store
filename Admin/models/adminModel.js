@@ -20,6 +20,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter your last name"],
     },
+
+    phone: {
+      type: String,
+      required: [true, "Please enter your phone number"],
+    },
   },
   {
     timestamps: true,
