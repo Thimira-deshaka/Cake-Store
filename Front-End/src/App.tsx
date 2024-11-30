@@ -10,9 +10,10 @@ import CheckOut from "./pages/CheckOut";
 import NavBar from "./component/NavBar";
 function App() {
   return (
+    <Router>
     <Fragment>
       <NavBar />
-      <Router>
+  
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -22,8 +23,9 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
         </Routes>
-      </Router>
+     
     </Fragment>
+    </Router>
   );
 }
 export default App;
