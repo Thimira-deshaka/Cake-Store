@@ -43,7 +43,7 @@ p {
 }
 
 select {
-  background-color: #1e1e1e;
+  background-color: #2a1b10;
   width: 200px;
   text-align: center;
   height: 40px;
@@ -63,14 +63,13 @@ img {
 }
 
 .most-popular {
-  margin-top: 60px;
   padding: 30px;
-  background-color: #1f2122;
-  border-radius: 23px;
+  margin-top: 20px;
+  background-color: #1d120a;
 }
 
 .most-popular .item {
-  background-color: #27292a;
+  background-color: #2a1b10;
   padding: 30px 15px;
   border-radius: 23px;
   margin-bottom: 30px;
@@ -131,7 +130,7 @@ img {
 }
 
 .most-popular .item ul li:last-child i {
-  color: #ec6090;
+  color: #ffcf86;
 }
 
 .most-popular .main-button {
@@ -141,12 +140,12 @@ img {
 
 .wid {
   width: 100%;
-  background: #27292a;
+  background: #1d120a;
 }
 
 .page-content {
   padding: 0;
-  margin-top: 100px;
+  background: #1d120a;
 }
 
 .heading-section {
@@ -156,7 +155,7 @@ img {
 }
 
 .heading-section h4 {
-  color: #ec6090;
+  color: #ffcf86;
   font-size: 34px;
   text-decoration: none;
 }
