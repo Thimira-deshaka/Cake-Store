@@ -15,7 +15,12 @@ const createProduct = async (data) => {
   return product;
 };
 
-const findProduct = async (idOrName) => {
+const findProduct = async (id) => {
+  const products = await productModel.findOne({ _id: id });
+  return products;
+};
+
+const findProductId = async (idOrName) => {
   const products = await productModel.findOne({
     $or: [{ name: idOrName }, { _id: idOrName }],
   });
@@ -26,4 +31,5 @@ module.exports = {
   getProducts,
   createProduct,
   findProduct,
+  findProductId,
 };

@@ -44,6 +44,15 @@ const findProduct = async (req, res) => {
   }
 };
 
+const findProductId = async (req, res) => {
+  try {
+    const product = await productService.findProductId(req.params.id);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 //Create New Product(Not Checked Yet)
 const createProduct = async (req, res) => {
   try {
@@ -56,6 +65,7 @@ const createProduct = async (req, res) => {
 
 module.exports = {
   getProducts,
+  findProductId,
   //   getProductByName,
   createProduct,
   //   getProductById,
