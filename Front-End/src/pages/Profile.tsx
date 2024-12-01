@@ -8,9 +8,22 @@ import clip3 from "../assets/clip-03.jpg";
 import clip4 from "../assets/clip-04.jpg";
 import profile from "../assets/profile.jpg";
 import profileg from "../assets/profileGirl.jpg";
+import Cake from "../assets/Cake.webp";
 import { useState, useEffect, Fragment } from "react";
+
+// Define the User interface
+interface User {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  age?: number;
+  phone?: string;
+  gender?: string;
+}
+
+
 function Profile() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -54,26 +67,25 @@ function Profile() {
                       <div className="col-lg-4">
                         {/* Render user profile image here */}
                         <img
-                          src={user.gender === "female" ? profileg : profile}
+                          src={Cake}
                           alt="Profile Image"
                         />
                       </div>
                       <div className="col-lg-4 align-self-center">
                         <div className="main-info header-text">
-                          <h1 id="firstname">{user.firstName}</h1>
-                          <h5 id="lastname">{user.lastName}</h5>
-                          <p>
-                            "I'm {user.firstName}, a passionate gamer who loves
-                            exploring new worlds and conquering challenges.
-                            Let's conquer the gaming world together!"
-                          </p>
+                          <h1 id="firstname">Hey {user.firstName}!</h1>
+                          <h5>Lovely to see you back on our cake page—your sweet tooth knows the way home!</h5>
+
                           <div className="main-border-button">
-                            <a href="#">Update</a>
+                            <a href="/Update">Update</a>
                           </div>
                         </div>
                       </div>
                       <div className="col-lg-4 align-self-center">
                         <ul>
+                          <li>
+                            Name <span>{user.firstName + " " + user.lastName}</span>
+                          </li>
                           <li>
                             Email <span>{user.email}</span>
                           </li>
@@ -82,9 +94,6 @@ function Profile() {
                           </li>
                           <li>
                             Phone Number <span>{user.phone}</span>
-                          </li>
-                          <li>
-                            Clips <span>29</span>
                           </li>
                         </ul>
                       </div>

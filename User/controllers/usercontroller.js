@@ -73,9 +73,31 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { firstName, lastName, email, age, phone } = req.body; // email, password    
+    const user = await userService.updateUser(req.user.id, {
+      firstName,
+      lastName,
+      age,
+      phone,
+      email,
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(400).json({ message: "user not found" });
+    }
+  } catch (error) {    
+    res
+      .status(500)
+      .json({ message: "Internal Server Error! Please contact help center." });
+  }
+};
 module.exports = {
   // getUsers,
   getUser,
   userRegister,
   loginUser,
+  updateUser,
 };

@@ -8,11 +8,14 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import NavBar from "./component/NavBar";
+import Update from "./pages/Update";
 function App() {
   return (
     <Fragment>
-      <NavBar />
+
       <Router>
+      <NavBar />
+
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -21,6 +24,7 @@ function App() {
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/update" element={<Update />} />
         </Routes>
       </Router>
     </Fragment>

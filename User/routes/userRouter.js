@@ -7,6 +7,7 @@ const {
   //   getUsers,
   userRegister,
   loginUser,
+  updateUser,
 } = require("../controllers/usercontroller");
 
 // router.route("/").get( validateToken, getUsers)
@@ -16,5 +17,7 @@ router.route("/").post(userRegister);
 router.route("/").get(validateToken, getUser);
 
 router.route("/login").post(loginUser);
+
+router.route("/update").put(validateToken, updateUser); 
 
 module.exports = router;

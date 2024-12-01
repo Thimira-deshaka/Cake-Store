@@ -44,7 +44,23 @@ body {
 
 .cart-header-text {
   font-size: 30px;
+  text-align: left;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Cart Page Header Styles */
+.cart-page-para {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: 20px;
   text-align: center;
+}
+
+.cart-para-text {
+  font-size: 15px;
+  text-align: left;
   font-weight: bold;
   color: #fff;
 }
