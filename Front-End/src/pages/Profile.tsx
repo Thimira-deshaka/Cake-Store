@@ -27,11 +27,11 @@ function Profile() {
             setUser(data);
           });
         } else {
-          window.location.href = "/login";
+         // window.location.href = "/login";
         }
       });
     } else {
-      window.location.href = "/login";
+      //window.location.href = "/login";
     }
   }, []);
 

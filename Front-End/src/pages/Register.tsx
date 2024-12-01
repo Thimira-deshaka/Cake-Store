@@ -1,5 +1,7 @@
 import "../Style/Register.css";
 import { useState } from "react";
+import Alert from "../component/Alert";
+
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -9,50 +11,64 @@ function Register() {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setconfPassword] = useState("");
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (password !== confpassword) {
+      setAlert({
+        title: "Error",
+        message: "Passwords do not match.",
+        isSuccess: false,
+      });
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:3001/users", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, firstName, lastName, age, phone, gender })
+        body: JSON.stringify({ email, password, firstName, lastName, age, phone, gender }),
       });
-  
+
       if (response.ok) {
-        console.log("Registered successful");
-        window.location.href = "/";
+        setAlert({
+          title: "Registration Successful",
+          message: "Your account has been created. Please log in.",
+          isSuccess: true,
+        });
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       } else {
-        console.log("Registered failed");
+        const data = await response.json();
+        setAlert({
+          title: "Registration Failed",
+          message: data.message || "An error occurred during registration.",
+          isSuccess: false,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
-    }
-
-    if (password === confpassword) {
-      const data = {
-        email,
-        password,
-        firstName,
-        lastName,
-        age,
-        phone,
-        gender
-      };
-      const dataString = JSON.stringify(data);
-      window.location.href = "/login";
-    } else {
-      alert("passwords doesn't match");
+      setAlert({
+        title: "Error",
+        message: "An unexpected error occurred. Please try again later.",
+        isSuccess: false,
+      });
     }
   }
+
   return (
     <div className="bg-img">
       <div className="registerContent">
         <header>Register Form</header>
-        <form action="http://localhost:3001/users" method="post" onSubmit={handleSubmit}>
+        {alert && (
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        )}
+        <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col">
               <h6>First name</h6>
@@ -162,7 +178,6 @@ function Register() {
               <h6>Gender</h6>
             </div>
           </div>
-
           <div className="row">
             <div className="col">
               <div className="field">
@@ -177,18 +192,15 @@ function Register() {
               </div>
             </div>
             <div className="col">
-              <div className="row">
-                <div className="col inline">
-                  <label className="radio-inline">
-                    <input type="text" name="gender"></input>
-                  </label>
-                </div>
-                {/* <div className="col inline">
-                  <label className="radio-inline">
-                    <input type="radio" name="gender" value="female"/>
-                    Female
-                  </label>
-                </div> */}
+              <div className="field">
+                <input
+                  type="text"
+                  className="form-control"
+                  required
+                  placeholder="Gender"
+                  name="gender"
+                  onChange={(event) => setGender(event.target.value)}
+                ></input>
               </div>
             </div>
           </div>
@@ -198,7 +210,7 @@ function Register() {
         </form>
         <div className="signup space">
           Already have an account?
-          <a href="/">Login</a>
+          <a href="/login">Login</a>
         </div>
       </div>
     </div>
