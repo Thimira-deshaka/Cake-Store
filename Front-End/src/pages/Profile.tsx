@@ -9,6 +9,7 @@ import clip4 from "../assets/clip-04.jpg";
 import profile from "../assets/profile.jpg";
 import profileg from "../assets/profileGirl.jpg";
 import { useState, useEffect, Fragment } from "react";
+import Footer from "../component/Footer";
 function Profile() {
   const [user, setUser] = useState({});
 
@@ -98,6 +99,7 @@ function Profile() {
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }

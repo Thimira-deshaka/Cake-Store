@@ -5,7 +5,8 @@ require("dotenv").config();
 
 const loginAdmin = async (email, password) => {
   const user = await adminModel.findOne({ email });
-
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
+  console.log(hashedPassword);
   if (user && (await bcrypt.compare(password, user.password))) {
     const accessToken = jwt.sign(
       {

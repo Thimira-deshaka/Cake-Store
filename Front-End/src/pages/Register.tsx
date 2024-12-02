@@ -1,5 +1,7 @@
+import Footer from "../component/Footer";
+import NavBar from "../component/NavBar";
 import "../Style/Register.css";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -58,145 +60,147 @@ function Register() {
     }
   }
   return (
-    <div className="bg-img">
-      <div className="registerContent">
-        <header>Register Form</header>
-        <form
-          action="http://localhost:3001/users"
-          method="post"
-          onSubmit={handleSubmit}
-        >
-          <div className="row">
-            <div className="col">
-              <h6>First name</h6>
-            </div>
-            <div className="col">
-              <h6>Last name</h6>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="field">
-                <input
-                  type="text"
-                  className="form-control"
-                  required
-                  placeholder="First Name"
-                  name="firstName"
-                  onChange={(event) => setFirstName(event.target.value)}
-                ></input>
+    <Fragment>
+      <NavBar />
+      <div className="bg-img">
+        <div className="registerContent">
+          <header>Register Form</header>
+          <form
+            action="http://localhost:3001/users"
+            method="post"
+            onSubmit={handleSubmit}
+          >
+            <div className="row">
+              <div className="col">
+                <h6>First name</h6>
+              </div>
+              <div className="col">
+                <h6>Last name</h6>
               </div>
             </div>
-            <div className="col">
-              <div className="field">
-                <input
-                  type="text"
-                  className="form-control"
-                  required
-                  placeholder="Last Name"
-                  name="lastName"
-                  onChange={(event) => setLastName(event.target.value)}
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h6>Email</h6>
-            </div>
-            <div className="col">
-              <h6>Phone number</h6>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="field">
-                <input
-                  type="email"
-                  className="form-control"
-                  required
-                  placeholder="Email"
-                  name="email"
-                  onChange={(event) => setEmail(event.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div className="col">
-              <div className="field">
-                <input
-                  type="text"
-                  className="form-control"
-                  required
-                  placeholder="Phone"
-                  name="phone"
-                  onChange={(event) => setPhoneNumber(event.target.value)}
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h6>Password</h6>
-            </div>
-            <div className="col">
-              <h6>Confirm password</h6>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="field">
-                <input
-                  type="password"
-                  className="form-control"
-                  required
-                  placeholder="Password"
-                  name="password"
-                  onChange={(event) => setPassword(event.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div className="col">
-              <div className="field">
-                <input
-                  type="password"
-                  className="form-control"
-                  required
-                  placeholder="Confirm password"
-                  onChange={(event) => setconfPassword(event.target.value)}
-                ></input>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h6>Age</h6>
-            </div>
-            <div className="col">
-              <h6>Gender</h6>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col">
-              <div className="field">
-                <input
-                  type="text"
-                  className="form-control"
-                  required
-                  placeholder="Age"
-                  name="age"
-                  onChange={(event) => setAge(event.target.value)}
-                ></input>
-              </div>
-            </div>
-            <div className="col">
-              <div className="row">
-                <div className="col inline">
-                  <label className="radio-inline">
-                    <input type="text" name="gender"></input>
-                  </label>
+            <div className="row">
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    placeholder="First Name"
+                    name="firstName"
+                    onChange={(event) => setFirstName(event.target.value)}
+                  ></input>
                 </div>
-                {/* <div className="col inline">
+              </div>
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    placeholder="Last Name"
+                    name="lastName"
+                    onChange={(event) => setLastName(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <h6>Email</h6>
+              </div>
+              <div className="col">
+                <h6>Phone number</h6>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="email"
+                    className="form-control"
+                    required
+                    placeholder="Email"
+                    name="email"
+                    onChange={(event) => setEmail(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    placeholder="Phone"
+                    name="phone"
+                    onChange={(event) => setPhoneNumber(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <h6>Password</h6>
+              </div>
+              <div className="col">
+                <h6>Confirm password</h6>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="password"
+                    className="form-control"
+                    required
+                    placeholder="Password"
+                    name="password"
+                    onChange={(event) => setPassword(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="password"
+                    className="form-control"
+                    required
+                    placeholder="Confirm password"
+                    onChange={(event) => setconfPassword(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <h6>Age</h6>
+              </div>
+              <div className="col">
+                <h6>Gender</h6>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col">
+                <div className="field">
+                  <input
+                    type="text"
+                    className="form-control"
+                    required
+                    placeholder="Age"
+                    name="age"
+                    onChange={(event) => setAge(event.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="col">
+                <div className="row">
+                  <div className="col inline">
+                    <label className="radio-inline">
+                      <input type="text" name="gender"></input>
+                    </label>
+                  </div>
+                  {/* <div className="col inline">
                   <label className="radio-inline">
                     <input type="radio" name="gender" value="male" />
                     Male
@@ -206,19 +210,21 @@ function Register() {
                     Female
                   </label>
                 </div> */}
+                </div>
               </div>
             </div>
+            <div className="field space">
+              <input type="submit" value="Register Now" />
+            </div>
+          </form>
+          <div className="signup space">
+            Already have an account?
+            <a href="/">Login</a>
           </div>
-          <div className="field space">
-            <input type="submit" value="Register Now" />
-          </div>
-        </form>
-        <div className="signup space">
-          Already have an account?
-          <a href="/">Login</a>
         </div>
       </div>
-    </div>
+      <Footer />
+    </Fragment>
   );
 }
 
