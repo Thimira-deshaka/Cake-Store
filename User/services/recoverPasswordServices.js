@@ -32,7 +32,7 @@ const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
     const token = jwt.sign({ id: user._id }, EMAIL_SECRET, { expiresIn: "1h" });
 
     // Create reset link
-   const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`;
+   const resetLink = `${FRONTEND_URL}/Forgetpassword?token=${token}`;
 
     // Email details
     const mailOptions = {
