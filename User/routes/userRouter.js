@@ -10,7 +10,7 @@ const {
  // resetPassword,
 } = require("../controllers/usercontroller");
 
- HEAD
+ 
 const {
   //getUser,
   //userRegister,
