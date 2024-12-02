@@ -1,14 +1,26 @@
 import { Fragment, useState } from "react";
 import "../Style/Login.css";
 import Alert from "../component/Alert";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleForgotPassword = async (email: string) => {
+    if (!email.trim()) {
+      setAlert({
+        title: "Error",
+        message: "Please enter your email to reset your password.",
+        isSuccess: false,
+      });
+      setIsDialogOpen(true);
+      return;
+    }
+
     try {
       const response = await axios.post("/api/forgot-password", { email });
       setAlert({
@@ -16,12 +28,14 @@ function Login() {
         message: response.data.message,
         isSuccess: true,
       });
+      setIsDialogOpen(true);
     } catch (error: any) {
       setAlert({
         title: "Error",
         message: error.response?.data?.message || "An error occurred.",
         isSuccess: false,
       });
+      setIsDialogOpen(true);
     }
   };
 
@@ -44,6 +58,7 @@ function Login() {
           message: "You have successfully logged in.",
           isSuccess: true,
         });
+        setIsDialogOpen(true);
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         setTimeout(() => (window.location.href = "/"), 2000);
@@ -53,6 +68,7 @@ function Login() {
           message: "Password or email is incorrect.",
           isSuccess: false,
         });
+        setIsDialogOpen(true);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -61,6 +77,7 @@ function Login() {
         message: "An unexpected error occurred.",
         isSuccess: false,
       });
+      setIsDialogOpen(true);
     }
   }
 
@@ -69,13 +86,6 @@ function Login() {
       <div className="bg-img">
         <div className="content">
           <header>Login Form</header>
-          {alert && (
-            <Alert
-              title={alert.title}
-              message={alert.message}
-              isSuccess={alert.isSuccess}
-            />
-          )}
           <form onSubmit={handleSubmit}>
             <h4 className="fieldHeader">Email</h4>
             <div className="field">
@@ -110,23 +120,27 @@ function Login() {
           <div className="signup space">
             <a
               href="#"
-              onClick={() => {
-                if (email.trim()) {
-                  handleForgotPassword(email);
-                } else {
-                  setAlert({
-                    title: "Error",
-                    message: "Please enter your email to reset your password.",
-                    isSuccess: false,
-                  });
-                }
-              }}
+              onClick={() => handleForgotPassword(email)}
             >
               Forget Password
             </a>
           </div>
         </div>
       </div>
+
+      {/* Popup Alert */}
+      {alert && (
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <DialogContent>
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDialogOpen(false)} color={alert.isSuccess ? "primary" : "error"}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Fragment>
   );
 }

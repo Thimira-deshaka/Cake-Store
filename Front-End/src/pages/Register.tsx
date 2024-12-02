@@ -1,17 +1,19 @@
 import "../Style/Register.css";
 import { useState } from "react";
 import Alert from "../component/Alert";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
+  const [dob, setDob] = useState(""); // Changed to dob for date of birth
   const [phone, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
-  const [confpassword, setconfPassword] = useState("");
+  const [confpassword, setConfPassword] = useState("");
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,6 +24,7 @@ function Register() {
         message: "Passwords do not match.",
         isSuccess: false,
       });
+      setIsDialogOpen(true);
       return;
     }
 
@@ -31,7 +34,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, firstName, lastName, age, phone, gender }),
+        body: JSON.stringify({ email, password, firstName, lastName, dob, phone, gender }),
       });
 
       if (response.ok) {
@@ -40,6 +43,7 @@ function Register() {
           message: "Your account has been created. Please log in.",
           isSuccess: true,
         });
+        setIsDialogOpen(true);
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
@@ -50,6 +54,7 @@ function Register() {
           message: data.message || "An error occurred during registration.",
           isSuccess: false,
         });
+        setIsDialogOpen(true);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -58,16 +63,15 @@ function Register() {
         message: "An unexpected error occurred. Please try again later.",
         isSuccess: false,
       });
+      setIsDialogOpen(true);
     }
   }
 
   return (
     <div className="bg-img">
       <div className="registerContent">
-        <header>Register Form</header>
-        {alert && (
-          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-        )}
+        <header>Registration Form</header>
+
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col">
@@ -165,14 +169,14 @@ function Register() {
                   className="form-control"
                   required
                   placeholder="Confirm password"
-                  onChange={(event) => setconfPassword(event.target.value)}
+                  onChange={(event) => setConfPassword(event.target.value)}
                 ></input>
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col">
-              <h6>Age</h6>
+              <h6>Date of Birth</h6>
             </div>
             <div className="col">
               <h6>Gender</h6>
@@ -182,12 +186,12 @@ function Register() {
             <div className="col">
               <div className="field">
                 <input
-                  type="text"
+                  type="date"
                   className="form-control"
                   required
-                  placeholder="Age"
-                  name="age"
-                  onChange={(event) => setAge(event.target.value)}
+                  placeholder="Date of Birth"
+                  name="dob"
+                  onChange={(event) => setDob(event.target.value)}
                 ></input>
               </div>
             </div>
@@ -213,6 +217,18 @@ function Register() {
           <a href="/login">Login</a>
         </div>
       </div>
+      {alert && (
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <DialogContent>
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDialogOpen(false)} color={alert.isSuccess ? "primary" : "error"}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 }
