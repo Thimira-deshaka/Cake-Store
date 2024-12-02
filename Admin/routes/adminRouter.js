@@ -9,12 +9,21 @@ const {
   loginAdmin,
 } = require("../controllers/adminController");
 
-// router.route("/").get( validateToken, getUsers)
+const {
+  resetPassword,
+  forgotPassword,
+} = require("../controllers/adminRecoverPasswordController");
 
-router.route("/").post(createAdmin);
+//router.route("/").post(createAdmin);
 
 // router.route("/").get(validateToken, getUser)
 
 router.route("/login").post(loginAdmin);
+
+// Forgot Password
+router.route("/forgot-password").post(forgotPassword);
+
+// Reset Password
+router.route("/reset-password").post(resetPassword);
 
 module.exports = router;
