@@ -13,7 +13,6 @@ const {
   resetPassword,
   forgotPassword,
 } = require("../controllers/adminRecoverPasswordController");
-// router.route("/").get( validateToken, getUsers)
 
 //router.route("/").post(createAdmin);
 

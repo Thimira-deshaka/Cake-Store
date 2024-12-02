@@ -6,22 +6,16 @@ const {
   //getUser,
   userRegister,
   loginUser,
-  //forgotPassword,
- // resetPassword,
 } = require("../controllers/usercontroller");
 
- 
+
 const {
-  //getUser,
-  //userRegister,
-  //loginUser,
   forgotPassword,
   resetPassword,
 } = require("../controllers/recoverPasswordController");
 
 //not validate
 // router.route("/").get( validateToken, getUsers)
-
 
 // Register User
 router.route("/").post(userRegister);
