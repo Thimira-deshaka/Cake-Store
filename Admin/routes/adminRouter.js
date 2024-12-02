@@ -15,7 +15,7 @@ const {
 } = require("../controllers/adminRecoverPasswordController");
 // router.route("/").get( validateToken, getUsers)
 
-router.route("/").post(createAdmin);
+//router.route("/").post(createAdmin);
 
 // router.route("/").get(validateToken, getUser)
 
