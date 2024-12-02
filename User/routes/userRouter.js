@@ -9,6 +9,7 @@ const {
   loginUser,
 } = require("../controllers/usercontroller");
 
+//not validate
 // router.route("/").get( validateToken, getUsers)
 
 router.route("/").post(userRegister);
