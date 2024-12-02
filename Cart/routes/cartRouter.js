@@ -13,6 +13,7 @@ router.get("/", validateToken, getCartProducts);
 
 router.post("/:productid", validateToken, addCartProduct);
 
+// need to modify
 router.delete("/checkout", validateToken, checkout);
 
 router.delete("/:orderid", validateToken, deleteCartProduct);
