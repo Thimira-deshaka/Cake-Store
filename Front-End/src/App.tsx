@@ -7,12 +7,13 @@ import { Fragment } from "react";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
-import NavBar from "./component/NavBar";
-import Footer from "./component/Footer";
+import AdminLogin from "./pages/AdminLogin";
+import AdminHome from "./pages/AdminHome";
+import AdminUserView from "./pages/AdminProductView";
+import AdminProductView from "./pages/AdminProductView";
 function App() {
   return (
     <Fragment>
-      <NavBar />
       <Router>
         <Routes>
           <Route index path="/" element={<Home />} />
@@ -22,9 +23,13 @@ function App() {
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
+          {/*Admin pages*/}
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/home" element={<AdminHome />} />
+          <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/admin/products" element={<AdminProductView />} />
         </Routes>
       </Router>
-      <Footer />
     </Fragment>
   );
 }

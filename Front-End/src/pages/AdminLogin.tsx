@@ -1,8 +1,6 @@
 import { Fragment, useState } from "react";
 import "../Style/Login.css";
 import Alert from "../component/Alert";
-import Footer from "../component/Footer";
-import NavBar from "../component/NavBar";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,7 +8,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/users/login", {
+      const response = await fetch("http://localhost:3004/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +28,7 @@ function Login() {
         });
       } else {
         alert("password or email not correct");
-        window.location.href = "/login";
+        window.location.href = "/admin/login";
         console.log("Login failed");
       }
     } catch (error) {
@@ -39,10 +37,9 @@ function Login() {
   }
   return (
     <Fragment>
-      <NavBar />
       <div className="bg-img">
         <div className="content">
-          <header>Login Form</header>
+          <header>Admin Login Form</header>
           <form onSubmit={handleSubmit}>
             <h4 className="fieldHeader">Email</h4>
             <div className="field">
@@ -71,12 +68,11 @@ function Login() {
             </div>
           </form>
           <div className="signup space">
-            Don't have account?
-            <a href="/register">Signup Now</a>
+            forgot password?
+            <a href="/pswd-recovery">Recover password</a>
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }

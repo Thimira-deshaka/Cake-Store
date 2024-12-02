@@ -77,15 +77,11 @@ function Home() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="wid">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="page-content">
-                <div className="">
-                  <HomeBanner />
-                </div>
                 <div className="most-popular">
                   <div className="row">
                     <div className="col-lg-12">
