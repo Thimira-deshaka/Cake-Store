@@ -20,16 +20,8 @@ const findProduct = async (id) => {
   return products;
 };
 
-const findProductId = async (idOrName) => {
-  const products = await productModel.findOne({
-    $or: [{ name: idOrName }, { _id: idOrName }],
-  });
-  return products;
-};
-
 module.exports = {
   getProducts,
   createProduct,
   findProduct,
-  findProductId,
 };

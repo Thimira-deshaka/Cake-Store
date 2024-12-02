@@ -1,6 +1,11 @@
 const express = require("express");
-const {getCartProducts, addCartProduct, deleteCartProduct, checkout} = require("../controllers/cartController");
-const validateToken = require('../middleware/tokenValidationMiddleware');
+const {
+  getCartProducts,
+  addCartProduct,
+  deleteCartProduct,
+  checkout,
+} = require("../controllers/cartController");
+const validateToken = require("../middleware/tokenValidationMiddleware");
 
 const router = express.Router();
 
@@ -10,7 +15,6 @@ router.post("/:productid", validateToken, addCartProduct);
 
 router.delete("/checkout", validateToken, checkout);
 
-router.delete("/:productid", validateToken, deleteCartProduct);
+router.delete("/:orderid", validateToken, deleteCartProduct);
 
-
-module.exports = router
+module.exports = router;

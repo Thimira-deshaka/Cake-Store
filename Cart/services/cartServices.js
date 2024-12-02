@@ -1,69 +1,55 @@
 const { json } = require("express");
-const CartModel = require("../models/cartModel");
-const ProductModel = require("../models/productModel");
 require("dotenv").config();
-const cartItem = require("../models/cartItem");
+const cartItemModel = require("../models/cartItemModel");
+const axios = require("axios");
 
 const getCartProducts = async (userId) => {
-  const cartItems = await cartItem.find({ userId });
+  const cartItems = await cartItemModel.find({ UserId: userId });
+  //   console.log(cartItems[0]);
   if (cartItems.length === 0) {
-    return res.status(404).json({ message: "Cart is empty" });
+    return "Cart is empty";
   }
 
   const enrichedCart = await Promise.all(
     cartItems.map(async (item) => {
+      //   console.log(item);
       // Fetch product details from the Product Server
       const productResponse = await axios.get(
-        `${process.env.PRODUCT_SERVER_BASE}/${item.productId}`
+        `${process.env.PRODUCT_SERVER_BASE}/products/${item.ProductId}`
       );
       const product = productResponse.data;
 
       return {
+        OrderId: item._id,
         productId: item.productId,
+        image: product.image,
         name: product.name,
         price: product.price,
-        quantity: item.quantity,
+        quantity: item.quantity || 1, //have to modify
         total: product.price * item.quantity, // Calculate total for the item
       };
     })
   );
-
-  //   const cartProducts = await CartModel.find({ UserId: userId });
-  //   const cartProductIds = [];
-  //   let total = 0;
-  //   cartProducts.forEach((cartProduct) => {
-  //     cartProductIds.push(cartProduct.ProductId);
-  //   });
-
-  //   // console.log(cartProductIds);
-  //   const Products = await ProductModel.find({ _id: { $in: cartProductIds } });
-  //   Products.forEach((product) => {
-  //     total += product.price;
-  //   });
-  // console.log(Products);
-
-  // const productDetails = productArray.push(await ProductModel.findById(cartProducts[0].ProductId));
-  // res.json(productDetails);
-  //   res.json({ Products, total });
+  const totalPrice = enrichedCart.reduce((sum, item) => sum + item.price, 0);
+  //   console.log(totalPrice.toFixed(2));
+  return { productDetail: enrichedCart, total: totalPrice.toFixed(2) };
 };
 
 const addCartProduct = async (userId, productId, qty) => {
-  const cartProduct = await CartModel.create({
+  const cartProduct = await cartItemModel.create({
     UserId: userId,
     ProductId: productId,
-    quantity: qty,
+    Quantity: qty,
   });
+  return cartProduct;
 };
 
-// const deleteCartProduct = async (req, res) => {
-//     const cartProduct = await CartModel.findOneAndDelete(
-//         {
-//             UserId: req.user.id,
-//             ProductId: req.params.productid
-//         }
-//     );
-//     res.json(cartProduct);
-// }
+const deleteCartProduct = async (OrderId) => {
+  const cartProduct = await cartItemModel.findOneAndDelete({
+    _id: OrderId,
+  });
+  return cartProduct;
+};
 
 // const checkout = async (req, res) => {
 //     const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
@@ -76,6 +62,6 @@ const addCartProduct = async (userId, productId, qty) => {
 module.exports = {
   getCartProducts,
   addCartProduct,
-  //   deleteCartProduct,
+  deleteCartProduct,
   //   checkout,
 };
