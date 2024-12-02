@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
 import deletesvg from "../assets/delete.svg";
-
 import "../Style/Cart.css";
 import NavBar from "../component/NavBar";
 function Cart() {
@@ -34,7 +33,7 @@ function Cart() {
             setCartData(data);
           }
         } else {
-          // Check if token is invalid (e.g., expired or unauthorized)
+          // Handle response errors
           if (response.status === 401) {
             console.log("Invalid token");
             // Handle invalid token scenario (e.g., redirect to login page)
@@ -61,6 +60,15 @@ function Cart() {
     }
   }, [cartData]);
 
+
+  const handleCheckout = () => {
+    if (cartData.Products.length === 0) {
+      alert("Your cart is empty. Please add items to proceed.");
+    } else {
+      window.location.href = "/Checkout"; // Proceed to the checkout page
+    }
+  };
+                
   const deleteOrder = async (orderId: any) => {
     try {
       console.log("Order ID:", orderId); // Debugging productId
@@ -111,6 +119,7 @@ function Cart() {
                     </tr>
                   </thead>
                   <tbody>
+
                     {cartData &&
                     cartData.Orders &&
                     cartData.Orders.length > 0 ? (
@@ -158,20 +167,22 @@ function Cart() {
                         <td>{product.category}</td>
                         <td>${product.price}</td>
                       </tr>
+
                     ))} */}
                   </tbody>
                 </table>
               </div>
               <div className="cart-table-bill">
-                {/* <div className="bill-sub">Subtotal: $104.97</div> */}
                 <div className="bill-total bold-text">${cartData.total}</div>
               </div>
               <div className="cart-header-footer">
-                <a href="/Checkout">
-                  <button className="cart-header-cta red-bg" type="button">
-                    Proceed to Checkout
-                  </button>
-                </a>
+                <button
+                  className="cart-header-cta red-bg"
+                  type="button"
+                  onClick={handleCheckout}
+                >
+                  Proceed to Checkout
+                </button>
               </div>
             </div>
           </div>
@@ -180,4 +191,5 @@ function Cart() {
     </Fragment>
   );
 }
+
 export default Cart;
