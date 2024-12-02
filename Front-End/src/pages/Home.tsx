@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "../component/card";
+import HomeBanner from "../component/HomeBanner";
 
 function Home() {
   const [data, setData] = useState([]);
@@ -76,9 +77,12 @@ function Home() {
     <Fragment>
       <div className="wid">
         <div className="container">
-          <div className="row pt-5">
+          <div className="row">
             <div className="col-lg-12">
               <div className="page-content">
+                <div className="">
+                  <HomeBanner />
+                </div>
                 <div className="most-popular">
                   <div className="row">
                     <div className="col-lg-12">
@@ -115,6 +119,7 @@ function Home() {
 
                           <input
                             className="newSearch"
+                            style={{ backgroundColor: "#2a1b10" }}
                             type="text"
                             id="searchText"
                             name="searchKeyword"
@@ -124,6 +129,7 @@ function Home() {
                           />
                           <button
                             className="searchButton"
+                            style={{ backgroundColor: "#2a1b10" }}
                             onClick={handleSearch}
                           >
                             Search
