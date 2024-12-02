@@ -1,4 +1,4 @@
-const userService = require("../services/userServices");
+const userService = require("../services/recoverPasswordServices");
 const jwt = require("jsonwebtoken");
 
 // Environment Variables

@@ -21,8 +21,9 @@ const transporter = nodemailer.createTransport({
  * @param {string} email - The email of the user requesting a password reset.
  * @returns {string|null} - The reset link if successful, or null if user not found.
  */
-const forgotPassword = async (email) => {
+const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
   try {
+    console.log("Received email:", email); 
     // Check if the user exists
     const user = await userModel.findOne({ email });
     if (!user) return null;
@@ -31,7 +32,7 @@ const forgotPassword = async (email) => {
     const token = jwt.sign({ id: user._id }, EMAIL_SECRET, { expiresIn: "1h" });
 
     // Create reset link
-    const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`;
+   const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`;
 
     // Email details
     const mailOptions = {
