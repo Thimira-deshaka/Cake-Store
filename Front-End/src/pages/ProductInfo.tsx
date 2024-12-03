@@ -1,6 +1,8 @@
 import "../Style/profile.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment, useState, useEffect } from "react";
+import NavBar from "../component/NavBar";
+import Footer from "../component/Footer";
 
 function ProductInfo() {
   const [inputValue, setInputValue] = useState({});
@@ -9,11 +11,14 @@ function ProductInfo() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3002/products/${productID}`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `http://localhost:3002/products/${productID}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const data = await response.json();
         console.log(data);
         setInputValue(data);
@@ -42,6 +47,7 @@ function ProductInfo() {
             alert("Added to cart");
           } else {
             console.log("Failed to add to cart");
+            console.log(response);
             window.location.href = "/login";
           }
         })
@@ -49,13 +55,11 @@ function ProductInfo() {
           console.error("Error:", error);
         });
     }
-
-  
-
   };
 
   return (
     <Fragment>
+      <NavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">
@@ -72,7 +76,11 @@ function ProductInfo() {
                           <h4>{inputValue.name}</h4>
                           <p>{inputValue.description}</p>
                           <div className="main-button">
-                            <button className="searchButton" type="button" onClick={onSubmithandler}>
+                            <button
+                              className="searchButton"
+                              type="button"
+                              onClick={onSubmithandler}
+                            >
                               Add To Cart
                             </button>
                           </div>
@@ -96,6 +104,7 @@ function ProductInfo() {
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }

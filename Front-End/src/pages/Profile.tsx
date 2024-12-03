@@ -10,8 +10,7 @@ import profile from "../assets/profile.jpg";
 import profileg from "../assets/profileGirl.jpg";
 import Cake from "../assets/Cake.webp";
 import { useState, useEffect, Fragment } from "react";
-
-// Define the User interface
+// Define the User interface(Theoda)
 interface User {
   firstName?: string;
   lastName?: string;
@@ -20,8 +19,7 @@ interface User {
   phone?: string;
   gender?: string;
 }
-
-
+import Footer from "../component/Footer";
 function Profile() {
   const [user, setUser] = useState<User>({});
 
@@ -107,6 +105,7 @@ function Profile() {
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }
