@@ -13,7 +13,7 @@ function Cart() {
 
         // Check if token exists
         if (!token) {
-          window.location.href = "/login";
+          //window.location.href = "/login";
           console.log("Token not found");
           return;
         }

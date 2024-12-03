@@ -14,8 +14,10 @@ import AdminUserView from "./pages/AdminProductView";
 import AdminProductView from "./pages/AdminProductView";
 function App() {
   return (
-    <Fragment>
+    
       <Router>
+        <Fragment>
+
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -32,8 +34,9 @@ function App() {
           <Route path="/admin/users" element={<AdminUserView />} />
           <Route path="/admin/products" element={<AdminProductView />} />
         </Routes>
-      </Router>
+     
     </Fragment>
+    </Router>
   );
 }
 export default App;
