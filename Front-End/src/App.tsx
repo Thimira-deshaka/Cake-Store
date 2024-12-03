@@ -5,16 +5,21 @@ import ProductInfo from "./pages/ProductInfo";
 import Register from "./pages/Register";
 import { Fragment } from "react";
 import Home from "./pages/Home";
+import Admin from "./pages/Admin";
+import UserDetails from "./pages/UserDetails";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import NavBar from "./component/NavBar";
+
 function App() {
   return (
     <Fragment>
       <NavBar />
       <Router>
         <Routes>
+          {/* <Route index path="/" element={<Admin/>} /> */}
           <Route index path="/" element={<Home />} />
+          <Route path="/userInfo/:userId" element={<UserDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />

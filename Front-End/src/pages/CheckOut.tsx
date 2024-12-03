@@ -30,9 +30,6 @@ function submitHandler(){
     window.location.href = "/login";
   }
   
-  
-
-
   return (
     <Fragment>
       <div className="wrapper">
