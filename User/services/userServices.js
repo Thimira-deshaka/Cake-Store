@@ -53,8 +53,15 @@ const getUser = async (userId) => {
   return user;
 };
 
+const updateUser = async (userId, userData) => {  
+  const user = await userModel.findByIdAndUpdate
+  (userId, userData, { new: true });
+  return user;
+}
+
 module.exports = {
   userRegister,
   loginUser,
   getUser,
+  updateUser,
 };

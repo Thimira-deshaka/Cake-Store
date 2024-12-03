@@ -6,6 +6,7 @@ const {
   getUser,
   userRegister,
   loginUser,
+  updateUser,
 } = require("../controllers/usercontroller");
 
 
@@ -25,6 +26,9 @@ router.route("/").get(validateToken, getUser);
 
 // Login User
 router.route("/login").post(loginUser);
+
+
+router.route("/update").put(validateToken, updateUser); 
 
 // Forgot Password
 router.route("/forgot-password").post(forgotPassword);

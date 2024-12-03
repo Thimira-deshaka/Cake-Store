@@ -7,6 +7,8 @@ import { Fragment } from "react";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import Update from "./pages/Update";
+function App() {
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminProductView";
@@ -15,6 +17,8 @@ function App() {
   return (
     <Fragment>
       <Router>
+      <NavBar />
+
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -23,6 +27,8 @@ function App() {
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/update" element={<Update />} />
+
           {/*Admin pages*/}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
