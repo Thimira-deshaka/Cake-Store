@@ -53,15 +53,37 @@ const getUser = async (userId) => {
   return user;
 };
 
+
+const getAllUsers = async () => {
+  try {
+      const users = await userModel.find(); // Fetch all users from the database
+      return users;
+  } catch (error) {
+      throw new Error("Failed to fetch users from database");
+  }
+};
+
+const getUserById = async (userID) => {
+  try {
+    const user = await userModel.findById(userID, { password: 0 }); // Exclude password
+    return user;
+  } catch (error) {
+    throw new Error("Failed to fetch user from database");
+  }
+};
+
 const updateUser = async (userId, userData) => {  
   const user = await userModel.findByIdAndUpdate
   (userId, userData, { new: true });
   return user;
 }
 
+
 module.exports = {
   userRegister,
   loginUser,
   getUser,
+  getAllUsers,
+  getUserById,
   updateUser,
 };

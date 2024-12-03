@@ -10,8 +10,9 @@ import CheckOut from "./pages/CheckOut";
 import Update from "./pages/Update";
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
-import AdminUserView from "./pages/AdminProductView";
+import AdminUserView from "./pages/AdminUserView";
 import AdminProductView from "./pages/AdminProductView";
+import AdminUserDetails from "./pages/AdminUserDetails";
 function App() {
   return (
     
@@ -32,6 +33,7 @@ function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
           <Route path="/admin/products" element={<AdminProductView />} />
         </Routes>
      
