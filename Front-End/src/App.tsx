@@ -7,14 +7,18 @@ import { Fragment } from "react";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import Update from "./pages/Update";
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
-import AdminUserView from "./pages/AdminProductView";
+import AdminUserView from "./pages/AdminUserView";
 import AdminProductView from "./pages/AdminProductView";
+import AdminUserDetails from "./pages/AdminUserDetails";
 function App() {
   return (
-    <Fragment>
+    
       <Router>
+        <Fragment>
+
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -23,14 +27,18 @@ function App() {
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/update" element={<Update />} />
+
           {/*Admin pages*/}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
           <Route path="/admin/products" element={<AdminProductView />} />
         </Routes>
-      </Router>
+     
     </Fragment>
+    </Router>
   );
 }
 export default App;

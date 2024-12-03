@@ -1,0 +1,90 @@
+# services:
+#   cart:
+#     build: ./Cart
+#     ports:
+#       - "3003:3003"
+#     environment:
+#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
+      
+#     networks:
+#       cakestore-network:
+
+#   product:
+#     build: ./Product
+#     ports:
+#       - "3002:3002"
+#     environment:
+#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
+#     networks:
+#       cakestore-network:
+
+#   order:
+#     build: ./Admin
+#     ports:
+#       - "3004:3004"
+#     environment:
+#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
+#     networks:
+#       cakestore-network:
+
+#   user:
+#     build: ./User
+#     ports:
+#       - "3001:3001"
+#     environment:
+#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
+#     networks:
+#       cakestore-network:
+
+#   db:
+#     image: mongo:4.0-xenial
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - CAKESTORE-Microservice:/data/db
+#     networks:
+#       cakestore-network:
+
+# networks:
+#   cakestore-network:
+
+# volumes:
+#   CAKESTORE-Microservice:
+
+
+services:
+  cart:
+    build:
+      context: ./Cart
+    ports:
+      - "3003:3003"
+    networks:
+      - my-network
+
+  user:
+    build:
+      context: ./User
+    ports:
+      - "3001:3001"
+    networks:
+      - my-network
+
+  admin:
+    build:
+      context: ./Admin
+    ports:
+      - "3004:3004"
+    networks:
+      - my-network
+
+  product:
+    build:
+      context: ./Product
+    ports:
+      - "3002:3002"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
