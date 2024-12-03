@@ -1,6 +1,8 @@
 import { Fragment, useState } from "react";
 import "../Style/Login.css";
 import Alert from "../component/Alert";
+import Footer from "../component/Footer";
+import NavBar from "../component/NavBar";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +39,7 @@ function Login() {
   }
   return (
     <Fragment>
+      <NavBar />
       <div className="bg-img">
         <div className="content">
           <header>Login Form</header>
@@ -73,6 +76,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <Footer />
     </Fragment>
   );
 }

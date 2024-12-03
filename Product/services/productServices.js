@@ -15,10 +15,8 @@ const createProduct = async (data) => {
   return product;
 };
 
-const findProduct = async (idOrName) => {
-  const products = await productModel.findOne({
-    $or: [{ name: idOrName }, { _id: idOrName }],
-  });
+const findProduct = async (id) => {
+  const products = await productModel.findOne({ _id: id });
   return products;
 };
 

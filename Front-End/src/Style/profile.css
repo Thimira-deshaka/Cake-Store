@@ -1,7 +1,6 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 * {
-    box-sizing: border-box;
-    
+    box-sizing: border-box; 
   }
   html, body {
     margin: 0;
@@ -38,9 +37,10 @@
     background-image: url('../assets/profile.jpg');
 }
 img{
-    width: 100%;
+    width: 80%;
     border-radius: 15px;
     overflow: hidden;
+    margin-bottom: 30px;
 }
 
   .page-content {
@@ -127,7 +127,7 @@ img{
   section {
     margin-top: 120px;
   }
-  .heading-section h4 {
+/* .heading-section h4 {
     color: #ec6090;
     font-size: 34px;
     text-decoration: none;
@@ -138,82 +138,82 @@ img{
     color: #fff;
     font-style: normal;
     text-decoration: underline;
-  }
-  .main-profile {
-    border-radius: 23px;
-    padding: 30px;
-    background-color: #1f2122;
-  }
-  
-  .main-profile .main-info span {
-    font-size: 14px;
-    color: #fff;
-    background-color: #e75e8d;
-    padding: 8px 20px;
-    display: inline-block;
-    border-radius: 25px;
-    font-weight: 400;
-    text-transform: capitalize;
-    letter-spacing: 0.5px;
-    margin-bottom: 15px;
-  }
-  
-  .main-profile .main-info h4 {
-    margin-bottom: 20px;
-  }
-  
-  .main-profile .main-info .main-border-button {
-    margin-top: 25px;
-  }
-  
-  .main-profile ul {
-    border-radius: 23px;
-    padding: 30px;
-    background-color: #27292a;
-  }
-  
-  .main-profile ul li {
-    width: 100%;
-    font-size: 14px;
-    color:#fff;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #666;
-  }
-  
-  .main-profile ul li span {
-    float: right;
-    font-weight: 500;
-    color: #ec6090;
-  }
-  
-  .main-profile ul li:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-  }
-  
-  .clips {
-    margin-top: 30px;
-    border-top: 2px solid #27292a;
-  }
-  
-  .clips .heading-section {
-    margin-top: 30px;
-  }
-  
-  .clips .item  {
-    border-radius: 23px;
-    padding: 30px 15px;
-    background-color: #27292a;
-    margin-bottom: 30px;
-  }
-  
-  .clips .item .thumb {
-    position: relative;
-    margin-bottom: 15px;
-  }
-  
+  } */
+.main-profile {
+  border-radius: 23px;
+  padding: 30px;
+  background-color: #1f2122;
+}
+
+.main-profile .main-info span {
+  font-size: 14px;
+  color: #fff;
+  background-color: #e75e8d;
+  padding: 8px 20px;
+  display: inline-block;
+  border-radius: 25px;
+  font-weight: 400;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+.main-profile .main-info h4 {
+  margin-bottom: 20px;
+}
+
+.main-profile .main-info .main-border-button {
+  margin-top: 25px;
+}
+
+.main-profile ul {
+  border-radius: 23px;
+  padding: 30px;
+  background-color: #27292a;
+}
+
+.main-profile ul li {
+  width: 100%;
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #666;
+}
+
+.main-profile ul li span {
+  float: right;
+  font-weight: 500;
+  color: #ec6090;
+}
+
+.main-profile ul li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.clips {
+  margin-top: 30px;
+  border-top: 2px solid #27292a;
+}
+
+.clips .heading-section {
+  margin-top: 30px;
+}
+
+.clips .item {
+  border-radius: 23px;
+  padding: 30px 15px;
+  background-color: #27292a;
+  margin-bottom: 30px;
+}
+
+.clips .item .thumb {
+  position: relative;
+  margin-bottom: 15px;
+}
+
 .clips .item .thumb a {
   position: absolute;
   left: 50%;
@@ -226,13 +226,13 @@ img{
   text-align: center;
   line-height: 46px;
   color: #ec6090;
-  }
-  
+}
+
 .clips .item h4 {
   font-size: 15px;
   display: inline-block;
-  }
-  
+}
+
 .clips .item span i {
   color: #ec6090;
 }
@@ -241,10 +241,9 @@ img{
   float: right;
   color: #fff;
   font-size: 14px;
-  }
+}
 
 .clips .main-button {
   margin-top: 10px;
   text-align: center;
-  }
-  
+}

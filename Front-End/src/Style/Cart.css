@@ -12,7 +12,6 @@ body {
   height: 100vh;
   background-size: cover;
   background-position: center;
-
 }
 
 .spacefo2 {
@@ -30,7 +29,6 @@ body {
   overflow: auto;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
 }
 
 /* Cart Page Header Styles */
@@ -44,7 +42,23 @@ body {
 
 .cart-header-text {
   font-size: 30px;
+  text-align: left;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Cart Page Header Styles */
+.cart-page-para {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: 20px;
   text-align: center;
+}
+
+.cart-para-text {
+  font-size: 15px;
+  text-align: left;
   font-weight: bold;
   color: #fff;
 }
