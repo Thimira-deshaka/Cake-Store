@@ -12,28 +12,28 @@ function Home() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/products", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:3002/products", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      if (response.ok) {
-        const jsonData = await response.json();
-        setData(jsonData);
-      } else {
-        console.log("Failed to fetch products");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const jsonData = await response.json();
+  //       setData(jsonData);
+  //     } else {
+  //       console.log("Failed to fetch products");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
 
   const handleLinkClick = (productID: any) => {
     localStorage.setItem("productID", productID);
@@ -166,7 +166,6 @@ function Home() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
