@@ -75,7 +75,7 @@ function AdminNavBar() {
                     Products
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="/profile"
                     className={`nav-item profile-tab ${activeLink === "profile" ? "active" : ""}`}
@@ -86,7 +86,7 @@ function AdminNavBar() {
                   >
                    Promotions
                   </a>
-                </li>
+                </li> */}
               </ul>
             </nav>
           </div>

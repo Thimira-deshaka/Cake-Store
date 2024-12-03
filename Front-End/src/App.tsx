@@ -8,12 +8,13 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import NavBar from "./component/NavBar";
+import AdminNavBar from "./component/AdminNavBar";
 function App() {
   return (
     <Router>
     <Fragment>
       <NavBar />
-  
+      {/* <AdminNavBar /> */}
         <Routes>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
