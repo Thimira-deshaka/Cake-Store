@@ -1,6 +1,9 @@
 import Footer from "../component/Footer";
 import NavBar from "../component/NavBar";
 import "../Style/Register.css";
+import Alert from "../component/Alert";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+
 import { Fragment, useState } from "react";
 function Register() {
   const [firstName, setFirstName] = useState("");
@@ -11,10 +14,21 @@ function Register() {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setconfPassword] = useState("");
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (password !== confpassword) {
+      setAlert({
+        title: "Error",
+        message: "Passwords do not match.",
+        isSuccess: false,
+      });
+      setIsDialogOpen(true);
+      return;
+    }
     try {
       const response = await fetch("http://localhost:3001/users", {
         method: "POST",
@@ -33,32 +47,35 @@ function Register() {
       });
 
       if (response.ok) {
-        alert("Registered successful");
-        window.location.href = "/";
+        setAlert({
+          title: "Registration Successful",
+          message: "Your account has been created. Please log in.",
+          isSuccess: true,
+        });
+        setIsDialogOpen(true);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       } else {
-        const errorData = await response.json();
-        alert("Register failed: " + errorData.message);
+        const data = await response.json();
+        setAlert({
+          title: "Registration Failed",
+          message: data.message || "An error occurred during registration.",
+          isSuccess: false,
+        });
+        setIsDialogOpen(true);
       }
     } catch (error) {
-      alert("Error:" + error);
-    }
-
-    if (password === confpassword) {
-      const data = {
-        email,
-        password,
-        firstName,
-        lastName,
-        age,
-        phone,
-        gender,
-      };
-      const dataString = JSON.stringify(data);
-      window.location.href = "/login";
-    } else {
-      alert("passwords doesn't match");
+      console.error("Error:", error);
+      setAlert({
+        title: "Error",
+        message: "An unexpected error occurred. Please try again later.",
+        isSuccess: false,
+      });
+      setIsDialogOpen(true);
     }
   }
+
   return (
     <Fragment>
       <NavBar />
@@ -219,13 +236,26 @@ function Register() {
           </form>
           <div className="signup space">
             Already have an account?
-            <a href="/">Login</a>
+            <a href="/login">Login</a>
           </div>
         </div>
       </div>
       <Footer />
+      {alert && (
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <DialogContent>
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDialogOpen(false)} color={alert.isSuccess ? "primary" : "error"}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Fragment>
   );
 }
 
 export default Register;
+

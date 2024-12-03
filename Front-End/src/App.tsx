@@ -8,7 +8,6 @@ import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import Update from "./pages/Update";
-function App() {
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminProductView";
@@ -17,7 +16,6 @@ function App() {
   return (
     <Fragment>
       <Router>
-      <NavBar />
 
         <Routes>
           <Route index path="/" element={<Home />} />
