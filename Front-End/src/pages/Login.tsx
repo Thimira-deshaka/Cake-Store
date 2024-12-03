@@ -10,7 +10,8 @@ function Login() {
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleForgotPassword = async (email: string) => {
+  // Handle forgot password request
+  const handleForgotPassword = async () => {
     if (!email.trim()) {
       setAlert({
         title: "Error",
@@ -22,14 +23,19 @@ function Login() {
     }
 
     try {
-      const response = await axios.post("/api/forgot-password", { email });
+      console.log("Requesting password reset for email:", email);
+      const response = await axios.post("http://localhost:3001/users/forgot-password", { email });
+      console.log("Response from forgot password:", response);
+
       setAlert({
         title: "Success",
-        message: response.data.message,
+        message: response.data.message || "Password reset request successful.",
         isSuccess: true,
       });
       setIsDialogOpen(true);
     } catch (error: any) {
+      console.error("Error during forgot password request:", error);
+
       setAlert({
         title: "Error",
         message: error.response?.data?.message || "An error occurred.",
@@ -39,6 +45,7 @@ function Login() {
     }
   };
 
+  // Handle login form submission
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -94,8 +101,9 @@ function Login() {
                 type="text"
                 required
                 placeholder="Email or Username"
+                value={email} // Ensure email is captured in state
                 onChange={(event) => setEmail(event.target.value)}
-              ></input>
+              />
             </div>
             <h4 className="fieldHeader space">Password</h4>
             <div className="field space">
@@ -106,7 +114,7 @@ function Login() {
                 required
                 placeholder="Password"
                 onChange={(event) => setPassword(event.target.value)}
-              ></input>
+              />
               <span className="show">SHOW</span>
             </div>
             <div className="field space">
@@ -118,12 +126,7 @@ function Login() {
             <a href="/register">Signup Now</a>
           </div>
           <div className="signup space">
-            <a
-              href="#"
-              onClick={() => handleForgotPassword(email)}
-            >
-              Forget Password
-            </a>
+            <a onClick={handleForgotPassword}>Forget Password</a>
           </div>
         </div>
       </div>

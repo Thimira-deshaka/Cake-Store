@@ -7,7 +7,7 @@ function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [dob, setDob] = useState(""); // Changed to dob for date of birth
+  const [age, setAge] = useState(""); // Changed from dob to age
   const [phone, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, firstName, lastName, dob, phone, gender }),
+        body: JSON.stringify({ email, password, firstName, lastName, age, phone, gender }),
       });
 
       if (response.ok) {
@@ -91,7 +91,7 @@ function Register() {
                   placeholder="First Name"
                   name="firstName"
                   onChange={(event) => setFirstName(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
             <div className="col">
@@ -103,7 +103,7 @@ function Register() {
                   placeholder="Last Name"
                   name="lastName"
                   onChange={(event) => setLastName(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ function Register() {
                   placeholder="Email"
                   name="email"
                   onChange={(event) => setEmail(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
             <div className="col">
@@ -137,7 +137,7 @@ function Register() {
                   placeholder="Phone"
                   name="phone"
                   onChange={(event) => setPhoneNumber(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@ function Register() {
                   placeholder="Password"
                   name="password"
                   onChange={(event) => setPassword(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
             <div className="col">
@@ -170,13 +170,13 @@ function Register() {
                   required
                   placeholder="Confirm password"
                   onChange={(event) => setConfPassword(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col">
-              <h6>Date of Birth</h6>
+              <h6>Age</h6>
             </div>
             <div className="col">
               <h6>Gender</h6>
@@ -186,13 +186,14 @@ function Register() {
             <div className="col">
               <div className="field">
                 <input
-                  type="date"
+                  type="number"
                   className="form-control"
                   required
-                  placeholder="Date of Birth"
-                  name="dob"
-                  onChange={(event) => setDob(event.target.value)}
-                ></input>
+                  placeholder="Age"
+                  name="age"
+                  min="1"
+                  onChange={(event) => setAge(event.target.value)}
+                />
               </div>
             </div>
             <div className="col">
@@ -204,7 +205,7 @@ function Register() {
                   placeholder="Gender"
                   name="gender"
                   onChange={(event) => setGender(event.target.value)}
-                ></input>
+                />
               </div>
             </div>
           </div>
