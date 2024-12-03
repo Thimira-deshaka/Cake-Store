@@ -53,6 +53,7 @@ const getUser = async (userId) => {
   return user;
 };
 
+
 const getAllUsers = async () => {
   try {
       const users = await userModel.find(); // Fetch all users from the database
@@ -71,10 +72,18 @@ const getUserById = async (userID) => {
   }
 };
 
+const updateUser = async (userId, userData) => {  
+  const user = await userModel.findByIdAndUpdate
+  (userId, userData, { new: true });
+  return user;
+}
+
+
 module.exports = {
   userRegister,
   loginUser,
   getUser,
   getAllUsers,
   getUserById,
+  updateUser,
 };
