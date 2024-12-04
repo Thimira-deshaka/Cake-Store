@@ -52,6 +52,7 @@ function AdminUserView() {
 
   return (
     <Fragment>
+      <NavBar />
       <div className="wid">
         <div className="container">
           <div className="row">

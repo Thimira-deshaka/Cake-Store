@@ -2,6 +2,7 @@ import "../Style/UserDetails.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect, Fragment } from "react";
 import profileImage from "../assets/user.png";
+import NavBar from "../component/NavBar";
 
 function UserDetails() {
   const [userDetails, setUserDetails] = useState({
@@ -41,6 +42,7 @@ function UserDetails() {
 
   return (
     <Fragment>
+      <NavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">
@@ -56,6 +58,15 @@ function UserDetails() {
                           alt="User Profile"
                           className="profile-image"
                         />
+                      </div>
+                      <div className="col-lg-4 align-self-center">
+                        <div className="main-info header-text">
+                          <h1 id="firstname">Hey!</h1>
+                          <h5>Want to update {userDetails.firstName}'s profile</h5>
+                        <div className="main-border-button">
+                            <a href="/AdminUserUpdate">Update</a>
+                          </div>
+                        </div>
                       </div>
                       {/* Right Section: Additional Info */}
                       <div className="col-lg-4 align-self-center">
