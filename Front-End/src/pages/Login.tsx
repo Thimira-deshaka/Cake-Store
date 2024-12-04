@@ -86,6 +86,9 @@ function Login() {
           isSuccess: false,
         });
         setIsDialogOpen(true);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 1500);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -148,11 +151,11 @@ function Login() {
           <DialogContent>
             <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
           </DialogContent>
-          <DialogActions>
+          
             <Button onClick={() => setIsDialogOpen(false)} color={alert.isSuccess ? "primary" : "error"}>
               Close
             </Button>
-          </DialogActions>
+          
         </Dialog>
       )}
     </Fragment>

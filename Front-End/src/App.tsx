@@ -12,6 +12,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminProductView";
 import AdminProductView from "./pages/AdminProductView";
+import Forgetpassword from "./pages/Forgetpassword";
+import AdminResetPassword from "./pages/AdminResetPassword"
 function App() {
   return (
     <Fragment>
@@ -26,12 +28,15 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut />} />
           <Route path="/update" element={<Update />} />
+          <Route path="/Forgetpassword" element={<Forgetpassword />} />
 
           {/*Admin pages*/}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
           <Route path="/admin/products" element={<AdminProductView />} />
+          <Route path="/AdminResetPassword" element={<AdminResetPassword />} />
+
         </Routes>
       </Router>
     </Fragment>

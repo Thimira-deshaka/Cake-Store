@@ -76,7 +76,7 @@ function Forgetpassword() {
   return (
     <div className="bg-img">
       <div className="content">
-        <header>Forget Password Form</header>
+        <header> Password Reset Form</header>
         <form onSubmit={handleSubmit}>
           <h4 className="fieldHeader">New Password</h4>
           <div className="field">

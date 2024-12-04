@@ -20,6 +20,7 @@ function AdminResetPassword() {
     const queryParams = new URLSearchParams(location.search);
     const tokenFromUrl = queryParams.get("token");
     setToken(tokenFromUrl);
+    console.log(token);
   }, [location.search]);
 
   // Handle password reset request
@@ -47,7 +48,7 @@ function AdminResetPassword() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/admin/reset-password", {
+      const response = await axios.post("http://localhost:3004/admin/reset-password", {
         token,
         newPassword,
       });
@@ -62,7 +63,7 @@ function AdminResetPassword() {
       // Redirect to login page after showing success alert
       setTimeout(() => {
         navigate("/login");
-      }, 2000); // Adjust the delay as needed
+      }, 2000); 
     } catch (error: any) {
       setAlert({
         title: "Error",
@@ -76,7 +77,7 @@ function AdminResetPassword() {
   return (
     <div className="bg-img">
       <div className="content">
-        <header>Forget Password Form</header>
+        <header>Password Reset Form</header>
         <form onSubmit={handleSubmit}>
           <h4 className="fieldHeader">New Password</h4>
           <div className="field">

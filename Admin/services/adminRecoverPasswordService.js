@@ -25,14 +25,14 @@ const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
   try {
     console.log("Received email:", email); 
     // Check if the user exists
-    const user = await adminModel.findOne({ email });
-    if (!user) return null;
+    const admin = await adminModel.findOne({ email });
+    if (!admin) return null;
 
     // Generate a JWT token for password reset
-    const token = jwt.sign({ id: user._id }, EMAIL_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: admin._id }, EMAIL_SECRET, { expiresIn: "1h" });
 
     // Create reset link
-   const resetLink = `${FRONTEND_URL}/AdminResestPassword?token=${token}`;
+   const resetLink = `${FRONTEND_URL}/AdminResetPassword?token=${token}`;
 
     // Email details
     const mailOptions = {
