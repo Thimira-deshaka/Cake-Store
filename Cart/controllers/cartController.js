@@ -46,9 +46,25 @@ const checkout = async (req, res) => {
   res.json({ cartProducts });
 };
 
+const checkoutCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Perform checkout process
+    const orderHistory = await cartService.checkoutCart(userId);
+
+    res.status(200).json({
+      message: "Checkout successful",
+      orderHistory,
+    });
+  } catch (error) {
+    console.error("Checkout error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkout,
+  checkoutCart,
 };
