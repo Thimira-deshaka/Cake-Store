@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
-import "../Style/home.css";
+import React, { Fragment, useState } from "react";
+import "../../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../component/NavBar";
+import NavBar from "../NavBar";
 
 interface Order {
   id: number;
@@ -10,13 +10,24 @@ interface Order {
   ProductNanme: string;
   date: string;
   quantity: number;
-  customerName: string;
+  price: string;
   status: "On Going" | "Shipped";
 }
 
-const Home: React.FC = () => {
+const UserOrdersView: React.FC = () => {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const [orders, setOrders] = useState<Order[]>([
+
+  // Handle row hover
+  const handleMouseEnter = (id: number) => {
+    setHoveredRow(id);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredRow(null);
+  };
+
+  // Sample data
+  const [orders] = useState<Order[]>([
     {
       id: 1,
       productImage:
@@ -25,7 +36,7 @@ const Home: React.FC = () => {
       ProductNanme: "Chocolate Cake 1",
       date: "2024.11.11",
       quantity: 1,
-      customerName: "Cody Fisher",
+      price: "1000.00",
       status: "On Going",
     },
     {
@@ -36,7 +47,7 @@ const Home: React.FC = () => {
       ProductNanme: "Chocolate Cake 2",
       date: "2024.11.30",
       quantity: 2,
-      customerName: "Kristin Watson",
+      price: "2500.00",
       status: "Shipped",
     },
     {
@@ -47,56 +58,10 @@ const Home: React.FC = () => {
       ProductNanme: "Chocolate Cake 3",
       date: "2024.11.20",
       quantity: 12,
-      customerName: "Esther Howard",
+      price: "3000.00",
       status: "Shipped",
     },
   ]);
-
-  //these are for change the color of rows when hover
-  const handleMouseEnter = (id: number) => {
-    setHoveredRow(id);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredRow(null);
-  };
-
-  // Handle status change with confirmation
-  const handleStatusChange = (
-    id: number,
-    newStatus: "On Going" | "Shipped"
-  ) => {
-    if (window.confirm("Are you sure you want to change the order status?")) {
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === id ? { ...order, status: newStatus } : order
-        )
-      );
-    }
-  };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3002/products", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       const jsonData = await response.json();
-  //       setData(jsonData);
-  //     } else {
-  //       console.log("Failed to fetch products");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   const handleLinkClick = (productID: any) => {
     localStorage.setItem("productID", productID);
@@ -133,7 +98,7 @@ const Home: React.FC = () => {
                         <th>Product Name</th>
                         <th>Date</th>
                         <th>Quantity</th>
-                        <th>Customer Name</th>
+                        <th>Price</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -145,7 +110,7 @@ const Home: React.FC = () => {
                           onMouseLeave={handleMouseLeave}
                           style={{
                             color:
-                              hoveredRow === order.id ? "#ffcf86" : "inherit", // Change text color on hover
+                              hoveredRow === order.id ? "#ffcf86" : "inherit",
                           }}
                         >
                           <td>
@@ -165,26 +130,8 @@ const Home: React.FC = () => {
                           <td>{order.ProductNanme}</td>
                           <td>{order.date}</td>
                           <td>{order.quantity}</td>
-                          <td>{order.customerName}</td>
-                          <td>
-                            <select
-                              className={`form-select ${
-                                order.status === "On Going"
-                                  ? "bg-primary text-white"
-                                  : "bg-success text-white"
-                              }`}
-                              value={order.status}
-                              onChange={(e) =>
-                                handleStatusChange(
-                                  order.id,
-                                  e.target.value as "On Going" | "Shipped"
-                                )
-                              }
-                            >
-                              <option value="On Going">On Going</option>
-                              <option value="Shipped">Shipped</option>
-                            </select>
-                          </td>
+                          <td>{`Rs. ${order.price}`}</td>
+                          <td>{order.status}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -199,4 +146,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default UserOrdersView;

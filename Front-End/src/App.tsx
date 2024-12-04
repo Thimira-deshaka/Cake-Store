@@ -11,6 +11,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminProductView";
 import AdminProductView from "./pages/AdminProductView";
+import UserOrdersView from "./component/user/UserOrdersView";
 function App() {
   return (
     <Fragment>
@@ -22,7 +23,9 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/myorders" element={<UserOrdersView />} />
           <Route path="/checkout" element={<CheckOut />} />
+
           {/*Admin pages*/}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
