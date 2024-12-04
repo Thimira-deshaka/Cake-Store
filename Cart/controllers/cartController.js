@@ -66,5 +66,5 @@ module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkout,
+  checkoutCart,
 };
