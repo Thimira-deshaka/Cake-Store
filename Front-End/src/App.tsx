@@ -13,6 +13,7 @@ import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminUserView";
 import AdminProductView from "./pages/AdminProductView";
 import AdminUserDetails from "./pages/AdminUserDetails";
+import AdminProductInfo from "./pages/AdminProductInfo";
 function App() {
   return (
     
@@ -35,6 +36,7 @@ function App() {
           <Route path="/admin/users" element={<AdminUserView />} />
           <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
           <Route path="/admin/products" element={<AdminProductView />} />
+          <Route path="/admin/adminproductInfo/:productId" element={<AdminProductInfo/>} />
         </Routes>
      
     </Fragment>

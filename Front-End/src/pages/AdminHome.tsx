@@ -3,7 +3,7 @@ import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "../component/card";
 import HomeBanner from "../component/HomeBanner";
-import NavBar from "../component/NavBar";
+import AdminNavBar from "../component/AdminNavBar";
 import Footer from "../component/Footer";
 
 function Home() {
@@ -77,7 +77,7 @@ function Home() {
 
   return (
     <Fragment>
-      <NavBar />
+      <AdminNavBar />
       <div className="wid">
         <div className="container">
           <div className="row">
