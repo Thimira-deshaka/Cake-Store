@@ -1,6 +1,7 @@
 const { json } = require("express");
 require("dotenv").config();
 const cartItemModel = require("../models/cartItemModel");
+const orderHistoryModel = require("../models/orderHistoryModel"); 
 const axios = require("axios");
 
 const getCartProducts = async (userId) => {
@@ -58,10 +59,41 @@ const deleteCartProduct = async (OrderId) => {
 //     res.json({cartProducts});
 
 // }
+const checkoutCart = async (userId) => {
+  try {
+    // Fetch user's cart items
+    const cartItems = await cartModel.find({ userId });
+
+    if (!cartItems.length) {
+      throw new Error("No items in the cart to checkout.");
+    }
+
+    // Create order history entries
+    const orderHistoryEntries = cartItems.map((item) => ({
+      userId: userId,
+      productId: item.productId,
+      quantity: item.quantity,
+      
+    }));
+
+    // Insert the cart items into the orderHistory table
+    await orderHistoryModel.insertMany(orderHistoryEntries);
+
+    // Remove the items from the cart after successful checkout
+    await cartModel.deleteMany({ userId });
+
+    // Return the created order history as confirmation
+    return orderHistoryEntries;
+  } catch (error) {
+    console.error("Error in checkoutCart service:", error);
+    throw new Error("Failed to perform checkout.");
+  }
+};
+
 
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  //   checkout,
+  checkoutCart,
 };
