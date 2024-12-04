@@ -3,7 +3,7 @@ const router = express.Router();
 const validateToken = require("../middleware/tokenValidationMiddleware");
 
 const {
-  //getUser,
+  getUser,
   userRegister,
   loginUser,
 } = require("../controllers/usercontroller");
@@ -21,7 +21,7 @@ const {
 router.route("/").post(userRegister);
 
 // Get User (Protected Route)
-router.route("/").get(validateToken);
+router.route("/").get(validateToken, getUser);
 
 // Login User
 router.route("/login").post(loginUser);
