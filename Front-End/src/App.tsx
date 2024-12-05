@@ -12,6 +12,7 @@ import { Fragment } from "react";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import Update from "./pages/Update";
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
 import AdminUserView from "./pages/AdminUserView";
@@ -63,9 +64,11 @@ function App() {
 
         {/* Admin Pages */}
         <Route element={<AdminLayout />}>
+
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
           <Route path="/admin/products" element={<AdminProductView />} />
         </Route>
       </Routes>
