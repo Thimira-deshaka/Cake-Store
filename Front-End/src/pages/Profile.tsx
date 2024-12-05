@@ -53,7 +53,6 @@ function Profile() {
   // }
   return (
     <Fragment>
-      <NavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">
@@ -105,7 +104,6 @@ function Profile() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }

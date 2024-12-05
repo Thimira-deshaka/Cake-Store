@@ -61,7 +61,6 @@ function Register() {
   }
   return (
     <Fragment>
-      <NavBar />
       <div className="bg-img">
         <div className="registerContent">
           <header>Register Form</header>
@@ -223,7 +222,6 @@ function Register() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
