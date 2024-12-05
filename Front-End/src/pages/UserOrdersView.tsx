@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
-import "../../Style/home.css";
+import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../NavBar";
 
 interface Order {
   id: number;
@@ -70,7 +69,6 @@ const UserOrdersView: React.FC = () => {
 
   return (
     <Fragment>
-      <NavBar />
       <div
         className="wid"
         style={{

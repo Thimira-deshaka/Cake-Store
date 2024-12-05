@@ -105,7 +105,6 @@ const Home: React.FC = () => {
 
   return (
     <Fragment>
-      <NavBar />
       <div
         className="wid"
         style={{
