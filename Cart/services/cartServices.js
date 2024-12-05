@@ -59,34 +59,35 @@ const deleteCartProduct = async (OrderId) => {
 //     res.json({cartProducts});
 
 // }
-const checkoutCart = async (userId) => {
+/**
+ * Proceed to checkout for a specific cart item.
+ */
+const proceedToOrder = async (userId, itemId) => {
   try {
-    // Fetch user's cart items
-    const cartItems = await cartModel.find({ userId });
+    // Find the cart item
+    const cartItem = await cartModel.findOneAndDelete({
+      _id: itemId,
+      UserId: userId,
+    });
 
-    if (!cartItems.length) {
-      throw new Error("No items in the cart to checkout.");
+    if (!cartItem) {
+      throw new Error("Cart item not found.");
     }
 
-    // Create order history entries
-    const orderHistoryEntries = cartItems.map((item) => ({
-      userId: userId,
-      productId: item.productId,
-      quantity: item.quantity,
-      
-    }));
+    // Create an order history entry for the cart item
+    const orderHistoryEntry = await orderHistoryModel.create({
+      UserId: cartItem.UserId,
+      ProductId: cartItem.ProductId,
+      Quantity: cartItem.Quantity,
+    });
 
-    // Insert the cart items into the orderHistory table
-    await orderHistoryModel.insertMany(orderHistoryEntries);
-
-    // Remove the items from the cart after successful checkout
-    await cartModel.deleteMany({ userId });
-
-    // Return the created order history as confirmation
-    return orderHistoryEntries;
+    return {
+      message: "Item successfully moved to order history.",
+      orderHistoryEntry,
+    };
   } catch (error) {
-    console.error("Error in checkoutCart service:", error);
-    throw new Error("Failed to perform checkout.");
+    console.error("Error in proceedToOrder service:", error);
+    throw new Error("Failed to proceed order.");
   }
 };
 
@@ -95,5 +96,5 @@ module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkoutCart,
+  proceedToOrder,
 };
