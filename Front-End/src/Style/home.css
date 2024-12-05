@@ -173,6 +173,9 @@ img {
     box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.page-content {
-  margin-top: 0;
+.productbtn {
+  background-color: #666; /* Ash color */
+  color: #fff; /* Black text */
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px 20px;
 }
