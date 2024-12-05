@@ -39,32 +39,32 @@ const deleteCartProduct = async (req, res) => {
 };
 
 //Need to modify
-const checkout = async (req, res) => {
-  const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
-  // console.log(cartProducts);
-  let total = 0;
-  res.json({ cartProducts });
-};
+// const checkout = async (req, res) => {
+//   const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
+//   // console.log(cartProducts);
+//   let total = 0;
+//   res.json({ cartProducts });
+// };
 
-const checkoutCart = async (req, res) => {
+const proceedItemToOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.id; // Assuming you use middleware to attach the user to the request
+    const itemId = req.params.itemId; // Item ID to be processed
 
-    // Perform checkout process
-    const orderHistory = await cartService.checkoutCart(userId);
+    const result = await cartService.proceedToOrder(userId, itemId);
 
     res.status(200).json({
-      message: "Checkout successful",
-      orderHistory,
+      message: result.message,
+      orderHistory: result.orderHistoryEntry,
     });
   } catch (error) {
-    console.error("Checkout error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkoutCart,
+  
+  proceedItemToOrder,
 };
