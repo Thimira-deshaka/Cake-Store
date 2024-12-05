@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AdminproductCard from "../component/AdminproductCard";
@@ -11,6 +12,7 @@ function Home() {
   const [selectedOption, setSelectedOption] = useState("idle");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -37,7 +39,7 @@ function Home() {
 
   const handleLinkClick = (productID: any) => {
     localStorage.setItem("productID", productID);
-    window.location.href = `/admin/adminproductInfo/${productID}`;
+    navigate(`/admin/adminproductInfo/${productID}`);
   };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,6 +68,9 @@ function Home() {
           console.error("Error:", error);
         });
     }
+   };
+   const handleAddProductClick = () => {
+    navigate("/admin/addproduct"); // Navigate to add product page
   };
 
   return (
@@ -80,6 +85,19 @@ function Home() {
                   <div className="row">
                     <div className="col-lg-12">
                       <div className="heading-section">
+                      <button
+                          onClick={handleAddProductClick}
+                          className="btn"
+                          style={{
+                            backgroundColor: "#fff",
+                            color: "black",
+                            fontWeight: "bold",
+                            marginBottom: "20px",
+                          }}
+                          
+                          >
+                          Add Product
+                        </button>
                       </div>
                       <div className="row">
                         {(filteredData.length > 0 ? filteredData : data).map(
@@ -100,6 +118,7 @@ function Home() {
                           )
                         )}
                       </div>
+                      
                     </div>
                   </div>
                 </div>
