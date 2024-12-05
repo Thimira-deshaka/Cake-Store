@@ -14,7 +14,7 @@ router.get("/", validateToken, getCartProducts);
 router.post("/:productid", validateToken, addCartProduct);
 
 
-router.post("/cart/proceed/:itemId", validateToken, proceedItemToOrder);
+router.post("/proceed/:itemId", validateToken, proceedItemToOrder);
 
 router.delete("/:orderid", validateToken, deleteCartProduct);
 

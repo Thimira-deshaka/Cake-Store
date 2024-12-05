@@ -27,9 +27,39 @@ const loginAdmin = async (email, password) => {
   return null;
 };
 
+
+const resetPasswordAdmin = async (email, newPassword) => {
+  try {
+    // Find the admin by email
+    const user = await adminModel.findOne({ email });
+     console.log("Service function called with:", email);
+
+    // Check if the user exists
+    if (!user) {
+      return { error: "User not found" };
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password and set passwordResetRequired to false
+    user.password = hashedPassword;
+    user.passwordResetRequired = false;
+
+    // Save the updated user
+    await user.save();
+
+    return { message: "Password reset successfully" };
+  } catch (error) {
+    return { error: "Internal Server Error", details: error.message };
+  }
+};
+
+
 module.exports = {
   // getUsers,
   // getUser,
   // createAdmin,
   loginAdmin,
+  resetPasswordAdmin,
 };
