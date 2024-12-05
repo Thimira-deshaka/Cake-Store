@@ -60,6 +60,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/myorders" element={<UserOrdersView />} />
           <Route path="/checkout" element={<CheckOut />} />
+          <Route path="/update" element={<Update />}></Route>
         </Route>
 
         {/* Admin Pages */}
@@ -68,7 +69,7 @@ function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
-          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
+          {/* <Route path="/userInfo/:userId" element={<AdminUserDetails />} /> */}
           <Route path="/admin/products" element={<AdminProductView />} />
         </Route>
       </Routes>
