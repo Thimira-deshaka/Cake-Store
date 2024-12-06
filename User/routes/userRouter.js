@@ -6,6 +6,8 @@ const {
   getUser,
   userRegister,
   loginUser,
+  getAllUsers,
+  getUserById,
   updateUser,
 } = require("../controllers/usercontroller");
 
@@ -35,5 +37,10 @@ router.route("/forgot-password").post(forgotPassword);
 
 // Reset Password
 router.route("/reset-password").post(resetPassword);
+
+router.route("/all").get(getAllUsers);
+
+router.route("/all/:userID").get(getUserById);
+
 
 module.exports = router;

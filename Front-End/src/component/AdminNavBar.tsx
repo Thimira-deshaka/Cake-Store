@@ -1,25 +1,27 @@
-import "../Style/NavBar.css";
+import "../Style/AdminNavBar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function NavBar() {
+function AdminNavBar() {
   const [activeLink, setActiveLink] = useState("home");
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     const path = location.pathname;
-    if (path === "/") {
+    if (path === "/admin/home") {
       setActiveLink("home");
-    } else if (path === "/cart") {
-      setActiveLink("cart");
-    } else if (path === "/login") {
-      setActiveLink("login");
-    } else if (path === "/profile") {
-      setActiveLink("profile");
-    }
-  }, [location.pathname]);
+    } else if (path === "/admin/users"|| path.startsWith("/userInfo")) {
+      setActiveLink("user");
+    } else if (path === "/admin/products" ||
+      path.startsWith("/admin/adminproductInfo")) 
+      {
+        setActiveLink("product");
+      } else {
+        setActiveLink(""); // Default state for non-matching routes
+      }
+    }, [location.pathname]);
 
   const handleLinkClick = (name: string, path: string) => {
     setActiveLink(name);
@@ -32,7 +34,7 @@ function NavBar() {
         <div className="row">
           <div className="col-12">
             <nav className="main-nav">
-              <a href="/" className="logo">
+              <a href="/admin/home" className="logo">
                 <h4>
                   <span className="creative-text">Queen</span> Of Cake
                 </h4>
@@ -40,11 +42,11 @@ function NavBar() {
               <ul className="nav">
                 <li>
                   <a
-                    href="/"
+                    href="/admin/home"
                     className={`nav-item ${activeLink === "home" ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleLinkClick("home", "/");
+                      handleLinkClick("home", "/admin/home");
                     }}
                   >
                     Home
@@ -52,29 +54,30 @@ function NavBar() {
                 </li>
                 <li>
                   <a
-                    href="/cart"
-                    className={`nav-item ${activeLink === "cart" ? "active" : ""}`}
+                    href="/admin/users"
+                    className={`nav-item ${activeLink === "user" ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleLinkClick("cart", "/cart");
+                      handleLinkClick("user", "/admin/users");
                     }}
                   >
-                    Cart
+                  
+                  User
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/login"
-                    className={`nav-item ${activeLink === "login" ? "active" : ""}`}
+                    href="/admin/products"
+                    className={`nav-item ${activeLink === "product" ? "active" : ""}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      handleLinkClick("login", "/login");
+                      handleLinkClick("product", "/admin/products");
                     }}
                   >
-                    Login
+                    Products
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="/profile"
                     className={`nav-item profile-tab ${activeLink === "profile" ? "active" : ""}`}
@@ -83,10 +86,9 @@ function NavBar() {
                       handleLinkClick("profile", "/profile");
                     }}
                   >
-                    Profile 
-                    {/* <img src="src/assets/profile-header.jpg" alt="" /> */}
+                   Promotions
                   </a>
-                </li>
+                </li> */}
               </ul>
             </nav>
           </div>
@@ -96,4 +98,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default AdminNavBar;

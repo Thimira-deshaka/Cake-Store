@@ -13,7 +13,7 @@ function Cart() {
 
         // Check if token exists
         if (!token) {
-          window.location.href = "/login";
+          //window.location.href = "/login";
           console.log("Token not found");
           return;
         }
@@ -94,7 +94,6 @@ function Cart() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="backgrounds">
         <div className="spacefo2">
           <div className="cart-page">
@@ -191,7 +190,6 @@ function Cart() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
