@@ -104,7 +104,6 @@ function Login() {
   
   return (
     <Fragment>
-      <NavBar />
       <div className="bg-img">
         <div className="content">
           <header>Login Form</header>
@@ -144,8 +143,6 @@ function Login() {
           </div>
         </div>
       </div>
-      
-      <Footer />
       {alert && (
         <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
           <DialogContent>

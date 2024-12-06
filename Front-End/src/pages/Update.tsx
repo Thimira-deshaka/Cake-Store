@@ -63,6 +63,7 @@ function Update() {
 
       if (response.ok) {
         setMessage("Profile updated successfully!");
+        window.location.href = "/profile";
       } else {
         setMessage("Failed to update profile. Please try again.");
       }
