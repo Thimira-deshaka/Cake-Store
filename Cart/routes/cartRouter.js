@@ -3,7 +3,7 @@ const {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkout,
+  proceedItemToOrder, 
 } = require("../controllers/cartController");
 const validateToken = require("../middleware/tokenValidationMiddleware");
 
@@ -13,8 +13,8 @@ router.get("/", validateToken, getCartProducts);
 
 router.post("/:productid", validateToken, addCartProduct);
 
-// need to modify
-router.delete("/checkout", validateToken, checkout);
+
+router.post("/proceed/:itemId", validateToken, proceedItemToOrder);
 
 router.delete("/:orderid", validateToken, deleteCartProduct);
 
