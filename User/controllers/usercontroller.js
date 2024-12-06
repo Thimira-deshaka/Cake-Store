@@ -125,6 +125,32 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updateUserById = async (req, res) => {
+  try {
+    const { userId } = req.params; // Extract user ID from the route parameters
+    const { firstName, lastName, email, age, phone } = req.body;
+
+    // Call the service to update the user
+    const updatedUser = await userService.updateUserById(userId, {
+      firstName,
+      lastName,
+      age,
+      phone,
+      email,
+    });
+
+    if (updatedUser) {
+      res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal Server Error! Please contact help center." });
+  }
+};
+
+
 module.exports = {
   // getUsers,
   getUser,
@@ -133,4 +159,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  updateUserById
 };

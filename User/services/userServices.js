@@ -78,6 +78,22 @@ const updateUser = async (userId, userData) => {
   return user;
 }
 
+const updateUserById = async (userId, userData) => {
+  try {
+    // Find user by ID and update
+    const updatedUser = await userModel.findByIdAndUpdate(userId, userData, {
+      new: true, // Return the updated document
+      runValidators: true, // Validate data before updating
+    });
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error in updateUserById service:", error);
+    throw new Error("Failed to update user in database");
+  }
+};
+
+
 
 module.exports = {
   userRegister,
@@ -86,4 +102,5 @@ module.exports = {
   getAllUsers,
   getUserById,
   updateUser,
+  updateUserById,
 };
