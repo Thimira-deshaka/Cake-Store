@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ProductInfo from "./pages/ProductInfo";
@@ -7,30 +12,82 @@ import { Fragment } from "react";
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
+import Update from "./pages/Update";
 import AdminLogin from "./pages/AdminLogin";
 import AdminHome from "./pages/AdminHome";
-import AdminUserView from "./pages/AdminProductView";
+import AdminUserView from "./pages/AdminUserView";
 import AdminProductView from "./pages/AdminProductView";
-function App() {
+import Forgetpassword from "./pages/Forgetpassword";
+import AdminResetPassword from "./pages/AdminResetPassword"
+import AdminUserDetails from "./pages/AdminUserDetails";
+import AdminUserUpdate from "./pages/AdminUserUpdate";
+import AdminProductInfo from "./pages/AdminProductInfo";
+import AddProduct from "./pages/AdminAddProduct";
+import NavBar from "./component/NavBar";
+import Footer from "./component/Footer";
+import UserOrdersView from "./pages/UserOrdersView";
+
+// User Layout
+function UserLayout() {
   return (
     <Fragment>
-      <Router>
-        <Routes>
+      <NavBar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </Fragment>
+  );
+}
+
+// Admin Layout
+function AdminLayout() {
+  return (
+    <Fragment>
+      <NavBar /> {/* Optional: Use a different NavBar for Admin if needed */}
+      <main>
+        <Outlet />
+      </main>
+    </Fragment>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* User Pages */}
+        <Route element={<UserLayout />}>
           <Route index path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/productInfo/:productId" element={<ProductInfo />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/myorders" element={<UserOrdersView />} />
           <Route path="/checkout" element={<CheckOut />} />
-          {/*Admin pages*/}
+          <Route path="/update" element={<Update />} />
+          <Route path="/Forgetpassword" element={<Forgetpassword />} />
+          <Route path="/update" element={<Update />}></Route>
+        </Route>
+
+        {/* Admin Pages */}
+        <Route element={<AdminLayout />}>
+
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
+          <Route path="/AdminUserupdate" element={<AdminUserUpdate />} />
+          {/* <Route path="/userInfo/:userId" element={<AdminUserDetails />} /> */}
           <Route path="/admin/products" element={<AdminProductView />} />
-        </Routes>
-      </Router>
-    </Fragment>
+          <Route path="/AdminResetPassword" element={<AdminResetPassword />} />
+          <Route path="/admin/adminproductInfo/:productId" element={<AdminProductInfo/>} />
+          <Route path="/admin/addproduct" element={<AddProduct/>} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
+
 export default App;

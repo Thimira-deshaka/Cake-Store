@@ -6,6 +6,10 @@ const {
   getUser,
   userRegister,
   loginUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  updateUserById,
 } = require("../controllers/usercontroller");
 
 
@@ -26,10 +30,22 @@ router.route("/").get(validateToken, getUser);
 // Login User
 router.route("/login").post(loginUser);
 
+
+router.route("/update").put(validateToken, updateUser); 
+
 // Forgot Password
 router.route("/forgot-password").post(forgotPassword);
 
 // Reset Password
 router.route("/reset-password").post(resetPassword);
+
+router.route("/all").get(getAllUsers);
+
+router.route("/all/:userID").get(getUserById);
+
+// Update a user by ID
+router.route("/update/:userId").put(updateUserById);
+
+
 
 module.exports = router;

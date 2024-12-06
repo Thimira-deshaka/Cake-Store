@@ -1,9 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700&display=swap");
 
-#navbarid {
-  color: black;
-  opacity: 50%;
-}
 .header-area {
   background-color: transparent;
   position: absolute;
@@ -13,263 +9,163 @@
   right: 0;
   z-index: 100;
   width: 100%;
-  -webkit-transition: all 0.5s ease 0s;
-  -moz-transition: all 0.5s ease 0s;
-  -o-transition: all 0.5s ease 0s;
-  transition: all 0.5s ease 0s;
+  transition: all .5s ease;
 }
 
+/* Base styling for the logo */
 .logo h4 {
-  color: #e75e8d;
+  font-family: 'Great Vibes', cursive; /* Elegant font */
+  font-size: 2rem;
+  margin: 0;
+  display: inline-block;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.logo h4 em {
-  color: #fff;
+.logo h4 span {
+  display: inline-block;
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
 }
+
+/* Base gradient for Queen */
+.creative-text {
+  background: linear-gradient(to right, #ff7eb3, #ffc3a0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Hover effect for Queen */
+.creative-text span:hover {
+  transform: scale(1.2); /* Enlarges the hovered word */
+  color: #ff7eb3; /* Fallback color when gradient is no longer visible */
+}
+
+/* Optional: Enlarge other words subtly for consistency */
+.logo h4:hover {
+  transform: scale(1.05);
+}
+
 
 .header-area .main-nav {
   min-height: 80px;
-  width: 100%;
   background-color: black;
-  /* background: transparent; */
   opacity: 60%;
   display: flex;
-  padding: 15px 7px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
   border-radius: 15px;
 }
-
-.background-header .main-nav {
-  padding: 0px;
-  background-color: transparent;
+/* Base styles for nav items */
+.nav-item {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 2rem;
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.header-area .main-nav #search {
-  position: relative;
+/* Hover effect: enlarge and change color */
+.nav-item:hover {
+  color: #e75e8d; /* Highlighted color */
+  transform: scale(1.1);
+}
+/* Active tab styles */
+.nav-item.active {
+  color: #e75e8d;
+  font-weight: bold;
+}
+
+
+/* Add a dynamic underline */
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #e75e8d;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  width: 100%;
+}
+
+/* Rounded corner for profile tab */
+.nav-item.profile-tab {
+  border-radius: 50px; /* Rounded corners */
+  background-color: #f4f4f4; /* Slightly different background */
+  color: #333; /* Neutral text color */
+  padding: 12px 25px; /* Adjusted padding for better aesthetics */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none; /* Ensure no underline */
+}
+.nav-item.profile-tab::after {
+  display: none;
+}
+/* 
+ Hover effect for profile tab*/
+
+.nav-item.profile-tab.active {
+  background-color: #e75e8d;
+  color: #fff !important;
+}
+.nav-item.profile-tab:hover {
+  color: #fff !important;; 
+}
+
+/* .header-area .main-nav .logo {
+  flex-basis: 25%;
+} */
+
+.header-area .main-nav .nav {
+  display: flex;
+  justify-content: flex-end;
+  width: 70%;
+}
+
+.header-area .main-nav .nav li {
+  list-style: none;
+  margin-left: 20px;
+}
+
+.header-area .main-nav .nav li a {
+  font-size: 18px;
+  color: #aeaaaa;
+  padding: 13px 20px;
+  border-radius: 18px;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+.header-area .main-nav .nav li a.active {
+  color: #e75e8d;
+}
+
+.header-area .main-nav .search-input {
+  flex-basis: 25%;
+  display: flex;
+  justify-content: center;
 }
 
 .header-area .main-nav #search input {
   background-color: #1f2122;
   height: 46px;
   border-radius: 23px;
-  border: none;
   color: #666;
-  font-size: 14px;
   padding: 0px 15px 0px 45px;
-}
-
-.header-area .main-nav #search i {
-  position: absolute;
-  color: #666;
-  left: 20px;
-  top: 16px;
-  width: 18px;
-  height: 18px;
-  font-size: 16px;
-}
-
-.header-area .main-nav .logo {
-  border-right: 1px solid #27292a;
-  flex-basis: 25%;
-  margin-right: 5%;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-}
-
-.header-area .main-nav .logo img {
-  width: 191px;
-}
-
-.background-header .main-nav .logo {
-  margin-top: 8px;
-}
-
-.background-header .main-nav .logo img {
-  width: 180px;
-}
-
-.header-area .main-nav .nav {
-  display: inline-flex;
-  flex-basis: 70%;
-  justify-content: flex-end;
-  vertical-align: middle;
-  text-align: right;
-  margin-top: 0px;
-  margin-right: 0px;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  position: relative;
-  z-index: 999;
-}
-
-.header-area .main-nav .nav li {
-  padding-left: 10px;
-  padding-right: 10px;
-  display: inline-block;
-}
-
-.header-area .main-nav .nav li a {
-  display: block;
-  font-weight: 400;
-  font-size: 14px;
-  text-transform: capitalize;
-  color: #666;
-  -webkit-transition: all 0.3s ease 0s;
-  -moz-transition: all 0.3s ease 0s;
-  -o-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-  border: transparent;
-  padding: 13px 10px;
-  border-radius: 18px;
-  letter-spacing: 0.3px;
-}
-
-.header-area .main-nav .nav li:last-child a {
-  background-color: #27292a;
-  padding: 8px 10px 8px 20px;
-  border-radius: 23px;
-}
-
-.header-area .main-nav .nav li:last-child a img {
-  max-width: 30px;
-  border-radius: 50%;
-  margin-left: 5px;
-}
-
-.header-area .main-nav .nav li.has-sub ul.sub-menu li:last-child a:hover,
-.background-header .main-nav .nav li.has-sub ul.sub-menu li:last-child a:hover {
-  padding-left: 25px !important;
-}
-
-.header-area .main-nav .nav li:hover a,
-.header-area .main-nav .nav li a.active {
-  color: #e75e8d !important;
-}
-
-.header-area .main-nav .nav li:last-child:hover a,
-.header-area .main-nav .nav li:last-child a.active {
-  color: #fff !important;
-  background-color: #e75e8d !important;
-}
-
-.background-header .main-nav .nav li:hover a,
-.background-header .main-nav .nav li a.active {
-  color: #fff;
-  opacity: 1;
-}
-
-.header-area .main-nav .nav li.has-sub {
-  position: relative;
-  padding-right: 15px;
-}
-
-.header-area .main-nav .menu-trigger {
-  cursor: pointer;
-  display: block;
-  position: absolute;
-  top: 23px;
-  width: 32px;
-  height: 40px;
-  text-indent: -9999em;
-  z-index: 99;
-  right: 20px;
-  display: none;
-}
-
-.background-header .main-nav .menu-trigger {
-  top: 17px;
-}
-
-.header-area .main-nav .menu-trigger span,
-.header-area .main-nav .menu-trigger span:before,
-.header-area .main-nav .menu-trigger span:after {
-  -moz-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -webkit-transition: all 0.4s;
-  transition: all 0.4s;
-  background-color: #e75e8d;
-  display: block;
-  position: absolute;
-  width: 30px;
-  height: 2px;
-  left: 0;
-}
-
-.background-header .main-nav .menu-trigger span,
-.background-header .main-nav .menu-trigger span:before,
-.background-header .main-nav .menu-trigger span:after {
-  background-color: #e75e8d;
-}
-
-.header-area .main-nav .menu-trigger span:before,
-.header-area .main-nav .menu-trigger span:after {
-  -moz-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -webkit-transition: all 0.4s;
-  transition: all 0.4s;
-  background-color: #e75e8d;
-  display: block;
-  position: absolute;
-  width: 30px;
-  height: 2px;
-  left: 0;
-  width: 75%;
-}
-
-.background-header .main-nav .menu-trigger span:before,
-.background-header .main-nav .menu-trigger span:after {
-  background-color: #e75e8d;
-}
-
-.header-area .main-nav .menu-trigger span:before,
-.header-area .main-nav .menu-trigger span:after {
-  content: "";
-}
-
-.header-area .main-nav .menu-trigger span {
-  top: 16px;
-}
-
-.header-area .main-nav .menu-trigger span:before {
-  -moz-transform-origin: 33% 100%;
-  -ms-transform-origin: 33% 100%;
-  -webkit-transform-origin: 33% 100%;
-  transform-origin: 33% 100%;
-  top: -10px;
-  z-index: 10;
-}
-
-.header-area .main-nav .menu-trigger span:after {
-  -moz-transform-origin: 33% 0;
-  -ms-transform-origin: 33% 0;
-  -webkit-transform-origin: 33% 0;
-  transform-origin: 33% 0;
-  top: 10px;
-}
-
-.header-area .main-nav .menu-trigger.active span,
-.header-area .main-nav .menu-trigger.active span:before,
-.header-area .main-nav .menu-trigger.active span:after {
-  background-color: transparent;
-  width: 100%;
-}
-
-.newSearch {
-  background-color: #1b1d1d;
-  height: 46px;
-  border-radius: 23px;
   border: none;
-  color: #666;
-  font-size: 14px;
-  padding: 0px 15px 0px 45px;
-  margin-left: 8px;
-}
-
-.margleft {
-  margin-left: 20px;
 }
 
 .searchButton {
@@ -280,4 +176,37 @@
   color: #fffefe;
   font-size: 14px;
   padding: 10px;
+  margin-left: 8px;
+}
+
+.header-area .main-nav .menu-trigger {
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  top: 23px;
+  width: 32px;
+  height: 40px;
+  text-indent: -9999em;
+  right: 20px;
+  display: none;
+}
+
+.header-area .main-nav .menu-trigger span {
+  background-color: #e75e8d;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  left: 0;
+}
+
+.header-area .main-nav .menu-trigger.active span {
+  background-color: transparent;
+  width: 100%;
+}
+
+.header-area .main-nav .nav li a img {
+  width: 30px;
+  border-radius: 50%;
+  margin-left: 10px;
 }

@@ -1,0 +1,109 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #27292a;
+    color: #fff;
+  }
+  
+  /* Container */
+  .update-page-container {
+    max-width: 100%;
+    margin-top: 100px;
+    padding: 20px;
+    background-color: #1f2122;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Header Styles */
+  h2.text-center {
+    max-width: 900px;
+    margin-top: 100px;
+    font-size: 28px;
+    color: #ec6090;
+    margin-bottom: 20px;
+  }
+  
+  /* Alert Styles */
+  .alert {
+    padding: 15px;
+    background-color: #f4f4f4;
+    color: #333;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Profile Update Form */
+  .profile-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .profile-update-form .form-group {
+    margin-bottom: 15px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  
+  .profile-update-form label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ec6090;
+  }
+  
+  .profile-update-form input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #27292a;
+    border: 1px solid #666;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .profile-update-form input:focus {
+    border-color: #ec6090;
+  }
+  
+  /* Submit Button */
+  .profile-update-form .btn {
+    font-size: 16px;
+    color: #fff;
+    background-color: #ec6090;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .profile-update-form .btn:hover {
+    background-color: #fff;
+    color: #ec6090;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+  
+    h2.text-center {
+      font-size: 24px;
+    }
+  
+    .profile-update-form input {
+      font-size: 14px;
+    }
+  
+    .profile-update-form .btn {
+      font-size: 14px;
+      padding: 10px 25px;
+    }
+  }
+  

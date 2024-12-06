@@ -53,8 +53,54 @@ const getUser = async (userId) => {
   return user;
 };
 
+
+const getAllUsers = async () => {
+  try {
+      const users = await userModel.find(); // Fetch all users from the database
+      return users;
+  } catch (error) {
+      throw new Error("Failed to fetch users from database");
+  }
+};
+
+const getUserById = async (userID) => {
+  try {
+    const user = await userModel.findById(userID, { password: 0 }); // Exclude password
+    return user;
+  } catch (error) {
+    throw new Error("Failed to fetch user from database");
+  }
+};
+
+const updateUser = async (userId, userData) => {  
+  const user = await userModel.findByIdAndUpdate
+  (userId, userData, { new: true });
+  return user;
+}
+
+const updateUserById = async (userId, userData) => {
+  try {
+    // Find user by ID and update
+    const updatedUser = await userModel.findByIdAndUpdate(userId, userData, {
+      new: true, // Return the updated document
+      runValidators: true, // Validate data before updating
+    });
+
+    return updatedUser;
+  } catch (error) {
+    console.error("Error in updateUserById service:", error);
+    throw new Error("Failed to update user in database");
+  }
+};
+
+
+
 module.exports = {
   userRegister,
   loginUser,
   getUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  updateUserById,
 };

@@ -1,0 +1,34 @@
+.admin-add-product {
+    background-color: #121212;
+    min-height: 200vh;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  h2 {
+    color: #f8f9fa;
+  }
+  
+  .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid gray;
+  }
+  
+  .form-control::placeholder {
+    color: #ccc;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  

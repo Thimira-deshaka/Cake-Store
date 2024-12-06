@@ -1,137 +1,132 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
 * {
-  box-sizing: border-box;
+    box-sizing: border-box; 
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  .widt {
+    padding-top: 50px;
+    background: #27292a;
+    width: 100%;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #fff;
+    font-weight: 700;
+  }
+  ul {
+    margin-bottom: 0px;
+  }
+  
+  p {
+    font-size: 15px;
+    line-height: 30px;
+    color: #fff;
+  }
+  
+.profile{
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    background-image: url('../assets/profile.jpg');
 }
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-size: 16px;
-}
-.widt {
-  padding-top: 50px;
-  background: #27292a;
-  width: 100%;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  color: #fff;
-  font-weight: 700;
-}
-ul {
-  margin-bottom: 0px;
-}
-
-p {
-  font-size: 15px;
-  line-height: 30px;
-  color: #fff;
-}
-
-.profile {
-  width: 100%;
-  overflow: hidden;
-  background-size: cover;
-  background-image: url("../assets/profile.jpg");
-}
-img {
-  width: 100%;
-  border-radius: 15px;
-  overflow: hidden;
+img{
+    width: 80%;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 30px;
 }
 
-.page-content {
-  margin-top: 10px;
-  background-color: #27292a;
-  padding: 60px;
-  border-radius: 23px;
-}
-
-p {
-  font-size: 15px;
-  color: #666;
-  line-height: 30px;
-  margin-bottom: 0px;
-}
-::selection {
-  background: #e75e8d;
-  color: #fff;
-}
-
-::-moz-selection {
-  background: #e75e8d;
-  color: #fff;
-}
-
-.templatemo-item {
-  max-width: 80px;
-  border-radius: 23px;
-}
-
-.main-button a {
-  font-size: 14px;
-  color: #fff;
-  background-color: #e75e8d;
-  padding: 12px 30px;
-  display: inline-block;
-  border-radius: 25px;
-  font-weight: 400;
-  text-transform: capitalize;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-.main-button a:hover {
-  background-color: #fff;
-  color: #e75e8d;
-}
-
-.main-border-button a {
-  font-size: 14px;
-  color: #ec6090;
-  background-color: transparent;
-  border: 1px solid #ec6090;
-  padding: 12px 30px;
-  display: inline-block;
-  border-radius: 25px;
-  font-weight: 400;
-  text-transform: capitalize;
-  letter-spacing: 0.5px;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-.main-border-button a:hover {
-  border-color: #fff;
-  background-color: #fff;
-  color: #e75e8d;
-}
-
-.border-no-active a {
-  border-color: #666;
-  color: #666;
-}
-
-.border-no-active a:hover {
-  border-color: #666;
-  color: #666;
-  background-color: transparent;
-}
-
-section {
-  margin-top: 120px;
-}
+  .page-content {
+    margin-top: 10px;
+    background-color: #27292a;
+    padding: 60px;
+    border-radius: 23px;
+  }
+  
+  p {
+    font-size: 15px;
+    color: #666;
+    line-height: 30px;
+    margin-bottom: 0px;
+  }
+  ::selection {
+    background: #e75e8d;
+    color: #fff;
+  }
+  
+  ::-moz-selection {
+    background: #e75e8d;
+    color: #fff;
+  }
+  
+  .templatemo-item {
+      max-width: 80px; 
+      border-radius: 23px;
+  }
+  
+  .main-button a {
+    font-size: 14px;
+    color: #fff;
+    background-color: #e75e8d;
+    padding: 12px 30px;
+    display: inline-block;
+    border-radius: 25px;
+    font-weight: 400;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .main-button a:hover {
+    background-color: #fff;
+    color: #e75e8d;
+  }
+  
+  .main-border-button a {
+    font-size: 14px;
+    color: #ec6090;
+    background-color: transparent;
+    border: 1px solid #ec6090;
+    padding: 12px 30px;
+    display: inline-block;
+    border-radius: 25px;
+    font-weight: 400;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .main-border-button a:hover {
+    border-color: #fff;
+    background-color: #fff;
+    color: #e75e8d;
+  }
+  
+  .border-no-active a {
+    border-color: #666;
+    color: #666;
+  }
+  
+  .border-no-active a:hover{
+    border-color: #666;
+    color: #666;
+    background-color: transparent;
+  }
+  
+  section {
+    margin-top: 120px;
+  }
 /* .heading-section h4 {
     color: #ec6090;
     font-size: 34px;

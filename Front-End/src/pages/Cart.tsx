@@ -13,7 +13,7 @@ function Cart() {
 
         // Check if token exists
         if (!token) {
-          window.location.href = "/login";
+          //window.location.href = "/login";
           console.log("Token not found");
           return;
         }
@@ -94,19 +94,21 @@ function Cart() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="backgrounds">
         <div className="spacefo2">
           <div className="cart-page">
             <div className="cart-page-container">
               <div className="cart-page-header">
-                <h2 className="cart-header-text">Your Games Cart</h2>
+                <h2 className="cart-header-text">Cake Cart</h2>
+              </div>
+              <div className="cart-page-para">
+                <h4 className="cart-para-text">Your sweetest cravings are just a click away! 🍰 <br/>Here lies your handpicked collection of delightful treats, <br/>crafted with love and ready to make your day sweeter.</h4>
               </div>
               <div className="cart-page-table">
                 <table className="cart-table-product">
                   <thead>
                     <tr className="cart-table-header">
-                      <th className="cart-table-img">Product Image</th>
+                      <th className="cart-table-img">Image of the Ordered Cake</th>
                       <th className="cart-table-desktop cart-table-payment">
                         Name
                       </th>
@@ -159,6 +161,7 @@ function Cart() {
                       </tr>
                     )}
                     {/* {cartData.Products.map((product: any) => (
+
                       <tr className="cart-table-content" key={product._id}>
                         <td className="cart-table-image-info">
                           <img src={product.image} alt="Product Image" />
@@ -167,7 +170,6 @@ function Cart() {
                         <td>{product.category}</td>
                         <td>${product.price}</td>
                       </tr>
-
                     ))} */}
                   </tbody>
                 </table>
@@ -188,7 +190,6 @@ function Cart() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
