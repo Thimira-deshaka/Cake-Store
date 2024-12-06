@@ -8,19 +8,23 @@ const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const accessToken = await adminService.loginAdmin(email, password);
+    const result = await adminService.loginAdmin(email, password);
 
-    if (accessToken) {
-      res.status(200).json({ accessToken: accessToken, role: "customer" });
+    if (result && result.firstTimeLogin) {
+      // Return a response indicating that the user needs to reset their password
+      return res.status(200).json({ firstTimeLogin: true });
+    }
+
+    if (result) {
+      res.status(200).json({ accessToken: result.accessToken, role: "admin" });
     } else {
       res.status(401).json({ message: "Wrong email or password" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 // const createAdmin = async (req, res) => {
 //   const { email, password } = req.body;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; 
+import { useLocation, useNavigate } from "react-router-dom";
 import "../Style/Login.css";
-import Alert from "../component/Alert"; 
+import Alert from "../component/Alert";
 import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import axios from "axios";
 
@@ -13,15 +13,18 @@ function AdminResetPassword() {
   const [token, setToken] = useState<string | null>(null);
 
   const location = useLocation();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   // Extract token from URL
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const tokenFromUrl = queryParams.get("token");
     setToken(tokenFromUrl);
-    console.log(token);
   }, [location.search]);
+
+  useEffect(() => {
+    console.log(token); // Log the token when it changes
+  }, [token]);
 
   // Handle password reset request
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -62,7 +65,7 @@ function AdminResetPassword() {
 
       // Redirect to login page after showing success alert
       setTimeout(() => {
-        navigate("/login");
+        navigate("/admin");
       }, 2000); 
     } catch (error: any) {
       setAlert({

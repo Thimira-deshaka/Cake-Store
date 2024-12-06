@@ -5,8 +5,12 @@ require("dotenv").config();
 
 const loginAdmin = async (email, password) => {
   const user = await adminModel.findOne({ email });
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  console.log(hashedPassword);
+  
+  if (user && user.isFirstTimeLogin) {
+    // If it's the first time, return a flag indicating a password reset is needed
+    return { firstTimeLogin: true };
+  }
+
   if (user && (await bcrypt.compare(password, user.password))) {
     const accessToken = jwt.sign(
       {
@@ -20,20 +24,17 @@ const loginAdmin = async (email, password) => {
         },
       },
       process.env.ACCESS_TOKEN
-      // { expiresIn: "5m" }
     );
 
-    return accessToken;
+    return { accessToken, firstTimeLogin: false };
   }
   return null;
 };
-
 
 const resetPasswordAdmin = async (email, newPassword) => {
   try {
     // Find the admin by email
     const user = await adminModel.findOne({ email });
-     console.log("Service function called with:", email);
 
     // Check if the user exists
     if (!user) {
@@ -45,7 +46,7 @@ const resetPasswordAdmin = async (email, newPassword) => {
 
     // Update the password and set passwordResetRequired to false
     user.password = hashedPassword;
-    user.passwordResetRequired = false;
+    user.isFirstTimeLogin = false;  // Mark the first-time login as done
 
     // Save the updated user
     await user.save();
@@ -56,11 +57,7 @@ const resetPasswordAdmin = async (email, newPassword) => {
   }
 };
 
-
 module.exports = {
-  // getUsers,
-  // getUser,
-  // createAdmin,
   loginAdmin,
   resetPasswordAdmin,
 };

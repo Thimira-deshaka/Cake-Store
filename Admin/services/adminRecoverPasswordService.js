@@ -3,16 +3,15 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
-// Environment variables
-const EMAIL_SECRET = process.env.EMAIL_SECRET; // Secret key for signing JWT
-const FRONTEND_URL = process.env.FRONTEND_URL; // URL for frontend password reset page
 
-// Configure Nodemailer
+const EMAIL_SECRET = process.env.EMAIL_SECRET; 
+const FRONTEND_URL = process.env.FRONTEND_URL; 
+
 const transporter = nodemailer.createTransport({
-  service: "gmail", // Use the email service (e.g., Gmail)
+  service: "gmail", 
   auth: {
-    user: process.env.EMAIL_USER, // Your email address
-    pass: process.env.EMAIL_PASS, // Your email password
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS, 
   },
 });
 
@@ -23,18 +22,13 @@ const transporter = nodemailer.createTransport({
  */
 const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
   try {
-    console.log("Received email:", email); 
-    // Check if the user exists
+    console.log("Received email:", email);
     const admin = await adminModel.findOne({ email });
     if (!admin) return null;
-
-    // Generate a JWT token for password reset
     const token = jwt.sign({ id: admin._id }, EMAIL_SECRET, { expiresIn: "1h" });
+    const resetLink = `${FRONTEND_URL}/AdminResetPassword?token=${token}`;
 
-    // Create reset link
-   const resetLink = `${FRONTEND_URL}/AdminResetPassword?token=${token}`;
-
-    // Email details
+    
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -42,7 +36,7 @@ const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
       text: `Click the link to reset your password: ${resetLink}`,
     };
 
-    // Send the email
+   
     await transporter.sendMail(mailOptions);
 
     return resetLink;
@@ -60,16 +54,12 @@ const forgotPassword = async (email, EMAIL_SECRET, FRONTEND_URL) => {
  */
 const resetPassword = async (token, newPassword) => {
   try {
-    // Verify the reset token
+   
     const decoded = jwt.verify(token, EMAIL_SECRET);
-
-    // Find the user by ID
-    const user = await userModel.findById(decoded.id);
-    if (!user) return false;
-
-    // Hash the new password and update it
-    user.password = await bcrypt.hash(newPassword, 10);
-    await user.save();
+    const admin = await adminModel.findById(decoded.id);
+    if (!admin) return false;
+    admin.password = await bcrypt.hash(newPassword, 10);
+    await admin.save();
 
     return true;
   } catch (error) {
