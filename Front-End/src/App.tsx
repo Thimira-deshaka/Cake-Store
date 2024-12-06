@@ -20,6 +20,7 @@ import AdminProductView from "./pages/AdminProductView";
 import Forgetpassword from "./pages/Forgetpassword";
 import AdminResetPassword from "./pages/AdminResetPassword"
 import AdminUserDetails from "./pages/AdminUserDetails";
+import AdminUserUpdate from "./pages/AdminUserUpdate";
 import AdminProductInfo from "./pages/AdminProductInfo";
 import AddProduct from "./pages/AdminAddProduct";
 import NavBar from "./component/NavBar";
@@ -76,6 +77,8 @@ function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/users" element={<AdminUserView />} />
+          <Route path="/userInfo/:userId" element={<AdminUserDetails />} />
+          <Route path="/AdminUserupdate" element={<AdminUserUpdate />} />
           {/* <Route path="/userInfo/:userId" element={<AdminUserDetails />} /> */}
           <Route path="/admin/products" element={<AdminProductView />} />
           <Route path="/AdminResetPassword" element={<AdminResetPassword />} />
