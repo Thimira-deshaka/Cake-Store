@@ -70,6 +70,28 @@ function ProductInfo() {
     }
   };
 
+  const handleDeleteClick = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3002/products/${productID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Product deleted successfully!");
+        window.location.href = "/admin/products"; // Navigate to the products page after deleting the product
+      } else {
+        alert("Failed to delete product");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <Fragment>
       <AdminNavBar />
@@ -137,6 +159,7 @@ function ProductInfo() {
                                 Save
                               </button>
                             ) : (
+                              <>
                               <button
                                 className="searchButton"
                                 type="button"
@@ -151,6 +174,21 @@ function ProductInfo() {
                               >
                                 Edit
                               </button>
+                              <button
+                                  className="searchButton"
+                                  type="button"
+                                  style={{
+                                    padding: "5px 20px",
+                                    fontSize: "20px",
+                                    backgroundColor:"rgba(255, 0, 0, 0.5)",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  }}
+                                  onClick={handleDeleteClick}
+                                >
+                                  Delete
+                                </button>
+                              </>
                             )}
                           </div>
                         </div>
