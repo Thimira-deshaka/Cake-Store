@@ -6,6 +6,7 @@ import "../Style/AdminUserView.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserCard from "../component/UserCard";
 import { useNavigate } from "react-router-dom";
+import AdminNavBar from "../component/AdminNavBar";
 
 function AdminUserView() {
   const [data, setData] = useState([
@@ -52,7 +53,7 @@ function AdminUserView() {
 
   return (
     <Fragment>
-      <NavBar />
+      <AdminNavBar />
       <div className="wid">
         <div className="container">
           <div className="row">

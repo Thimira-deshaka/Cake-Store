@@ -25,6 +25,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter your phone number"],
     },
+    isFirstTimeLogin: { type: Boolean, default: true },
   },
   {
     timestamps: true,

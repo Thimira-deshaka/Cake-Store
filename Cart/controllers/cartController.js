@@ -39,16 +39,32 @@ const deleteCartProduct = async (req, res) => {
 };
 
 //Need to modify
-const checkout = async (req, res) => {
-  const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
-  // console.log(cartProducts);
-  let total = 0;
-  res.json({ cartProducts });
-};
+// const checkout = async (req, res) => {
+//   const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
+//   // console.log(cartProducts);
+//   let total = 0;
+//   res.json({ cartProducts });
+// };
 
+const proceedItemToOrder = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you use middleware to attach the user to the request
+    const itemId = req.params.itemId; // Item ID to be processed
+
+    const result = await cartService.proceedToOrder(userId, itemId);
+
+    res.status(200).json({
+      message: result.message,
+      orderHistory: result.orderHistoryEntry,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  checkout,
+  
+  proceedItemToOrder,
 };

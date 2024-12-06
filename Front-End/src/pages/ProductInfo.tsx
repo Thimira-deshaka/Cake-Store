@@ -59,7 +59,6 @@ function ProductInfo() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">
@@ -104,7 +103,6 @@ function ProductInfo() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
