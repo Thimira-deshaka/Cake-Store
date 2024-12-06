@@ -24,26 +24,19 @@ const orderHistorySchema = mongoose.Schema(
 const OrderHistory = mongoose.model("OrderHistory", orderHistorySchema);
 
 // Import the cart model
-const Cart = require("./cartItemModel");
+// const Cart = require("./cartItemModel");
+// //const OrderHistory = require("./orderHistoryModel");
 
-// Watch for delete operations in the Cart collection
-Cart.watch([{ $match: { operationType: "delete" } }]).on("change", async (change) => {
-  try {
-    const cartItem = change.documentKey; // Get deleted document's _id
-    const deletedItem = await Cart.findById(cartItem._id);
+// // Watch for delete operations in the Cart collection
+// Cart.watch([{ $match: { operationType: "delete" } }], { fullDocument: "updateLookup" })
+//   .on("change", async (change) => {
+//     const { UserId, ProductId, Quantity } = change.fullDocument;
 
-    if (deletedItem) {
-      // Insert the deleted item into the OrderHistory collection
-      await OrderHistory.create({
-        UserId: deletedItem.UserId,
-        ProductId: deletedItem.ProductId,
-        Quantity: deletedItem.Quantity,
-      });
-      console.log("Item moved to order history:", deletedItem);
-    }
-  } catch (error) {
-    console.error("Error handling cart change stream:", error);
-  }
-});
+//     // Move to order history
+//     await OrderHistory.create({ UserId, ProductId, Quantity });
+//     console.log(`Item moved to OrderHistory: UserId=${UserId}, ProductId=${ProductId}`);
+//   });
+
+
 
 module.exports = mongoose.model("OrderHistory", orderHistorySchema);
