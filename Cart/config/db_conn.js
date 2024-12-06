@@ -15,7 +15,7 @@ const mongo_database = process.env.MONGO_DBNAME;
 
 
 mongoose.connect(`mongodb+srv://${mongo_username}:${mongo_password}@${mongo_cluster}/${mongo_database}?retryWrites=true&w=majority`
-, { useNewUrlParser: true, useUnifiedTopology: true })
+, { useNewUrlParser: true, useUnifiedTopology: true , maxPoolSize: 10,})
 .then(() => console.log(`Connected to: ${mongoose.connection.name}`))
 .catch(err => console.log(err));
 
