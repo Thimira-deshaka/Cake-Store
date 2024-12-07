@@ -16,5 +16,5 @@ COPY . .
 # Expose port for React app (default is 5173 for Vite)
 EXPOSE 5173
 
-# Command to run the React app (this assumes you're using Vite or the default start command)
-CMD ["npm", "start"]
+# Override the CMD to run the Vite server directly
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
