@@ -1,6 +1,7 @@
 const { json } = require("express");
 require("dotenv").config();
 const cartItemModel = require("../models/cartItemModel");
+const orderHistoryModel = require("../models/orderHistoryModel"); 
 const axios = require("axios");
 
 const getCartProducts = async (userId) => {
@@ -58,10 +59,42 @@ const deleteCartProduct = async (OrderId) => {
 //     res.json({cartProducts});
 
 // }
+/**
+ * Proceed to checkout for a specific cart item.
+ */
+const proceedToOrder = async (userId, itemId) => {
+  try {
+    // Find the cart item
+    const cartItem = await cartItemModel.findOneAndDelete({
+      _id: itemId,
+      UserId: userId,
+    });
+
+    if (!cartItem) {
+      throw new Error("Cart item not found.");
+    }
+
+    // Create an order history entry for the cart item
+    const orderHistoryEntry = await orderHistoryModel.create({
+      UserId: cartItem.UserId,
+      ProductId: cartItem.ProductId,
+      Quantity: cartItem.Quantity,
+    });
+
+    return {
+      message: "Item successfully moved to order history.",
+      orderHistoryEntry,
+    };
+  } catch (error) {
+    console.error("Error in proceedToOrder service:", error);
+    throw new Error("Failed to proceed order.");
+  }
+};
+
 
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  //   checkout,
+  proceedToOrder,
 };

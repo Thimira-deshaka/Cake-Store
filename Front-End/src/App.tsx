@@ -23,6 +23,7 @@ import AddProduct from "./pages/AdminAddProduct";
 import NavBar from "./component/NavBar";
 import Footer from "./component/Footer";
 import UserOrdersView from "./pages/UserOrdersView";
+import UserOrderHistory from "./pages/UserHistoryView";
 
 // User Layout
 function UserLayout() {
@@ -64,6 +65,7 @@ function App() {
           <Route path="/myorders" element={<UserOrdersView />} />
           <Route path="/checkout" element={<CheckOut />} />
           <Route path="/update" element={<Update />}></Route>
+          <Route path="/order-history" element={<UserOrderHistory />} />
         </Route>
 
         {/* Admin Pages */}

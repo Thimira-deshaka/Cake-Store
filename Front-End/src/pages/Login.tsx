@@ -20,6 +20,7 @@ function Login() {
 
       if (response.ok) {
         alert("Log in successfuly.");
+        
         // console.log("Login successful");
         // window.location.href = "/";
         response.json().then((data) => {
@@ -27,6 +28,7 @@ function Login() {
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("user", JSON.stringify(data.role));
           window.location.href = "/";
+         
         });
       } else {
         alert("password or email not correct");

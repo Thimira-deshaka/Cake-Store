@@ -25,6 +25,7 @@ function Profile() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (token) {
       fetch("http://localhost:3001/users/", {
         method: "GET",
