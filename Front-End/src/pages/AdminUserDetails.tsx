@@ -2,6 +2,7 @@ import "../Style/UserDetails.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect, Fragment } from "react";
 import profileImage from "../assets/user.png";
+import AdminNavBar from "../component/AdminNavBar";
 
 function UserDetails() {
   const [userDetails, setUserDetails] = useState({
@@ -41,6 +42,7 @@ function UserDetails() {
 
   return (
     <Fragment>
+      <AdminNavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">

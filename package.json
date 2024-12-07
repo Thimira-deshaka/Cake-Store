@@ -1,0 +1,22 @@
+{
+  "name": "cake-store",
+  "version": "1.0.0",
+  "description": "Welcome to our **Simple e-Commerce Cake Ordering Platform**! This application enables customers to order delicious cakes online with ease. Built with a **Microservices Architecture** and powered by the **MERN Stack** (MongoDB, Express.js, React, Node.js), it provides a seamless experience for both admins and customers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.8.4",
+    "redis": "^4.7.0"
+  }
+}

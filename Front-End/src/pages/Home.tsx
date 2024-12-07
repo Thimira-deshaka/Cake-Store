@@ -77,7 +77,6 @@ function Home() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="wid">
         <div className="container">
           <div className="row">
@@ -166,7 +165,6 @@ function Home() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }
