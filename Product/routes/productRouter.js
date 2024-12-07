@@ -1,4 +1,5 @@
 const express = require("express");const multer = require("multer");
+const AdminTokenValidate = require("../middleware/admintokenValidationMiddleware");
 const path = require("path");
 const fs = require("fs");
 const productController = require("../controllers/productController");
@@ -27,6 +28,10 @@ router.get("/", productController.getProducts);
 
 router.get("/:idOrName", productController.findProduct);
 
-router.post("/", upload.single("image"), productController.createProduct);
+router.post("/", AdminTokenValidate, upload.single("image"), productController.createProduct);
+
+router.put("/:id", AdminTokenValidate, productController.updateProduct);
+
+router.delete("/:id", AdminTokenValidate, productController.deleteProduct);
 
 module.exports = router;

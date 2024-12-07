@@ -29,8 +29,29 @@ const findProduct = async (id) => {
   return products;
 };
 
+const updateProduct = async (productId, productData) => {
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      {_id: productId},
+      { $set: productData }, 
+      { new: true, runValidators: true } 
+    );
+
+    if (!updatedProduct) {
+      throw new Error("Product not found");
+    }
+
+    return updatedProduct;
+};
+
+const deleteProduct = async (productId) => {
+    const deletedProduct = await productModel.findByIdAndDelete(productId);
+    return deletedProduct;
+  }
+
 module.exports = {
   getProducts,
   createProduct,
   findProduct,
+  updateProduct,
+  deleteProduct,
 };

@@ -63,10 +63,50 @@ const createProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id; 
+    const productData = req.body; 
+    
+    const updatedProduct = await productService.updateProduct(productId, productData);
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error("Error updating product:", error.message);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const deletedProduct = await productService.deleteProduct(productId);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({
+      message: "Product deleted successfully",
+      product: deletedProduct,
+    });
+  } catch (error) {
+    console.error("Error deleting product:", error.message);
+    res.status(500).json({
+      message: "Failed to delete product",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProducts,
   //   getProductByName,
   createProduct,
   //   getProductById,
   findProduct,
+  updateProduct,
+  deleteProduct,
 };

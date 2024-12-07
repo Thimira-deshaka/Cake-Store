@@ -3,13 +3,10 @@ const router = express.Router();
 const validateToken = require("../middleware/tokenValidationMiddleware");
 
 const {
-  getUser,
-  getUsers,
-  createAdmin,
   loginAdmin,
   resetPasswordAdminController,
   getOrderDetails,
-  addProduct,
+  logoutAdmin,
 } = require("../controllers/adminController");
 
 const {
@@ -18,6 +15,8 @@ const {
 } = require("../controllers/adminRecoverPasswordController");
 
 router.route("/login").post(loginAdmin);
+
+router.route("/logout").post(validateToken, logoutAdmin);
 
 router.route("/orders").get(validateToken, getOrderDetails);
 

@@ -3,13 +3,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment, useState, useEffect } from "react";
 import AdminNavBar from "../component/AdminNavBar";
 import Footer from "../component/Footer";
-import Alert from "../component/Alert"; // Import Alert component
+import Alert from "../component/Alert"; 
+import { useNavigate } from "react-router-dom";
 
 function ProductInfo() {
   const [inputValue, setInputValue] = useState({});
   const [editMode, setEditMode] = useState(false);
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
   const productID = localStorage.getItem("productID");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +37,7 @@ function ProductInfo() {
   }, [productID]);
 
   const handleEditClick = () => {
-    setEditMode(!editMode); // Toggle edit mode
+    setEditMode(!editMode); 
   };
 
   const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
@@ -72,15 +75,15 @@ function ProductInfo() {
           message: "Product updated successfully!",
           isSuccess: true,
         });
-        setTimeout(() => setAlert(null), 3000);
-        setEditMode(false); // Exit edit mode after saving
+        setTimeout(() => {setAlert(null); navigate("/admin/products")}, 3000);
+        setEditMode(false); 
       } else {
         setAlert({
           title: "Error",
           message: "Failed to update product.",
           isSuccess: false,
         });
-        setTimeout(() => setAlert(null), 3000);
+        setTimeout(() => {setAlert(null); navigate("/admin/products")}, 2000);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -89,7 +92,7 @@ function ProductInfo() {
         message: "An error occurred while updating the product.",
         isSuccess: false,
       });
-      setTimeout(() => setAlert(null), 3000);
+      setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
     }
   };
 
@@ -110,8 +113,8 @@ function ProductInfo() {
           message: "Product deleted successfully!",
           isSuccess: true,
         });
-        setTimeout(() => setAlert(null), 3000);
-        window.location.href = "/admin/products"; // Navigate to the products page after deleting the product
+        setTimeout(() => {setAlert(null); navigate("/admin/products");}, 3000);
+        
       } else {
         setAlert({
           title: "Error",

@@ -25,6 +25,10 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+const logoutAdmin = async (req, res) => {
+  return res.status(200).json({message : "Successfully logout"})
+ };
+
 const getOrderDetails = async (req, res) => {
   try {
     const orders = await adminService.getOrderDetails(); 
@@ -57,9 +61,7 @@ const resetPasswordAdminController = async (req, res) => {
 };
 
 module.exports = {
-  // getUsers,
-  // getUser,
-  // createAdmin,
+  logoutAdmin,
   loginAdmin,
   resetPasswordAdminController,
   getOrderDetails,

@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AdminNavBar from "../component/AdminNavBar";
 import photo6 from '../assets/photo6.jpg';
 import Alert from "../component/Alert"; // Import Alert component
 
@@ -82,9 +81,13 @@ function AdminAddProduct() {
     }
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3002/products/", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.ok) {
@@ -93,8 +96,7 @@ function AdminAddProduct() {
           message: "Product added successfully!",
           isSuccess: true,
         });
-        setTimeout(() => setAlert(null), 3000); 
-        navigate("/admin/products"); 
+        setTimeout(() => {setAlert(null); navigate("/admin/products");}, 3000);  
       } else {
         setAlert({
           title: "Error",
@@ -116,7 +118,6 @@ function AdminAddProduct() {
 
   return (
     <Fragment>
-      <AdminNavBar />
       <div
         className="container-fluid"
         style={{
