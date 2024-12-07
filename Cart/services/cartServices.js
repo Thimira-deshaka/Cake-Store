@@ -74,7 +74,7 @@ const getOrderHistory = async () => {
 const proceedToOrder = async (userId, itemId) => {
   try {
     // Find the cart item
-    const cartItem = await cartModel.findOneAndDelete({
+    const cartItem = await cartItemModel.findOneAndDelete({
       _id: itemId,
       UserId: userId,
     });
