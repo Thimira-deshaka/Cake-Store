@@ -39,8 +39,8 @@
   padding: 60px 32px;
   width: 420px;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75);
+  background: rgba(17, 17, 17, 0.67);
+  box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.942);
 }
 
 .content header {

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../Style/AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../component/NavBar";
+import AdminNavBar from "../component/AdminNavBar";
 
 interface Order {
   id: string; // Unique order ID
@@ -99,6 +99,7 @@ function AdminHome () {
 
   return (
     <Fragment>
+      <AdminNavBar/>
       <div
         className="wid"
         style={{

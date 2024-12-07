@@ -1,8 +1,11 @@
 import { Fragment, useState } from "react";
 import "../Style/AdminLogin.css";
 import Alert from "../component/Alert";
+import "../Style/Login.css";
 import { Dialog, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import axios from "axios";
+import AdminNavBar from "../component/AdminNavBar";
+import photo from '../assets/login2.jpg';
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -144,8 +147,15 @@ function AdminLogin() {
 
   return (
     <Fragment>
-      <div className="bg-img">
-        <div className="content">
+      <AdminNavBar/>
+      <div style={{ backgroundImage: `url(${photo})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "0",
+            margin: "0",
+            height: "100vh",}}>
+        <div className="content"
+        >
           <header>Admin Login Form</header>
           <form onSubmit={handleSubmit}>
             <h4 className="fieldHeader">Email</h4>
