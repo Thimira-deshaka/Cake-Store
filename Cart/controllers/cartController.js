@@ -12,8 +12,27 @@ const getCartProducts = async (req, res) => {
 
 const getOrderHistory = async (req, res) => {
   try{
-    const orders = await cartService.getOrderHistory();
+    const id = req.user.id;
+    const orders = await cartService.getOrderHistory(id);
     res.json(orders);
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getAllOrderHistory = async (req, res) => {
+  try{
+    const orders = await cartService.getAllOrderHistory();
+    res.json(orders);
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateStatus = async (req, res) => {
+  try{
+    const status = await cartService.updateStatus(req.body.orderId, req.body.newStatus);
+    res.json(status);
   }catch(error){
     res.status(500).json({ message: "Internal server error" });
   }
@@ -73,4 +92,6 @@ module.exports = {
   deleteCartProduct,
   getOrderHistory,
   proceedItemToOrder,
+  getAllOrderHistory,
+  updateStatus,
 };

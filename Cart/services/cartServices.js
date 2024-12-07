@@ -37,6 +37,7 @@ const getCartProducts = async (userId) => {
 };
 
 const addCartProduct = async (userId, productId, qty) => {
+  console.log(userId, productId, qty);
   const cartProduct = await cartItemModel.create({
     UserId: userId,
     ProductId: productId,
@@ -53,12 +54,73 @@ const deleteCartProduct = async (OrderId) => {
 };
 
 
-const getOrderHistory = async () => {
-  console.log("hello");
-  const orders = await orderHistoryModel.find();
-  console.log(orders);
-  return orders;
+const getOrderHistory = async (id) => {
+  const orders = await orderHistoryModel.find({UserId: id});
+
+  const enrichedOrders = await Promise.all(
+    orders.map(async (order) => {
+        const productResponse = await axios.get(
+          `${process.env.PRODUCT_SERVER_BASE}/products/${order.ProductId}`
+        );
+
+        // Add product details to the order
+        const product = productResponse.data;
+        return {
+          id: order._id,
+          productId: order.ProductId,
+          productName: product.name,
+          productImage: product.image,
+          date: order.createdAt, 
+          quantity: order.Quantity,
+          price: product.price,
+          status: order.status, 
+        };
+    })
+  )
+  // console.log(orders);
+  // return enrichedOrders;
 };
+
+const getAllOrderHistory = async () => {
+  const orders = await orderHistoryModel.find();
+
+  const enrichedOrders = await Promise.all(
+    orders.map(async (order) => {
+        const productResponse = await axios.get(
+          `${process.env.PRODUCT_SERVER_BASE}/products/${order.ProductId}`
+        );
+        const userResponse = await axios.get(
+          `${process.env.USER_SERVER_BASE}/users/${order.UserId}`
+        );
+        const user = userResponse.data;
+
+        // Add product details to the order
+        const product = productResponse.data;
+        return {
+          id: order._id,
+          productId: order.ProductId,
+          productName: product.name,
+          productImage: product.image,
+          date: order.createdAt, 
+          quantity: order.Quantity,
+          price: product.price,
+          status: order.Status,
+          customerName: user.firstName + " " + user.lastName, 
+        };
+    })
+  )
+  // console.log(enrichedOrders);
+  return enrichedOrders;
+};
+
+const updateStatus = async (OrderId, newStatus) => {
+  const updatedOrder = await orderHistoryModel.findByIdAndUpdate(
+    OrderId,
+    { Status: newStatus },
+    { new: true } // Return the updated document
+  );
+  return updatedOrder;
+}
 
 
 // const checkout = async (req, res) => {
@@ -83,7 +145,7 @@ const proceedToOrder = async (userId) => {
       UserId: cartItem.UserId,
       ProductId: cartItem.ProductId,
       Quantity: cartItem.Quantity,
-      Status: "Ongoing"
+      Status: "Accepted",
     }));
 
     await orderHistoryModel.insertMany(orderHistoryEntries);
@@ -103,4 +165,6 @@ module.exports = {
   deleteCartProduct,
   proceedToOrder,
   getOrderHistory,
+  getAllOrderHistory,
+  updateStatus,
 };
