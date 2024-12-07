@@ -17,7 +17,7 @@ router.post("/:productid", validateToken, addCartProduct);
 
 router.post("/proceed/:itemId", validateToken, proceedItemToOrder);
 
-router.get('/order-history', getOrderHistoryController);
+router.get("/order-history/:userId", getOrderHistoryController);
 
 router.delete("/:orderid", validateToken, deleteCartProduct);
 
