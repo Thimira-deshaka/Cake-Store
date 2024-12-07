@@ -11,11 +11,20 @@ const getCartProducts = async (req, res) => {
 };
 
 const getOrderHistory = async (req, res) => {
-  try{
-    const orders = await cartService.getOrderHistory();
-    res.json(orders);
-  }catch(error){
-    res.status(500).json({ message: "Internal server error" });
+  const { userId } = req.params; // Get userId from route parameters
+  if (!userId) {
+    return res.status(400).json({ message: 'userId is required' });
+  }
+
+  try {
+    const orderHistory = await cartService.getOrderHistory(userId);
+    if (!orderHistory || orderHistory.length === 0) {
+      return res.status(404).json({ message: 'No order history found for this user' });
+    }
+    res.json(orderHistory);
+  } catch (error) {
+    console.error('Error fetching order history:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 

@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", validateToken, getCartProducts);
 
-router.get("/history", getOrderHistory);
+router.get("/history/:userId", getOrderHistory);
 
 router.post("/:productid", validateToken, addCartProduct);
 
@@ -22,3 +22,4 @@ router.delete("/checkout", validateToken, proceedItemToOrder);
 router.delete("/:orderid", validateToken, deleteCartProduct);
 
 module.exports = router;
+ 

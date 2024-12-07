@@ -53,11 +53,14 @@ const deleteCartProduct = async (OrderId) => {
 };
 
 
-const getOrderHistory = async () => {
-  console.log("hello");
-  const orders = await orderHistoryModel.find();
-  console.log(orders);
-  return orders;
+const getOrderHistory = async (userId) => {
+  try {
+    const orderHistory = await orderHistoryModel.find({ userId: userId }); // Find orders for the specific user
+    return orderHistory;
+  } catch (error) {
+    console.error('Error fetching order history from DB:', error);
+    throw new Error('Error fetching order history');
+  }
 };
 
 
@@ -94,7 +97,7 @@ const proceedToOrder = async (userId) => {
       message: "Item successfully moved to order history.",
       cartItems,
     };
-};
+};  
 
 
 module.exports = {
