@@ -5,7 +5,6 @@ import Alert from "../component/Alert"; // Assuming Alert is a reusable componen
 function CheckOut() {
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-
   const token = localStorage.getItem("token");
 
   const submitHandler = async () => {
@@ -119,9 +118,9 @@ function CheckOut() {
                 </div>
               </div>
             </div>
-
             <div className="bat" onClick={submitHandler}>
               {isProcessing ? "Processing..." : "Proceed"}
+
             </div>
           </div>
         </div>

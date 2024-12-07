@@ -32,22 +32,6 @@ const loginAdmin = async (email, password) => {
   return null;
 };
 
-const addProduct = async (name, description, price, quantity, category, image) => {
-  const productData = {name, description, price, quantity, category, image};
-  const PRODUCT_SERVER_BASE_URL = process.env.PRODUCT_SERVER_BASE;
-  console.log(productData);
-
-    // Send the POST request to the Product Server
-    const response = await axios.post(`${PRODUCT_SERVER_BASE_URL}/products`, productData, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return response.data;
-}
-
 const resetPasswordAdmin = async (email, newPassword) => {
   try {
     // Find the admin by email
@@ -141,5 +125,4 @@ module.exports = {
   loginAdmin,
   resetPasswordAdmin,
   getOrderDetails,
-  addProduct,
 };

@@ -91,7 +91,6 @@ function AdminUserUpdate() {
 
   return (
     <Fragment>
-      <NavBar />
       <div className="update-page-container mt-5">
         <h2 className="text-center">Update Your Profile</h2>
         {alert && (

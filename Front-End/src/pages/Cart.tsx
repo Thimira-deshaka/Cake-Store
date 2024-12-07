@@ -79,8 +79,11 @@ function Cart() {
       setTimeout(() => setAlert(null), 3000);
     } else {
       window.location.href = "/Checkout";
+
     }
-  };
+};
+
+  
 
   const deleteOrder = async (orderId: any) => {
     try {

@@ -5,19 +5,26 @@ const {
   deleteCartProduct,
   proceedItemToOrder,
   getOrderHistory, 
+  getAllOrderHistory,
+  updateStatus,
 } = require("../controllers/cartController");
 const validateToken = require("../middleware/tokenValidationMiddleware");
+const validateAdminToken = require("../middleware//admintokenValidationMiddleware");
 
 const router = express.Router();
 
 router.get("/", validateToken, getCartProducts);
 
-router.get("/history", getOrderHistory);
+router.get("/history", validateToken, getOrderHistory);
+
+router.get("/orders", validateAdminToken, getAllOrderHistory);
+
+router.put("/orders/status", validateAdminToken, updateStatus);
 
 router.post("/:productid", validateToken, addCartProduct);
 
 
-router.post("/proceed/:itemId", validateToken, proceedItemToOrder);
+router.delete("/checkout", validateToken, proceedItemToOrder);
 
 router.delete("/:orderid", validateToken, deleteCartProduct);
 
