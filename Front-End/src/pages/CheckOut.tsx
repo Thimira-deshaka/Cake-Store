@@ -1,32 +1,64 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import "../Style/CheckOut.css";
+import Alert from "../component/Alert"; // Assuming Alert is a reusable component
+
 function CheckOut() {
-  function submitHandler() {
-    alert("Your order has been placed!");
-    window.location.href = "/";
-  }
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const token = localStorage.getItem("token");
 
-  if (token) {
-    fetch("http://localhost:3003/cart/checkout", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then((response) => {
+  const submitHandler = async () => {
+    setIsProcessing(true);
+
+    if (!token) {
+      setAlert({
+        title: "Error",
+        message: "You need to be logged in to complete the checkout.",
+        isSuccess: false,
+      });
+      setIsProcessing(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3003/cart/checkout", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
       if (response.ok) {
-        response.json().then((data) => {
-          console.log(data);
+        const data = await response.json();
+        setAlert({
+          title: "Success",
+          message: "Your order has been placed successfully!",
+          isSuccess: true,
         });
+
+        // Redirect after success
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
       } else {
-        console.log("Error");
+        setAlert({
+          title: "Error",
+          message: "An error occurred while placing your order. Please try again.",
+          isSuccess: false,
+        });
       }
-    });
-  } else {
-    window.location.href = "/login";
-  }
+    } catch (error) {
+      setAlert({
+        title: "Error",
+        message: "An unexpected error occurred. Please try again.",
+        isSuccess: false,
+      });
+    }
+
+    setIsProcessing(false);
+  };
 
   return (
     <Fragment>
@@ -38,11 +70,11 @@ function CheckOut() {
             <div className="input-form">
               <div className="section-1">
                 <div className="items">
-                  <label className="label">card number</label>
+                  <label className="label">Card number</label>
                   <input
                     type="text"
                     className="input"
-                    maxLength={10}
+                    maxLength={16}
                     data-mask="0000 0000 0000 0000"
                     placeholder="1234 1234 1234 1234"
                   />
@@ -50,7 +82,7 @@ function CheckOut() {
               </div>
               <div className="section-2">
                 <div className="items">
-                  <label className="label">card holder</label>
+                  <label className="label">Card holder</label>
                   <input
                     type="text"
                     className="input"
@@ -70,7 +102,7 @@ function CheckOut() {
                 </div>
                 <div className="items">
                   <div className="cvc">
-                    <label className="label">cvc code</label>
+                    <label className="label">CVC code</label>
                     <div className="tooltip">
                       ?
                       <div className="cvc-img">
@@ -89,12 +121,24 @@ function CheckOut() {
             </div>
 
             <div className="bat" onClick={submitHandler}>
-              proceed
+              {isProcessing ? "Processing..." : "Proceed"}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Show Alert */}
+      {alert && (
+        <div style={{ position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1000,}}>
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }
+
 export default CheckOut;

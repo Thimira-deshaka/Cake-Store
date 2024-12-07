@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import "../Style/Login.css";
 import Alert from "../component/Alert"; // Assuming Alert is a reusable component
-import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import axios from "axios";
 
 function Forgetpassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
   const location = useLocation();
@@ -32,7 +30,6 @@ function Forgetpassword() {
         message: "Passwords do not match.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
       return;
     }
 
@@ -42,7 +39,6 @@ function Forgetpassword() {
         message: "Invalid or missing reset token.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
       return;
     }
 
@@ -57,7 +53,6 @@ function Forgetpassword() {
         message: response.data.message || "Password reset successfully.",
         isSuccess: true,
       });
-      setIsDialogOpen(true);
 
       // Redirect to login page after showing success alert
       setTimeout(() => {
@@ -69,14 +64,13 @@ function Forgetpassword() {
         message: error.response?.data?.message || "An error occurred while resetting password.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
     }
   };
 
   return (
     <div className="bg-img">
       <div className="content">
-        <header> Password Reset Form</header>
+        <header>Password Reset Form</header>
         <form onSubmit={handleSubmit}>
           <h4 className="fieldHeader">New Password</h4>
           <div className="field">
@@ -110,24 +104,15 @@ function Forgetpassword() {
         </form>
       </div>
 
-      {/* Popup Alert */}
+      {/* Alert Message */}
       {alert && (
-        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          <DialogContent>
-            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setIsDialogOpen(false);
-                if (alert.isSuccess) navigate("/login"); // Navigate if the alert is success
-              }}
-              color={alert.isSuccess ? "primary" : "error"}
-            >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <div style={{position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1000, }}>
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
       )}
     </div>
   );

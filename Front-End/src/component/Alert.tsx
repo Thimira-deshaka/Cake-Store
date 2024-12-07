@@ -12,6 +12,7 @@ const Alert = ({ title, message, isSuccess }: Props) => {
     padding: "1rem",
     borderRadius: "15px",
     margin: "1rem 0",
+    width:"50vh",
   };
 
   return (

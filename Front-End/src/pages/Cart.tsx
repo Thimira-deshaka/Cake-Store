@@ -3,18 +3,24 @@ import deletesvg from "../assets/delete.svg";
 import "../Style/Cart.css";
 import NavBar from "../component/NavBar";
 import Footer from "../component/Footer";
+import Alert from "../component/Alert";
+
 function Cart() {
-  const [cartData, setCartData] = useState({ total: 0, Products: [] });
+  const [cartData, setCartData] = useState({ total: 0, Orders: [] });
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
 
   useEffect(() => {
     const fetchCartData = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        // Check if token exists
         if (!token) {
-          //window.location.href = "/login";
-          console.log("Token not found");
+          setAlert({
+            title: "Authentication Error",
+            message: "Please log in to access your cart.",
+            isSuccess: false,
+          });
+          setTimeout(() => setAlert(null), 3000);
           return;
         }
 
@@ -27,51 +33,57 @@ function Cart() {
         });
 
         if (response.ok) {
-          console.log("Welcome to cart");
           const data = await response.json();
-          console.log(data.Orders);
           if (data !== "Cart is empty") {
             setCartData(data);
           }
         } else {
-          // Handle response errors
           if (response.status === 401) {
-            console.log("Invalid token");
-            // Handle invalid token scenario (e.g., redirect to login page)
+            setAlert({
+              title: "Session Expired",
+              message: "Your session has expired. Please log in again.",
+              isSuccess: false,
+            });
+            setTimeout(() => setAlert(null), 3000);
             window.location.href = "/login";
           } else {
-            console.log("Failed to fetch cart data");
+            setAlert({
+              title: "Error",
+              message: "Failed to fetch cart data. Please try again later.",
+              isSuccess: false,
+            });
+            setTimeout(() => setAlert(null), 3000);
           }
         }
       } catch (error) {
         console.error("Error:", error);
+        setAlert({
+          title: "Error",
+          message: "An unexpected error occurred while fetching your cart.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
       }
     };
 
     fetchCartData();
   }, []);
 
-  useEffect(() => {
-    // Update total price when cartData changes
-    if (cartData) {
-      const totalPriceElement = document.getElementById("totalPrice");
-      if (totalPriceElement) {
-        totalPriceElement.innerHTML = "Total: $" + cartData.total;
-      }
-    }
-  }, [cartData]);
-
   const handleCheckout = () => {
     if (cartData.Orders.length === 0) {
-      alert("Your cart is empty. Please add items to proceed.");
+      setAlert({
+        title: "Empty Cart",
+        message: "Your cart is empty. Please add items to proceed.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
     } else {
-      window.location.href = "/Checkout"; // Proceed to the checkout page
+      window.location.href = "/Checkout";
     }
   };
 
   const deleteOrder = async (orderId: any) => {
     try {
-      console.log("Order ID:", orderId); // Debugging productId
       const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:3003/cart/${orderId}`, {
         method: "DELETE",
@@ -82,13 +94,32 @@ function Cart() {
       });
 
       if (response.ok) {
-        alert("Delete Order Successfully");
-        window.location.href = "/cart";
+        setAlert({
+          title: "Success",
+          message: "Order deleted successfully.",
+          isSuccess: true,
+        });
+        setTimeout(() => setAlert(null), 3000);
+        setCartData((prev) => ({
+          ...prev,
+          Orders: prev.Orders.filter((order: any) => order.OrderId !== orderId),
+        }));
       } else {
-        console.log("Failed to Delete Order");
+        setAlert({
+          title: "Error",
+          message: "Failed to delete the order. Please try again.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
       }
     } catch (error) {
       console.error("Error:", error);
+      setAlert({
+        title: "Error",
+        message: "An error occurred while deleting the order.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
@@ -102,22 +133,20 @@ function Cart() {
                 <h2 className="cart-header-text">Cake Cart</h2>
               </div>
               <div className="cart-page-para">
-                <h4 className="cart-para-text">Your sweetest cravings are just a click away! 🍰 <br/>Here lies your handpicked collection of delightful treats, <br/>crafted with love and ready to make your day sweeter.</h4>
+                <h4 className="cart-para-text">
+                  Your sweetest cravings are just a click away! 🍰 <br />
+                  Here lies your handpicked collection of delightful treats, <br />
+                  crafted with love and ready to make your day sweeter.
+                </h4>
               </div>
               <div className="cart-page-table">
                 <table className="cart-table-product">
                   <thead>
                     <tr className="cart-table-header">
                       <th className="cart-table-img">Image of the Ordered Cake</th>
-                      <th className="cart-table-desktop cart-table-payment">
-                        Name
-                      </th>
-                      <th className="cart-table-desktop cart-table-size">
-                        Category
-                      </th>
-                      <th className="cart-table-size right-text-mobile">
-                        Price
-                      </th>
+                      <th className="cart-table-desktop cart-table-payment">Name</th>
+                      <th className="cart-table-desktop cart-table-size">Category</th>
+                      <th className="cart-table-size right-text-mobile">Price</th>
                       <th className="cart-table-size right-text-mobile"></th>
                     </tr>
                   </thead>
@@ -160,17 +189,6 @@ function Cart() {
                         </td>
                       </tr>
                     )}
-                    {/* {cartData.Products.map((product: any) => (
-
-                      <tr className="cart-table-content" key={product._id}>
-                        <td className="cart-table-image-info">
-                          <img src={product.image} alt="Product Image" />
-                        </td>
-                        <td className="bold-text">{product.name}</td>
-                        <td>{product.category}</td>
-                        <td>${product.price}</td>
-                      </tr>
-                    ))} */}
                   </tbody>
                 </table>
               </div>
@@ -190,6 +208,20 @@ function Cart() {
           </div>
         </div>
       </div>
+
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }
