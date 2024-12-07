@@ -42,7 +42,6 @@ function UserDetails() {
 
   return (
     <Fragment>
-      <AdminNavBar />
       <div className="widt">
         <div className="row">
           <div className="col-lg-12">

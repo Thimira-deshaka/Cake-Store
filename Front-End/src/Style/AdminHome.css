@@ -1,0 +1,174 @@
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  background-color: #1e1e1e;
+  font-size: 16px;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #fff;
+  font-weight: 700;
+}
+
+ul {
+  margin-bottom: 0px;
+}
+
+p {
+  font-size: 15px;
+  line-height: 30px;
+  color: #fff;
+}
+
+.selct {
+  height: fit-content;
+}
+
+select {
+  background-color: #2a1b10;
+  width: 200px;
+  text-align: center;
+  height: 40px;
+  color: #ccc;
+  border: 0;
+  /* Added smooth transition for hover or focus effects */
+  transition: all 0.3s ease;
+}
+
+option {
+  color: #fff;
+}
+
+img {
+  width: 100%;
+  overflow: hidden;
+}
+
+.most-popular {
+  padding: 30px;
+  margin-top: 20px;
+  background-color: #1d120a;
+}
+
+.most-popular .item {
+  background-color: #2a1b10;
+  padding: 30px 15px;
+  border-radius: 23px;
+  margin-bottom: 30px;
+  /* Added transition for smooth hover effects */
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.most-popular .item:hover {
+  transform: translateY(-10px); /* Moves the card 10px upward */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for hover */
+}
+
+.most-popular .item .item {
+  padding: 0px;
+  border-radius: 0px;
+  background-color: transparent;
+  margin-bottom: 0px;
+}
+
+.most-popular .item img {
+  border-radius: 23px;
+  /* Added smoother hover transition for images */
+  transition: transform 0.4s ease;
+}
+
+.most-popular .item img:hover {
+  transform: scale(1.03); /* Slight zoom effect on hover */
+}
+
+.most-popular .item h4 {
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  display: inline-block;
+}
+
+.most-popular .item span {
+  color: #666;
+  display: block;
+  margin-top: 7px;
+  font-weight: 400;
+}
+
+.most-popular .item ul {
+  float: right;
+  margin-top: 20px;
+}
+
+.most-popular .item ul li {
+  text-align: right;
+  color: #fff;
+  font-size: 14px;
+}
+
+.most-popular .item ul li:first-child i {
+  color: yellow;
+}
+
+.most-popular .item ul li:last-child i {
+  color: #ffcf86;
+}
+
+.most-popular .main-button {
+  text-align: center;
+  margin-bottom: -53px;
+}
+
+.wid {
+  width: 100%;
+  background: #2a1b10;
+}
+
+.page-content {
+  padding: 0;
+  background: #1d120a;
+}
+
+.heading-section {
+  display: flex;
+  justify-content: space-between; /* Align items to the two ends */
+  align-items: center; /* Vertically center items */
+}
+
+.heading-section h4 {
+  color: #ffcf86;
+  font-size: 34px;
+  text-decoration: none;
+}
+
+.heading-section h4 em {
+  color: #fff;
+  font-style: normal;
+}
+
+/* Hover effect for the entire card */
+.item:hover {
+  transform: translateY(-10px); /* Moves the card 10px upward */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Adds a more prominent shadow */
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.productbtn {
+  background-color: #666; /* Ash color */
+  color: #fff; /* Black text */
+  border-radius: 8px; /* Rounded corners */
+  padding: 10px 20px;
+}

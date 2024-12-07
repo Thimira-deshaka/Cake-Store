@@ -8,7 +8,7 @@
 }
 
 .bg-img {
-  background: url('src/assets/background-img.jpg');
+  background-color: #1e1e1e;
   height: 100vh;
   background-size: cover;
   background-position: center;

@@ -1,59 +1,53 @@
 import React, { Fragment, useEffect, useState } from "react";
-import "../Style/home.css";
+import "../Style/AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../component/NavBar";
 
 interface Order {
-  id: number;
-  productImage: string;
-  productId: string;
-  ProductNanme: string;
-  date: string;
-  quantity: number;
-  customerName: string;
-  status: "On Going" | "Shipped";
+  id: string; // Unique order ID
+  productImage: string; // Product image URL
+  productId: string; // Product ID
+  productName: string; // Product name
+  date: string; // Order date
+  quantity: number; // Quantity of product ordered
+  customerName: string; // Customer's name
+  status: "Accepted" | "Ready" | "Pickup" | "Delivery Done"; // Updated statuses
 }
 
-const Home: React.FC = () => {
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      id: 1,
-      productImage:
-        "https://cdn.giftstoindia24x7.com/ASP_Img/IMG2000/GTI443307.jpg",
-      productId: "P001",
-      ProductNanme: "Chocolate Cake 1",
-      date: "2024.11.11",
-      quantity: 1,
-      customerName: "Cody Fisher",
-      status: "On Going",
-    },
-    {
-      id: 2,
-      productImage:
-        "https://www.cakestoindia.com/wp-content/uploads/2021/12/802.png",
-      productId: "P002",
-      ProductNanme: "Chocolate Cake 2",
-      date: "2024.11.30",
-      quantity: 2,
-      customerName: "Kristin Watson",
-      status: "Shipped",
-    },
-    {
-      id: 3,
-      productImage:
-        "https://i.pinimg.com/474x/71/7f/2a/717f2af577fa853a44fa255c09c72a2b.jpg",
-      productId: "P003",
-      ProductNanme: "Chocolate Cake 3",
-      date: "2024.11.20",
-      quantity: 12,
-      customerName: "Esther Howard",
-      status: "Shipped",
-    },
-  ]);
+function AdminHome () {
+  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
 
-  //these are for change the color of rows when hover
-  const handleMouseEnter = (id: number) => {
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  // Fetch orders from the server
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3004/admin/orders", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const jsonData: Order[] = await response.json();
+        setOrders(jsonData);
+        console.log("Fetched Orders:", jsonData);
+      } else {
+        console.error("Failed to fetch orders");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // Change row hover behavior
+  const handleMouseEnter = (id: string) => {
     setHoveredRow(id);
   };
 
@@ -61,44 +55,44 @@ const Home: React.FC = () => {
     setHoveredRow(null);
   };
 
-  // Handle status change with confirmation
-  const handleStatusChange = (
-    id: number,
-    newStatus: "On Going" | "Shipped"
+  // Handle status change and update on the server
+  const handleStatusChange = async (
+    id: string,
+    newStatus: "Accepted" | "Ready" | "Pickup" | "Delivery Done"
   ) => {
     if (window.confirm("Are you sure you want to change the order status?")) {
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === id ? { ...order, status: newStatus } : order
-        )
-      );
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `http://localhost:3004/admin/orders/status`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ orderId: id, newStatus }),
+          }
+        );
+
+        if (response.ok) {
+          setOrders((prevOrders) =>
+            prevOrders.map((order) =>
+              order.id === id ? { ...order, status: newStatus } : order
+            )
+          );
+          alert("Order status updated successfully!");
+        } else {
+          console.error("Failed to update order status");
+        }
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
     }
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3002/products", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       const jsonData = await response.json();
-  //       setData(jsonData);
-  //     } else {
-  //       console.log("Failed to fetch products");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
-  const handleLinkClick = (productID: any) => {
+  // Handle navigation to product info
+  const handleLinkClick = (productID: string) => {
     localStorage.setItem("productID", productID);
     window.location.href = `/productinfo/${productID}`;
   };
@@ -117,8 +111,17 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="page-content" style={{ marginTop: "150px" }}>
-                <div className="container mt-4 pb-5">
+              <div
+                className="page-content"
+                style={{ marginTop: "10px", backgroundColor: "#1e1e1e" }}
+              >
+                <div
+                  className="container mt-4 pb-5"
+                  style={{
+                    backgroundColor: "#1f2122",
+                    borderRadius: "5%",
+                  }}
+                >
                   <h2
                     className="mb-4 pt-4 text-center"
                     style={{ color: "#ffcf86" }}
@@ -144,7 +147,9 @@ const Home: React.FC = () => {
                           onMouseLeave={handleMouseLeave}
                           style={{
                             color:
-                              hoveredRow === order.id ? "#ffcf86" : "inherit", // Change text color on hover
+                              hoveredRow === order.id
+                                ? "#ff7eb3"
+                                : "inherit", // Change text color on hover
                           }}
                         >
                           <td>
@@ -161,27 +166,36 @@ const Home: React.FC = () => {
                               <span>{order.productId}</span>
                             </div>
                           </td>
-                          <td>{order.ProductNanme}</td>
+                          <td>{order.productName}</td>
                           <td>{order.date}</td>
                           <td>{order.quantity}</td>
                           <td>{order.customerName}</td>
                           <td>
                             <select
                               className={`form-select ${
-                                order.status === "On Going"
+                                order.status === "Accepted"
                                   ? "bg-primary text-white"
+                                  : order.status === "Ready"
+                                  ? "bg-warning text-white"
+                                  : order.status === "Pickup"
+                                  ? "bg-info text-white"
                                   : "bg-success text-white"
                               }`}
                               value={order.status}
                               onChange={(e) =>
                                 handleStatusChange(
                                   order.id,
-                                  e.target.value as "On Going" | "Shipped"
+                                  e.target
+                                    .value as "Accepted" | "Ready" | "Pickup" | "Delivery Done"
                                 )
                               }
                             >
-                              <option value="On Going">On Going</option>
-                              <option value="Shipped">Shipped</option>
+                              <option value="Accepted">Accepted</option>
+                              <option value="Ready">Ready</option>
+                              <option value="Pickup">Pickup</option>
+                              <option value="Delivery Done">
+                                Delivery Done
+                              </option>
                             </select>
                           </td>
                         </tr>
@@ -198,4 +212,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default AdminHome;

@@ -3,13 +3,16 @@ const {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  proceedItemToOrder, 
+  proceedItemToOrder,
+  getOrderHistory, 
 } = require("../controllers/cartController");
 const validateToken = require("../middleware/tokenValidationMiddleware");
 
 const router = express.Router();
 
 router.get("/", validateToken, getCartProducts);
+
+router.get("/history", getOrderHistory);
 
 router.post("/:productid", validateToken, addCartProduct);
 

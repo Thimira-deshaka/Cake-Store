@@ -52,6 +52,15 @@ const deleteCartProduct = async (OrderId) => {
   return cartProduct;
 };
 
+
+const getOrderHistory = async () => {
+  console.log("hello");
+  const orders = await orderHistoryModel.find();
+  console.log(orders);
+  return orders;
+};
+
+
 // const checkout = async (req, res) => {
 //     const cartProducts = await CartModel.deleteMany({ UserId: req.user.id });
 //     // console.log(cartProducts);
@@ -97,4 +106,5 @@ module.exports = {
   addCartProduct,
   deleteCartProduct,
   proceedToOrder,
+  getOrderHistory,
 };

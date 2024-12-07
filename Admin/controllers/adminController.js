@@ -25,6 +25,35 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+const addProduct = async (req, res) => {
+  try {
+    const { name, description, price, quantity, category } = req.body;
+
+    console.log("Product Data:", { name, description, price, quantity, category });
+
+    // Handle uploaded file (if any)
+    const image = req.file ? req.file.buffer : null;
+    const product = await adminService.addProduct(name, description, price, quantity, category, image); 
+    res.status(200).json(product); 
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Failed to fetch order details." });
+  }
+};
+
+const getOrderDetails = async (req, res) => {
+  try {
+    const orders = await adminService.getOrderDetails(); 
+    if(orders){
+      return res.status(200).json(orders); 
+    }
+    return res.status(400).json({message : "No orders available"});
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Failed to fetch order details." });
+  }
+};
+
 
 // const createAdmin = async (req, res) => {
 //   const { email, password } = req.body;
@@ -68,4 +97,6 @@ module.exports = {
   // createAdmin,
   loginAdmin,
   resetPasswordAdminController,
+  getOrderDetails,
+  addProduct,
 };

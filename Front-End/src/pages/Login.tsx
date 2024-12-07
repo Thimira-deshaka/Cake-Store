@@ -1,8 +1,6 @@
 import { Fragment, useState } from "react";
 import "../Style/Login.css";
 import Alert from "../component/Alert";
-import Footer from "../component/Footer";
-import NavBar from "../component/NavBar";
 import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import axios from "axios";
 

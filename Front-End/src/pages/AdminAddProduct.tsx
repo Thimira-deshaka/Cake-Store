@@ -62,10 +62,11 @@ function AdminAddProduct() {
     }
 
     try {
-      const response = await fetch("http://localhost:3002/products", {
+      const response = await fetch("http://localhost:3004/admin/addproduct", {
         method: "POST",
         body: formData,
       });
+      // console.log(response);
 
       if (response.ok) {
         navigate("/admin/products"); // Navigate to the products page after adding the product

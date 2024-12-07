@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import "../Style/Login.css";
+import "../Style/AdminLogin.css";
 import Alert from "../component/Alert";
 import { Dialog, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import axios from "axios";

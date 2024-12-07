@@ -14,6 +14,10 @@ const orderHistorySchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    Status: {
+      type: String,
+      required: true,
+    },
   },
 
   {

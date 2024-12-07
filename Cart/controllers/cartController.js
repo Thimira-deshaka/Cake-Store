@@ -12,6 +12,15 @@ const getCartProducts = async (req, res) => {
   res.json({ Orders: products.productDetail, total: products.total });
 };
 
+const getOrderHistory = async (req, res) => {
+  try{
+    const orders = await cartService.getOrderHistory();
+    res.json(orders);
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const addCartProduct = async (req, res) => {
   try {
     const productID = req.params;
@@ -65,6 +74,6 @@ module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  
+  getOrderHistory,
   proceedItemToOrder,
 };
