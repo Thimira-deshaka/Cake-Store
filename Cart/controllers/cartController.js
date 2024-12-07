@@ -61,10 +61,31 @@ const proceedItemToOrder = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getOrderHistoryController = async (req, res) => {
+  const { userId } = req.query; // Extract userId from query parameters
+
+  try {
+    const orderHistory = await cartService.getOrderHistory(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order history fetched successfully.',
+      data: orderHistory,
+    });
+  } catch (error) {
+    console.error('Error in getOrderHistoryController:', error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to fetch order history.',
+    });
+  }
+};
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
-  
+  getOrderHistoryController,
   proceedItemToOrder,
 };

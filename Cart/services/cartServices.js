@@ -91,10 +91,20 @@ const proceedToOrder = async (userId, itemId) => {
   }
 };
 
+const getOrderHistory = async (userId) => {
+  try {
+    const orderHistory = await orderHistoryModel.find({ UserId: userId });
+    return orderHistory;
+  } catch (error) {
+    console.error('Error in getOrderHistory service:', error);
+    throw new Error('Failed to fetch order history.');
+  }
+};
 
 module.exports = {
   getCartProducts,
   addCartProduct,
   deleteCartProduct,
   proceedToOrder,
+  getOrderHistory,
 };
