@@ -90,11 +90,13 @@ const UserOrdersView: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
+          marginTop: "-100px",
         }}
       >
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
+
               <div className="page-content" style={{ marginTop: "10px" }}>
                 <div
                   className="container mt-4 pb-5"
