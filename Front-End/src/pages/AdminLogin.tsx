@@ -2,7 +2,6 @@ import { Fragment, useState } from "react";
 import "../Style/AdminLogin.css";
 import Alert from "../component/Alert";
 import "../Style/Login.css";
-import { Dialog, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import axios from "axios";
 import AdminNavBar from "../component/AdminNavBar";
 import photo from '../assets/login2.jpg';
@@ -11,9 +10,8 @@ function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState(""); // Store new password for reset
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false); // New dialog for password reset
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false); // New dialog for password reset
 
   const handleForgotPassword = async () => {
     if (!email.trim()) {
@@ -22,7 +20,6 @@ function AdminLogin() {
         message: "Please enter your email to reset your password.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
       return;
     }
 
@@ -36,7 +33,6 @@ function AdminLogin() {
         message: response.data.message || "Password reset request successful.",
         isSuccess: true,
       });
-      setIsDialogOpen(true);
     } catch (error: any) {
       console.error("Error during forgot password request:", error);
 
@@ -45,7 +41,6 @@ function AdminLogin() {
         message: error.response?.data?.message || "An error occurred.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
     }
   };
 
@@ -76,7 +71,6 @@ function AdminLogin() {
           message: "Login successful.",
           isSuccess: true,
         });
-        setIsDialogOpen(true);
 
         setTimeout(() => {
           window.location.href = "/admin/home";
@@ -87,7 +81,6 @@ function AdminLogin() {
           message: data.message || "Password or email not correct.",
           isSuccess: false,
         });
-        setIsDialogOpen(true);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -97,7 +90,6 @@ function AdminLogin() {
         message: "An error occurred while logging in. Please try again.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
     }
   }
 
@@ -127,7 +119,6 @@ function AdminLogin() {
         });
 
         setIsPasswordResetDialogOpen(false);
-        setIsDialogOpen(true);
 
         // You can redirect or log the user in again after successful password reset
         setTimeout(() => {
@@ -154,8 +145,7 @@ function AdminLogin() {
             padding: "0",
             margin: "0",
             height: "100vh",}}>
-        <div className="content"
-        >
+        <div className="content">
           <header>Admin Login Form</header>
           <form onSubmit={handleSubmit}>
             <h4 className="fieldHeader">Email</h4>
@@ -191,77 +181,33 @@ function AdminLogin() {
         </div>
       </div>
 
-      {/* Default alert dialog */}
+      {/* Alert for login and password reset */}
       {alert && (
-        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          <DialogContent>
-            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
-          </DialogActions>
-        </Dialog>
+        <div style={{ position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1000, }}>
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
       )}
 
-      {/* Password reset dialog */}
-      <Dialog
-        open={isPasswordResetDialogOpen}
-        onClose={() => setIsPasswordResetDialogOpen(false)}
-        sx={{
-          "& .MuiDialog-paper": {
-            padding: "20px",
-            borderRadius: "10px",
-            width: "400px",
-            backgroundColor: "#f9f9f9",
-            boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)",
-          },
-        }}
-      >
-        <DialogContent>
-          <h3
-            style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              color: "#333",
-              fontWeight: "600",
-            }}
-          >
-            Reset Password
-          </h3>
-          <TextField
-            label="New Password"
+      {/* Password reset form */}
+      {isPasswordResetDialogOpen && (
+        <div className="reset-password-form">
+          <h3 style={{ textAlign: "center" }}>Reset Password</h3>
+          <input
             type="password"
-            fullWidth
-            margin="normal"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="New Password"
             required
-            sx={{
-              backgroundColor: "#fff",
-              borderRadius: "5px",
-              marginBottom: "20px",
-              padding: "10px",
-            }}
           />
-        </DialogContent>
-        <DialogActions>
-  
-          <Button
-            onClick={handlePasswordReset}
-            sx={{
-              textTransform: "none",
-              fontWeight: "500",
-              color: "#fff",
-              background: "-webkit-linear-gradient(left, #a445b2, #fa4299)",
-              "&:hover": {
-                backgroundColor: "#fa4299",
-              },
-            }}
-          >
+          <button onClick={handlePasswordReset} style={{ backgroundColor: "#fa4299", color: "#fff" }}>
             Reset Password
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </button>
+        </div>
+      )}
     </Fragment>
   );
 }
