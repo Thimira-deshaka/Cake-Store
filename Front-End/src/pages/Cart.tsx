@@ -3,6 +3,7 @@ import deletesvg from "../assets/delete.svg";
 import "../Style/Cart.css";
 import NavBar from "../component/NavBar";
 import Footer from "../component/Footer";
+
 function Cart() {
   const [cartData, setCartData] = useState({ total: 0, Products: [] });
 
@@ -27,11 +28,14 @@ function Cart() {
         });
 
         if (response.ok) {
-          console.log("Welcome to cart");
+          console.log("Welcome to cart",token);
           const data = await response.json();
           console.log(data.Orders);
+           
           if (data !== "Cart is empty") {
             setCartData(data);
+            localStorage.setItem("Orders", JSON.stringify(data.Orders));
+
           }
         } else {
           // Handle response errors
@@ -40,7 +44,7 @@ function Cart() {
             // Handle invalid token scenario (e.g., redirect to login page)
             window.location.href = "/login";
           } else {
-            console.log("Failed to fetch cart data");
+            console.log("Failed to fetch cart data",token);
           }
         }
       } catch (error) {
@@ -61,11 +65,13 @@ function Cart() {
     }
   }, [cartData]);
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+   
     if (cartData.Orders.length === 0) {
       alert("Your cart is empty. Please add items to proceed.");
     } else {
-      window.location.href = "/Checkout"; // Proceed to the checkout page
+     window.location.href = "/checkout"; // Proceed to the checkout page
+ 
     }
   };
 
@@ -102,7 +108,7 @@ function Cart() {
                 <h2 className="cart-header-text">Cake Cart</h2>
               </div>
               <div className="cart-page-para">
-                <h4 className="cart-para-text">Your sweetest cravings are just a click away! 🍰 <br/>Here lies your handpicked collection of delightful treats, <br/>crafted with love and ready to make your day sweeter.</h4>
+                <h4 className="cart-para-text"> Your sweetest cravings are just a click away! 🍰 <br/>Here lies your handpicked collection of delightful treats, <br/>crafted with love and ready to make your day sweeter.</h4>
               </div>
               <div className="cart-page-table">
                 <table className="cart-table-product">
