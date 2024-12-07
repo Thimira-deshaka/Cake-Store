@@ -1,6 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../Style/AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Alert from "../component/Alert";
+import { useNavigate } from "react-router-dom";
+
 
 interface Order {
   id: string;
@@ -18,6 +21,9 @@ const AdminHome: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const navigate = useNavigate();
+
 
   // Fetch orders on component mount
   useEffect(() => {
@@ -25,6 +31,7 @@ const AdminHome: React.FC = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
+        // const token = 10;
 
         const response = await fetch("http://localhost:3003/cart/orders", {
           method: "GET",
@@ -35,7 +42,13 @@ const AdminHome: React.FC = () => {
         });
 
         if (!response.ok) {
-          alert("Failed to fetch orders.");
+          setAlert({
+            title: "Failed to fetch orders",
+            message: "cannot fetch orders",
+            isSuccess: false,
+          });
+          setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+          return;
         }
 
         const jsonData: Order[] = await response.json();
@@ -44,7 +57,13 @@ const AdminHome: React.FC = () => {
       } catch (err: any) {
         console.log(err);
         setError("Error: "+ err);
-        alert("Error: "+ err);
+        setAlert({
+          title: "Failed to fetch orders",
+          message: err,
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
       } finally {
         setLoading(false);
       }
@@ -87,10 +106,22 @@ const AdminHome: React.FC = () => {
         )
       );
 
-      alert("Order status updated successfully!");
+      setAlert({
+        title: "Successfull!",
+        message: "Order status updated successfully!",
+        isSuccess: true,
+      });
+      setTimeout(() => {setAlert(null); navigate("/admin/home")}, 3000);
+      return;
     } catch (err: any) {
       console.log("Error updating order status:", err.message || err);
-      alert("Failed to update order status.");
+      setAlert({
+        title: "Unsuccessfull!",
+        message: "Failed to update order status.",
+        isSuccess: false,
+      });
+      setTimeout(() => {setAlert(null); navigate("/admin/home")}, 3000);
+      return;
     }
   };
 
@@ -203,6 +234,19 @@ const AdminHome: React.FC = () => {
           </div>
         </div>
       </div>
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 };

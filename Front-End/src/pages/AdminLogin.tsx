@@ -147,7 +147,6 @@ function AdminLogin() {
 
   return (
     <Fragment>
-      <AdminNavBar />
       <div
         style={{
           backgroundImage: `url(${photo})`,
