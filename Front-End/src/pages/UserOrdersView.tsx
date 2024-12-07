@@ -76,64 +76,68 @@ const UserOrdersView: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
+          marginTop: "-100px",
         }}
       >
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <div className="page-content" style={{ marginTop: "150px" }}>
-                <div className="container mt-4 pb-5">
-                  <h2
-                    className="mb-4 pt-4 text-center"
-                    style={{ color: "#ffcf86" }}
-                  >
-                    Your Orders
-                  </h2>
-                  <table className="table table-bordered text-center align-middle text-white">
-                    <thead className="thead-light">
-                      <tr>
-                        <th>Product</th>
-                        <th>Product Name</th>
-                        <th>Date</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.map((order) => (
-                        <tr
-                          key={order.id}
-                          onMouseEnter={() => handleMouseEnter(order.id)}
-                          onMouseLeave={handleMouseLeave}
-                          style={{
-                            color:
-                              hoveredRow === order.id ? "#ffcf86" : "inherit",
-                          }}
-                        >
-                          <td>
-                            <div className="d-flex align-items-center justify-content-center">
-                              <img
-                                src={order.productImage}
-                                alt="Product"
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  marginRight: "10px",
-                                }}
-                              />
-                              <span>{order.productId}</span>
-                            </div>
-                          </td>
-                          <td>{order.ProductNanme}</td>
-                          <td>{order.date}</td>
-                          <td>{order.quantity}</td>
-                          <td>{`Rs. ${order.price}`}</td>
-                          <td>{order.status}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="most-popular">
+                  <div className="row">
+                    <div className="col-lg-12">
+                      <h4 className="mb-4 text-center" style={{ color: "#fff" }}>
+                        Your Orders
+                      </h4>
+                      <table className="table table-bordered text-center align-middle text-white">
+                        <thead className="thead-light">
+                          <tr>
+                            <th>Product</th>
+                            <th>Product Name</th>
+                            <th>Date</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {orders.map((order) => (
+                            <tr
+                              key={order.id}
+                              onMouseEnter={() => handleMouseEnter(order.id)}
+                              onMouseLeave={handleMouseLeave}
+                              style={{
+                                color:
+                                  hoveredRow === order.id
+                                    ? "#ffcf86"
+                                    : "inherit",
+                              }}
+                            >
+                              <td>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  <img
+                                    src={order.productImage}
+                                    alt="Product"
+                                    style={{
+                                      width: "50px",
+                                      height: "50px",
+                                      marginRight: "10px",
+                                    }}
+                                  />
+                                  <span>{order.productId}</span>
+                                </div>
+                              </td>
+                              <td>{order.ProductNanme}</td>
+                              <td>{order.date}</td>
+                              <td>{order.quantity}</td>
+                              <td>{`Rs. ${order.price}`}</td>
+                              <td>{order.status}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
