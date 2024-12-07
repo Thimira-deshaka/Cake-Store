@@ -41,6 +41,9 @@ function AdminLogin() {
         message: error.response?.data?.message || "An error occurred.",
         isSuccess: false,
       });
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1500);
     }
   };
 
@@ -81,6 +84,9 @@ function AdminLogin() {
           message: data.message || "Password or email not correct.",
           isSuccess: false,
         });
+        setTimeout(() => {
+          window.location.href = "/admin";
+        }, 1500);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -90,6 +96,9 @@ function AdminLogin() {
         message: "An error occurred while logging in. Please try again.",
         isSuccess: false,
       });
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1500);
     }
   }
 
