@@ -75,7 +75,6 @@ function Home() {
 
   return (
     <Fragment>
-      <AdminNavBar />
       <div className="wid">
         <div className="container">
           <div className="row">
