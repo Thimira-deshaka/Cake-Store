@@ -18,6 +18,8 @@ function NavBar() {
       setActiveLink("login");
     } else if (path === "/profile") {
       setActiveLink("profile");
+    } else if (path === "/myorders") {
+      setActiveLink("myorders");
     }
   }, [location.pathname]);
 
@@ -48,6 +50,18 @@ function NavBar() {
                     }}
                   >
                     Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/myorders"
+                    className={`nav-item ${activeLink === "myorders" ? "active" : ""}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick("myorders", "/myorders");
+                    }}
+                  >
+                    My Orders
                   </a>
                 </li>
                 <li>
