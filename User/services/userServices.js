@@ -40,7 +40,7 @@ const loginUser = async (email, password) => {
         },
       },
       process.env.ACCESS_TOKEN,
-      { expiresIn: "5m" }
+      // { expiresIn: "5m" }
     );
 
     return accessToken;

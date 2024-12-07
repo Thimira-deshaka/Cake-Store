@@ -2,9 +2,7 @@ import { Fragment } from "react";
 import "../Style/CheckOut.css";
 function CheckOut() {
   function submitHandler() {
-    alert("Your order has been placed!");
-    window.location.href = "/";
-  }
+  
 
   const token = localStorage.getItem("token");
 
@@ -19,14 +17,17 @@ function CheckOut() {
       if (response.ok) {
         response.json().then((data) => {
           console.log(data);
+          alert("Your order has been placed!");
+          // window.location.href = "/";
         });
       } else {
         console.log("Error");
       }
     });
   } else {
-    window.location.href = "/login";
+    // window.location.href = "/login";
   }
+}
 
   return (
     <Fragment>
@@ -88,7 +89,7 @@ function CheckOut() {
               </div>
             </div>
 
-            <div className="bat" onClick={submitHandler}>
+            <div className="bat" onClick={() =>submitHandler()}>
               proceed
             </div>
           </div>
