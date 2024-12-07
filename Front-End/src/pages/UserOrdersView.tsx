@@ -1,6 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
+import Alert from "../component/Alert";
+
 
 interface Order {
   id: string;
@@ -10,7 +13,7 @@ interface Order {
   date: string;
   quantity: number;
   price: string;
-  status: string; // Can be expanded based on backend
+  status: string; 
 }
 
 const UserOrdersView: React.FC = () => {
@@ -18,13 +21,17 @@ const UserOrdersView: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+
 
   // Fetch orders on component mount
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem("token"); 
+        const token = localStorage.getItem("token");
+        if(token){ 
         const response = await fetch("http://localhost:3003/cart/history", {
           method: "GET",
           headers: {
@@ -34,10 +41,25 @@ const UserOrdersView: React.FC = () => {
         });
 
         if (!response.ok) {
-          alert("Failed to fetch orders");
+          setAlert({
+            title: "Failed to fetch orders",
+            message: "cannot fetch orders",
+            isSuccess: false,
+          });
+          setTimeout(() => {setAlert(null); navigate("/")}, 3000);
+          return;
         }
         const data: Order[] = await response.json();
         setOrders(data);
+      }else{
+        setAlert({
+          title: "Authentication Error",
+          message: "Please log in to access your Orders.",
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); navigate("/login")}, 3000);
+        return;
+      }
       } catch (err: any) {
         setError(err.message || "Something went wrong");
         console.log(err.message)
@@ -172,6 +194,19 @@ const UserOrdersView: React.FC = () => {
           </div>
         </div>
       </div>
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 };

@@ -2,11 +2,15 @@ import "../Style/NavBar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Alert from "../component/Alert";
+
 
 function NavBar() {
   const [activeLink, setActiveLink] = useState("home");
   const location = useLocation();
   const navigate = useNavigate();
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+
 
   useEffect(() => {
     const path = location.pathname;
@@ -26,6 +30,53 @@ function NavBar() {
   const handleLinkClick = (name: string, path: string) => {
     setActiveLink(name);
     navigate(path);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if(token){
+        const response = await fetch("http://localhost:3001/users/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          localStorage.removeItem("token");
+          setAlert({
+            title: "Log out Successfully!",
+            message: "Please log in to access your personal details.",
+            isSuccess: true,
+          });
+          setTimeout(() => {setAlert(null); navigate("/login")}, 3000); 
+        } else {
+          setAlert({
+            title: "Authentication Error",
+            message: "Failed to log out.",
+            isSuccess: false,
+          });
+          setTimeout(() => {setAlert(null); navigate("/")}, 3000);
+        }
+      }else{
+        setAlert({
+          title: "You are already logged out.",
+          message: "",
+          isSuccess: true,
+        });
+        setTimeout(() => {setAlert(null); navigate("/")}, 3000);
+      }
+    } catch (error) {
+      console.error("Logout Error:", error);
+      setAlert({
+        title: "Error Occured",
+        message: "An error occurred while logging out.",
+        isSuccess: false,
+      });
+      setTimeout(() => {setAlert(null); navigate("/")}, 3000);
+    }
   };
 
   return (
@@ -101,11 +152,32 @@ function NavBar() {
                     {/* <img src="src/assets/profile-header.jpg" alt="" /> */}
                   </a>
                 </li>
+                <li>
+                  <button
+                    className="btn nav-item profile-tab logout-btn"
+                    onClick={handleLogout}
+                  >
+                    Log Out
+                  </button>
+                </li>
               </ul>
             </nav>
           </div>
         </div>
       </div>
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </header>
   );
 }

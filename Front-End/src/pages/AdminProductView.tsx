@@ -20,9 +20,11 @@ function Home() {
 
   const fetchData = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3002/products", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 

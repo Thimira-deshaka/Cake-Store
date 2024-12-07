@@ -4,10 +4,12 @@ import "../Style/Cart.css";
 import NavBar from "../component/NavBar";
 import Footer from "../component/Footer";
 import Alert from "../component/Alert";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [cartData, setCartData] = useState({ total: 0, Orders: [] });
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -20,7 +22,7 @@ function Cart() {
             message: "Please log in to access your cart.",
             isSuccess: false,
           });
-          setTimeout(() => setAlert(null), 3000);
+          setTimeout(() => {setAlert(null); navigate("/login")}, 3000);
           return;
         }
 
@@ -44,8 +46,7 @@ function Cart() {
               message: "Your session has expired. Please log in again.",
               isSuccess: false,
             });
-            setTimeout(() => setAlert(null), 3000);
-            window.location.href = "/login";
+            setTimeout(() => {setAlert(null); navigate("/login")}, 3000);
           } else {
             setAlert({
               title: "Error",
