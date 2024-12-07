@@ -1,10 +1,10 @@
 import { Fragment, useState } from "react";
-import "../Style/AdminLogin.css";
-import Alert from "../component/Alert";
+import Alert from "../component/Alert";  // Import the Alert component
 import "../Style/Login.css";
 import axios from "axios";
 import AdminNavBar from "../component/AdminNavBar";
 import photo from '../assets/login2.jpg';
+
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -138,13 +138,17 @@ function AdminLogin() {
 
   return (
     <Fragment>
-      <AdminNavBar/>
-      <div style={{ backgroundImage: `url(${photo})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            padding: "0",
-            margin: "0",
-            height: "100vh",}}>
+      <AdminNavBar />
+      <div
+        style={{
+          backgroundImage: `url(${photo})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          padding: "0",
+          margin: "0",
+          height: "100vh",
+        }}
+      >
         <div className="content">
           <header>Admin Login Form</header>
           <form onSubmit={handleSubmit}>
@@ -179,31 +183,70 @@ function AdminLogin() {
             <a onClick={handleForgotPassword}>Recover password</a>
           </div>
         </div>
+
+        {/* Inline Alert */}
+        {alert && (
+          <div
+            style={{
+              position: "fixed",
+              top: "15%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1000,
+              maxWidth: "400px",
+              width: "100%",
+            }}
+          >
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </div>
+        )}
       </div>
 
-      {/* Alert for login and password reset */}
-      {alert && (
-        <div style={{ position: "fixed",
-          top: "15%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1000, }}>
-          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-        </div>
-      )}
-
-      {/* Password reset form */}
+      {/* Password reset dialog */}
       {isPasswordResetDialogOpen && (
-        <div className="reset-password-form">
-          <h3 style={{ textAlign: "center" }}>Reset Password</h3>
+        <div
+          style={{
+            position: "fixed",
+            top: "20%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000,
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
+          <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Reset Password</h3>
           <input
             type="password"
+            placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="New Password"
             required
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "5px",
+              marginBottom: "20px",
+              border: "1px solid #ccc",
+            }}
           />
-          <button onClick={handlePasswordReset} style={{ backgroundColor: "#fa4299", color: "#fff" }}>
+          <button
+            onClick={handlePasswordReset}
+            style={{
+              width: "100%",
+              padding: "10px",
+              backgroundColor: "#fa4299",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
             Reset Password
           </button>
         </div>
