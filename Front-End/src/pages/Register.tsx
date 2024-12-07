@@ -2,9 +2,9 @@ import Footer from "../component/Footer";
 import NavBar from "../component/NavBar";
 import "../Style/Register.css";
 import Alert from "../component/Alert";
-import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 
 import { Fragment, useState } from "react";
+
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,7 +15,6 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confpassword, setconfPassword] = useState("");
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,9 +25,12 @@ function Register() {
         message: "Passwords do not match.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
+      setTimeout(() => {
+        window.location.href = "/register" ;
+      }, 2000);
       return;
     }
+
     try {
       const response = await fetch("http://localhost:3001/users", {
         method: "POST",
@@ -52,7 +54,6 @@ function Register() {
           message: "Your account has been created. Please log in.",
           isSuccess: true,
         });
-        setIsDialogOpen(true);
         setTimeout(() => {
           window.location.href = "/login";
         }, 2000);
@@ -63,7 +64,9 @@ function Register() {
           message: data.message || "An error occurred during registration.",
           isSuccess: false,
         });
-        setIsDialogOpen(true);
+        setTimeout(() => {
+          window.location.href = "/register" ;
+        }, 2000);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -72,7 +75,9 @@ function Register() {
         message: "An unexpected error occurred. Please try again later.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
+      setTimeout(() => {
+        window.location.href = "/register" ;
+      }, 2000);
     }
   }
 
@@ -211,21 +216,11 @@ function Register() {
               </div>
               <div className="col">
                 <div className="row">
-                  <div className="col inline">
+                  <div className="field">
                     <label className="radio-inline">
                       <input type="text" name="gender"></input>
                     </label>
                   </div>
-                  {/* <div className="col inline">
-                  <label className="radio-inline">
-                    <input type="radio" name="gender" value="male" />
-                    Male
-                  </label>
-                  <label className="radio-inline">
-                    <input type="radio" name="gender" value="female" />
-                    Female
-                  </label>
-                </div> */}
                 </div>
               </div>
             </div>
@@ -239,21 +234,22 @@ function Register() {
           </div>
         </div>
       </div>
+
       {alert && (
-        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          <DialogContent>
-            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDialogOpen(false)} color={alert.isSuccess ? "primary" : "error"}>
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <div
+          style={{
+            position: "fixed",
+            top: "15%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
       )}
     </Fragment>
   );
 }
 
 export default Register;
-

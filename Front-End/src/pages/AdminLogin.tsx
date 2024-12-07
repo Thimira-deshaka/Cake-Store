@@ -1,16 +1,17 @@
 import { Fragment, useState } from "react";
-import "../Style/AdminLogin.css";
-import Alert from "../component/Alert";
-import { Dialog, DialogContent, DialogActions, Button, TextField } from "@mui/material";
+import Alert from "../component/Alert";  // Import the Alert component
+import "../Style/Login.css";
 import axios from "axios";
+import AdminNavBar from "../component/AdminNavBar";
+import photo from '../assets/login2.jpg';
+
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState(""); // Store new password for reset
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false); // New dialog for password reset
   const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false); // New dialog for password reset
 
   const handleForgotPassword = async () => {
     if (!email.trim()) {
@@ -19,7 +20,6 @@ function AdminLogin() {
         message: "Please enter your email to reset your password.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
       return;
     }
 
@@ -33,7 +33,6 @@ function AdminLogin() {
         message: response.data.message || "Password reset request successful.",
         isSuccess: true,
       });
-      setIsDialogOpen(true);
     } catch (error: any) {
       console.error("Error during forgot password request:", error);
 
@@ -42,7 +41,9 @@ function AdminLogin() {
         message: error.response?.data?.message || "An error occurred.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1500);
     }
   };
 
@@ -73,7 +74,6 @@ function AdminLogin() {
           message: "Login successful.",
           isSuccess: true,
         });
-        setIsDialogOpen(true);
 
         setTimeout(() => {
           window.location.href = "/admin/home";
@@ -84,7 +84,9 @@ function AdminLogin() {
           message: data.message || "Password or email not correct.",
           isSuccess: false,
         });
-        setIsDialogOpen(true);
+        setTimeout(() => {
+          window.location.href = "/admin";
+        }, 1500);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -94,7 +96,9 @@ function AdminLogin() {
         message: "An error occurred while logging in. Please try again.",
         isSuccess: false,
       });
-      setIsDialogOpen(true);
+      setTimeout(() => {
+        window.location.href = "/admin";
+      }, 1500);
     }
   }
 
@@ -124,7 +128,6 @@ function AdminLogin() {
         });
 
         setIsPasswordResetDialogOpen(false);
-        setIsDialogOpen(true);
 
         // You can redirect or log the user in again after successful password reset
         setTimeout(() => {
@@ -144,7 +147,17 @@ function AdminLogin() {
 
   return (
     <Fragment>
-      <div className="bg-img">
+      <AdminNavBar />
+      <div
+        style={{
+          backgroundImage: `url(${photo})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          padding: "0",
+          margin: "0",
+          height: "100vh",
+        }}
+      >
         <div className="content">
           <header>Admin Login Form</header>
           <form onSubmit={handleSubmit}>
@@ -179,79 +192,74 @@ function AdminLogin() {
             <a onClick={handleForgotPassword}>Recover password</a>
           </div>
         </div>
-      </div>
 
-      {/* Default alert dialog */}
-      {alert && (
-        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-          <DialogContent>
-            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
-          </DialogActions>
-        </Dialog>
-      )}
-
-      {/* Password reset dialog */}
-      <Dialog
-        open={isPasswordResetDialogOpen}
-        onClose={() => setIsPasswordResetDialogOpen(false)}
-        sx={{
-          "& .MuiDialog-paper": {
-            padding: "20px",
-            borderRadius: "10px",
-            width: "400px",
-            backgroundColor: "#f9f9f9",
-            boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)",
-          },
-        }}
-      >
-        <DialogContent>
-          <h3
+        {/* Inline Alert */}
+        {alert && (
+          <div
             style={{
-              textAlign: "center",
-              marginBottom: "20px",
-              color: "#333",
-              fontWeight: "600",
+              position: "fixed",
+              top: "15%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1000,
+              maxWidth: "400px",
+              width: "100%",
             }}
           >
-            Reset Password
-          </h3>
-          <TextField
-            label="New Password"
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </div>
+        )}
+      </div>
+
+      {/* Password reset dialog */}
+      {isPasswordResetDialogOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "20%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000,
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
+          <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Reset Password</h3>
+          <input
             type="password"
-            fullWidth
-            margin="normal"
+            placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             required
-            sx={{
-              backgroundColor: "#fff",
+            style={{
+              width: "100%",
+              padding: "10px",
               borderRadius: "5px",
               marginBottom: "20px",
-              padding: "10px",
+              border: "1px solid #ccc",
             }}
           />
-        </DialogContent>
-        <DialogActions>
-  
-          <Button
+          <button
             onClick={handlePasswordReset}
-            sx={{
-              textTransform: "none",
-              fontWeight: "500",
+            style={{
+              width: "100%",
+              padding: "10px",
+              backgroundColor: "#fa4299",
               color: "#fff",
-              background: "-webkit-linear-gradient(left, #a445b2, #fa4299)",
-              "&:hover": {
-                backgroundColor: "#fa4299",
-              },
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontWeight: "bold",
             }}
           >
             Reset Password
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </button>
+        </div>
+      )}
     </Fragment>
   );
 }

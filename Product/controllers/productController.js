@@ -1,9 +1,6 @@
 const productService = require("../services/productServices");
 const express = require("express");
-const productModel = require("../models/productModel");
-
 const app = express();
-
 app.use(express.json());
 
 //Get All The Products
@@ -44,14 +41,25 @@ const findProduct = async (req, res) => {
   }
 };
 
-//Create New Product(Not Checked Yet)
+//Create New Product
 const createProduct = async (req, res) => {
   try {
-    console.log(req.body);
-    const product = await productService.createProduct(req.body);
-    res.status(200).json(product);
+    const { name, description, price, quantity, category } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
+
+    const product = await productService.createProduct({
+      name,
+      description,
+      price,
+      quantity,
+      category,
+      imageUrl,
+    });
+    res.status(201).json(product);
+    // console.log(imageUrl);
   } catch (error) {
-    res.status(400).json(error);
+    console.error("Error creating product:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
 

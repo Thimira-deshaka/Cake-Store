@@ -3,6 +3,7 @@ import "../Style/Update.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../component/NavBar";
 import { useNavigate } from "react-router-dom";
+import Alert from "../component/Alert";  // Import the Alert component
 
 function AdminUserUpdate() {
   const navigate = useNavigate();
@@ -14,8 +15,7 @@ function AdminUserUpdate() {
     phone: "",
     gender: "",
   });
-  const [message, setMessage] = useState<string>("");
-
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);  // State for alert
   const userID = localStorage.getItem("userID"); // Fetch userID from localStorage
 
   // Fetch user data
@@ -61,23 +61,51 @@ function AdminUserUpdate() {
       });
 
       if (response.ok) {
-        setMessage("Profile updated successfully!");
-        navigate("/admin/users");
+        setAlert({
+          title: "Success",
+          message: "Profile updated successfully!",
+          isSuccess: true,
+        });
+        setTimeout(() => {
+          setAlert(null);
+          navigate("/admin/users");
+        }, 2000);
       } else {
-        setMessage("Failed to update profile. Please try again.");
+        setAlert({
+          title: "Error",
+          message: "Failed to update profile. Please try again.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      setMessage("An error occurred while updating your profile.");
+      setAlert({
+        title: "Error",
+        message: "An error occurred while updating your profile.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
   return (
     <Fragment>
-      <NavBar />
       <div className="update-page-container mt-5">
         <h2 className="text-center">Update Your Profile</h2>
-        {message && <div className="alert alert-info">{message}</div>}
+        {alert && (
+          <div
+            style={{
+              position: "fixed",
+              top: "15%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1000,
+            }}
+          >
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="profile-update-form">
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>

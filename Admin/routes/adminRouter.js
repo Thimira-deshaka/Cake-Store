@@ -17,18 +17,6 @@ const {
   forgotPassword,
 } = require("../controllers/adminRecoverPasswordController");
 
-const multer = require("multer");
-
-// Configure Multer for memory storage
-const storage = multer.memoryStorage(); // Store file in memory
-const upload = multer({ storage });
-
-// router.route("/").post(createAdmin)
-
-// router.route("/").get(validateToken, getUser)addproduct
-
-router.route("/addproduct").post(upload.single("image"), addProduct);
-
 router.route("/login").post(loginAdmin);
 
 router.route("/orders").get(validateToken, getOrderDetails);

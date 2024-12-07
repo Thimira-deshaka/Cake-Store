@@ -1,101 +1,119 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../Style/AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../component/NavBar";
 
 interface Order {
-  id: string; // Unique order ID
-  productImage: string; // Product image URL
-  productId: string; // Product ID
-  productName: string; // Product name
-  date: string; // Order date
-  quantity: number; // Quantity of product ordered
-  customerName: string; // Customer's name
-  status: "Accepted" | "Ready" | "Pickup" | "Delivery Done"; // Updated statuses
+  id: string;
+  productImage: string;
+  productId: string;
+  productName: string;
+  date: string;
+  quantity: number;
+  customerName: string;
+  status: "Accepted" | "Ready" | "Pickup" | "Delivery Done";
 }
 
-function AdminHome () {
+const AdminHome: React.FC = () => {
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch orders on component mount
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+
+        const response = await fetch("http://localhost:3003/cart/orders", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          alert("Failed to fetch orders.");
+        }
+
+        const jsonData: Order[] = await response.json();
+        
+        setOrders(jsonData);
+      } catch (err: any) {
+        console.log(err);
+        setError("Error: "+ err);
+        alert("Error: "+ err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchOrders();
   }, []);
 
-  // Fetch orders from the server
-  const fetchOrders = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3004/admin/orders", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const jsonData: Order[] = await response.json();
-        setOrders(jsonData);
-        console.log("Fetched Orders:", jsonData);
-      } else {
-        console.error("Failed to fetch orders");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  // Change row hover behavior
-  const handleMouseEnter = (id: string) => {
-    setHoveredRow(id);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredRow(null);
-  };
-
-  // Handle status change and update on the server
+  // Handle status change with server update
   const handleStatusChange = async (
     id: string,
     newStatus: "Accepted" | "Ready" | "Pickup" | "Delivery Done"
   ) => {
-    if (window.confirm("Are you sure you want to change the order status?")) {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `http://localhost:3004/admin/orders/status`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ orderId: id, newStatus }),
-          }
-        );
+    if (!window.confirm("Are you sure you want to change the order status?")) {
+      return;
+    }
 
-        if (response.ok) {
-          setOrders((prevOrders) =>
-            prevOrders.map((order) =>
-              order.id === id ? { ...order, status: newStatus } : order
-            )
-          );
-          alert("Order status updated successfully!");
-        } else {
-          console.error("Failed to update order status");
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `http://localhost:3003/cart/orders/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ orderId: id, newStatus }),
         }
-      } catch (error) {
-        console.error("Error updating order status:", error);
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update order status.");
       }
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === id ? { ...order, status: newStatus } : order
+        )
+      );
+
+      alert("Order status updated successfully!");
+    } catch (err: any) {
+      console.log("Error updating order status:", err.message || err);
+      alert("Failed to update order status.");
     }
   };
 
-  // Handle navigation to product info
-  const handleLinkClick = (productID: string) => {
-    localStorage.setItem("productID", productID);
-    window.location.href = `/productinfo/${productID}`;
-  };
+  // Handle row hover
+  const handleMouseEnter = (id: string) => setHoveredRow(id);
+  const handleMouseLeave = () => setHoveredRow(null);
+
+  // Render loading or error state
+  if (loading) {
+    return (
+      <div className="text-center" style={{ marginTop: "150px" }}>
+        <p>Loading your orders...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center" style={{ marginTop: "150px", color: "red" }}>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <Fragment>
@@ -111,22 +129,10 @@ function AdminHome () {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div
-                className="page-content"
-                style={{ marginTop: "10px", backgroundColor: "#1e1e1e" }}
-              >
-                <div
-                  className="container mt-4 pb-5"
-                  style={{
-                    backgroundColor: "#1f2122",
-                    borderRadius: "5%",
-                  }}
-                >
-                  <h2
-                    className="mb-4 pt-4 text-center"
-                    style={{ color: "#ffcf86" }}
-                  >
-                    Your Orders
+              <div className="page-content" style={{ marginTop: "10px", backgroundColor: "#1e1e1e" }}>
+                <div className="container mt-4 pb-5" style={{ backgroundColor: "#1f2122", borderRadius: "5%" }}>
+                  <h2 className="mb-4 pt-4 text-center" style={{ color: "#ffcf86" }}>
+                    Manage Orders
                   </h2>
                   <table className="table table-bordered text-center align-middle text-white">
                     <thead className="thead-light">
@@ -146,10 +152,7 @@ function AdminHome () {
                           onMouseEnter={() => handleMouseEnter(order.id)}
                           onMouseLeave={handleMouseLeave}
                           style={{
-                            color:
-                              hoveredRow === order.id
-                                ? "#ff7eb3"
-                                : "inherit", // Change text color on hover
+                            color: hoveredRow === order.id ? "#ff7eb3" : "inherit",
                           }}
                         >
                           <td>
@@ -157,13 +160,8 @@ function AdminHome () {
                               <img
                                 src={order.productImage}
                                 alt="Product"
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  marginRight: "10px",
-                                }}
+                                style={{ width: "50px", height: "50px", marginRight: "10px" }}
                               />
-                              <span>{order.productId}</span>
                             </div>
                           </td>
                           <td>{order.productName}</td>
@@ -174,28 +172,25 @@ function AdminHome () {
                             <select
                               className={`form-select ${
                                 order.status === "Accepted"
-                                  ? "bg-primary text-white"
+                                  ? "bg-secondary text-white"
                                   : order.status === "Ready"
-                                  ? "bg-warning text-white"
+                                  ? "bg-primary text-white"
                                   : order.status === "Pickup"
-                                  ? "bg-info text-white"
+                                  ? "bg-warning text-white"
                                   : "bg-success text-white"
                               }`}
                               value={order.status}
                               onChange={(e) =>
                                 handleStatusChange(
                                   order.id,
-                                  e.target
-                                    .value as "Accepted" | "Ready" | "Pickup" | "Delivery Done"
+                                  e.target.value as "Accepted" | "Ready" | "Pickup" | "Delivery Done"
                                 )
                               }
                             >
                               <option value="Accepted">Accepted</option>
                               <option value="Ready">Ready</option>
                               <option value="Pickup">Pickup</option>
-                              <option value="Delivery Done">
-                                Delivery Done
-                              </option>
+                              <option value="Delivery Done">Delivery Done</option>
                             </select>
                           </td>
                         </tr>

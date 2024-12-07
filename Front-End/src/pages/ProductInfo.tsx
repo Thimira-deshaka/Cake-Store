@@ -1,8 +1,7 @@
 import "../Style/profile.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment, useState, useEffect } from "react";
-import NavBar from "../component/NavBar";
-import Footer from "../component/Footer";
+
 
 function ProductInfo() {
   const [inputValue, setInputValue] = useState({});
@@ -33,7 +32,6 @@ function ProductInfo() {
   const onSubmithandler = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log("Add to cart");
       fetch(`http://localhost:3003/cart/${productID}`, {
         method: "POST",
         headers: {
@@ -45,6 +43,7 @@ function ProductInfo() {
           if (response.ok) {
             console.log("Added to cart");
             alert("Added to cart");
+            window.location.href = "/cart";
           } else {
             console.log("Failed to add to cart");
             console.log(response);

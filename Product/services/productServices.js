@@ -10,8 +10,17 @@ const getProducts = async () => {
   return products;
 };
 
-const createProduct = async (data) => {
-  const product = await productModel.create(data);
+const createProduct = async ({ name, description, price, quantity, category, imageUrl }) => {
+  const product = new productModel({
+    name,
+    description,
+    price,
+    quantity,
+    category,
+    imageUrl, 
+  });
+
+  await product.save(); 
   return product;
 };
 

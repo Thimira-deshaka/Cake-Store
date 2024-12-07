@@ -53,7 +53,6 @@ function AdminUserView() {
 
   return (
     <Fragment>
-      <AdminNavBar />
       <div className="wid">
         <div className="container">
           <div className="row">

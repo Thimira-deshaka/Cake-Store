@@ -37,6 +37,7 @@ const getCartProducts = async (userId) => {
 };
 
 const addCartProduct = async (userId, productId, qty) => {
+  console.log(userId, productId, qty);
   const cartProduct = await cartItemModel.create({
     UserId: userId,
     ProductId: productId,
@@ -53,12 +54,73 @@ const deleteCartProduct = async (OrderId) => {
 };
 
 
-const getOrderHistory = async () => {
-  console.log("hello");
-  const orders = await orderHistoryModel.find();
-  console.log(orders);
-  return orders;
+const getOrderHistory = async (id) => {
+  const orders = await orderHistoryModel.find({UserId: id});
+
+  const enrichedOrders = await Promise.all(
+    orders.map(async (order) => {
+        const productResponse = await axios.get(
+          `${process.env.PRODUCT_SERVER_BASE}/products/${order.ProductId}`
+        );
+
+        // Add product details to the order
+        const product = productResponse.data;
+        return {
+          id: order._id,
+          productId: order.ProductId,
+          productName: product.name,
+          productImage: product.image,
+          date: order.createdAt, 
+          quantity: order.Quantity,
+          price: product.price,
+          status: order.Status, 
+        };
+    })
+  )
+  // console.log(orders);
+  return enrichedOrders;
 };
+
+const getAllOrderHistory = async () => {
+  const orders = await orderHistoryModel.find();
+
+  const enrichedOrders = await Promise.all(
+    orders.map(async (order) => {
+        const productResponse = await axios.get(
+          `${process.env.PRODUCT_SERVER_BASE}/products/${order.ProductId}`
+        );
+        const userResponse = await axios.get(
+          `${process.env.USER_SERVER_BASE}/users/${order.UserId}`
+        );
+        const user = userResponse.data;
+
+        // Add product details to the order
+        const product = productResponse.data;
+        return {
+          id: order._id,
+          productId: order.ProductId,
+          productName: product.name,
+          productImage: product.image,
+          date: order.createdAt, 
+          quantity: order.Quantity,
+          price: product.price,
+          status: order.Status,
+          customerName: user.firstName + " " + user.lastName, 
+        };
+    })
+  )
+  // console.log(enrichedOrders);
+  return enrichedOrders;
+};
+
+const updateStatus = async (OrderId, newStatus) => {
+  const updatedOrder = await orderHistoryModel.findByIdAndUpdate(
+    OrderId,
+    { Status: newStatus },
+    { new: true } // Return the updated document
+  );
+  return updatedOrder;
+}
 
 
 // const checkout = async (req, res) => {
@@ -71,33 +133,29 @@ const getOrderHistory = async () => {
 /**
  * Proceed to checkout for a specific cart item.
  */
-const proceedToOrder = async (userId, itemId) => {
-  try {
-    // Find the cart item
-    const cartItem = await cartItemModel.findOneAndDelete({
-      _id: itemId,
-      UserId: userId,
-    });
+const proceedToOrder = async (userId) => {
+    const cartItems = await cartItemModel.find({ UserId: userId }); 
 
-    if (!cartItem) {
-      throw new Error("Cart item not found.");
+    if (!cartItems || cartItems.length === 0) {
+      throw new Error("No cart items found for the user.");
     }
 
-    // Create an order history entry for the cart item
-    const orderHistoryEntry = await orderHistoryModel.create({
+    //Save all deleted cart items to the order history
+    const orderHistoryEntries = cartItems.map((cartItem) => ({
       UserId: cartItem.UserId,
       ProductId: cartItem.ProductId,
       Quantity: cartItem.Quantity,
-    });
+      Status: "Accepted",
+    }));
 
+    await orderHistoryModel.insertMany(orderHistoryEntries);
+
+    //Delete all cart items for the user
+    await cartItemModel.deleteMany({ UserId: userId });
     return {
       message: "Item successfully moved to order history.",
-      orderHistoryEntry,
+      cartItems,
     };
-  } catch (error) {
-    console.error("Error in proceedToOrder service:", error);
-    throw new Error("Failed to proceed order.");
-  }
 };
 
 
@@ -107,4 +165,6 @@ module.exports = {
   deleteCartProduct,
   proceedToOrder,
   getOrderHistory,
+  getAllOrderHistory,
+  updateStatus,
 };

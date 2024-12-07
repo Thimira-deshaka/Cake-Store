@@ -1,6 +1,4 @@
 const { json } = require("express");
-const CartModel = require("../models/cartModel");
-const ProductModel = require("../models/productModel");
 const cartService = require("../services/cartServices");
 
 const getCartProducts = async (req, res) => {
@@ -14,8 +12,27 @@ const getCartProducts = async (req, res) => {
 
 const getOrderHistory = async (req, res) => {
   try{
-    const orders = await cartService.getOrderHistory();
+    const id = req.user.id;
+    const orders = await cartService.getOrderHistory(id);
     res.json(orders);
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getAllOrderHistory = async (req, res) => {
+  try{
+    const orders = await cartService.getAllOrderHistory();
+    res.json(orders);
+  }catch(error){
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const updateStatus = async (req, res) => {
+  try{
+    const status = await cartService.updateStatus(req.body.orderId, req.body.newStatus);
+    res.json(status);
   }catch(error){
     res.status(500).json({ message: "Internal server error" });
   }
@@ -24,7 +41,7 @@ const getOrderHistory = async (req, res) => {
 const addCartProduct = async (req, res) => {
   try {
     const productID = req.params;
-    // console.log(req.user.id, productID.productid);
+    console.log(req.user.id, productID.productid);
     const cartProduct = await cartService.addCartProduct(
       req.user.id,
       productID.productid,
@@ -57,17 +74,16 @@ const deleteCartProduct = async (req, res) => {
 
 const proceedItemToOrder = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming you use middleware to attach the user to the request
-    const itemId = req.params.itemId; // Item ID to be processed
+    const userId = req.user.id; 
 
-    const result = await cartService.proceedToOrder(userId, itemId);
+    const result = await cartService.proceedToOrder(userId);
 
     res.status(200).json({
       message: result.message,
-      orderHistory: result.orderHistoryEntry,
+      orderHistory: result.cartItems,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 module.exports = {
@@ -76,4 +92,6 @@ module.exports = {
   deleteCartProduct,
   getOrderHistory,
   proceedItemToOrder,
+  getAllOrderHistory,
+  updateStatus,
 };
