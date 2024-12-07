@@ -2,8 +2,14 @@ import "../Style/UserDetails.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect, Fragment } from "react";
 import profileImage from "../assets/user.png";
+import Alert from "../component/Alert";
+import { useNavigate } from "react-router-dom";
+
+
 
 function UserDetails() {
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const navigate = useNavigate(); 
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
@@ -19,20 +25,36 @@ function UserDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`http://localhost:3001/users/all/${userID}`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.ok) {
           const data = await response.json();
-          setUserDetails(data); // Set user details
+          setUserDetails(data); 
         } else {
-          console.error("Failed to fetch user details");
+          console.log("Failed to fetch Details");
+          setAlert({
+          title: "Failed",
+          message: "cannot fetch users",
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
         }
       } catch (error) {
         console.error("Error:", error);
+        setAlert({
+          title: "Failed",
+          message: "Error: "+ error,
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
       }
     };
 
@@ -94,6 +116,19 @@ function UserDetails() {
           </div>
         </div>
       </div>
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const validateToken = require("../middleware/tokenValidationMiddleware");
-
+const adminTokenValidate = require("../middleware/admintokenValidationMiddleware");
 const {
   getUser,
   userRegister,
@@ -41,13 +41,13 @@ router.route("/forgot-password").post(forgotPassword);
 router.route("/reset-password").post(resetPassword);
 
 //get all users
-router.route("/all").get(getAllUsers);
+router.route("/all").get(adminTokenValidate, getAllUsers);
 
 
-router.route("/all/:userID").get(getUserById);
+router.route("/all/:userID").get(adminTokenValidate, getUserById);
 
 // Update a user by ID
-router.route("/update/:userId").put(updateUserById);
+router.route("/update/:userId").put(adminTokenValidate, updateUserById);
 
 router.route("/:userID").get(getUserById);
 

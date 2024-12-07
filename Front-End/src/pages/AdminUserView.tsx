@@ -1,12 +1,11 @@
-import NavBar from "../component/NavBar";
-// import Footer from "../component/Footer";
+
 import React, { Fragment, useEffect, useState } from "react";
-// import "../Style/home.css";
 import "../Style/AdminUserView.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserCard from "../component/UserCard";
 import { useNavigate } from "react-router-dom";
-import AdminNavBar from "../component/AdminNavBar";
+import Alert from "../component/Alert";
+
 
 function AdminUserView() {
   const [data, setData] = useState([
@@ -20,8 +19,10 @@ function AdminUserView() {
       gender: "",
     },
   ]);
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
 
-  const navigate = useNavigate(); // For navigation
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchUsers();
@@ -29,9 +30,11 @@ function AdminUserView() {
 
   const fetchUsers = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:3001/users/all", {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -39,10 +42,25 @@ function AdminUserView() {
         const jsonData = await response.json();
         setData(jsonData);
       } else {
-        console.log("Failed to fetch users");
+        console.log("Failed to fetch ");
+        setAlert({
+          title: "Failed",
+          message: "cannot fetch users",
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
+
       }
     } catch (error) {
       console.error("Error:", error);
+        setAlert({
+          title: "Failed",
+          message: "Error: "+ error,
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
     }
   };
 
@@ -88,6 +106,19 @@ function AdminUserView() {
           </div>
         </div>
       </div>
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "10%",
+            left: "50%",
+            transform: "translate(-50%, 0)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }

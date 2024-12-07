@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import "../Style/Update.css"; 
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../component/NavBar";
 import { useNavigate } from "react-router-dom";
 import Alert from "../component/Alert";  // Import the Alert component
 
@@ -22,20 +21,35 @@ function AdminUserUpdate() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`http://localhost:3001/users/all/${userID}`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.ok) {
           const data = await response.json();
-          setUserDetails(data); // Populate form with fetched data
+          setUserDetails(data); 
         } else {
-          console.error("Failed to fetch user details");
+          setAlert({
+            title: "Failed",
+            message: "Failed to fetch user details",
+            isSuccess: false,
+          });
+          setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+          return;
         }
       } catch (error) {
         console.error("Error:", error);
+        setAlert({
+          title: "Failed",
+          message: "Error: "+ error,
+          isSuccess: false,
+        });
+        setTimeout(() => {setAlert(null); localStorage.removeItem("token"); navigate("/admin")}, 3000);
+        return;
       }
     };
 
@@ -52,10 +66,12 @@ function AdminUserUpdate() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:3001/users/update/${userID}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(userDetails),
       });
@@ -72,17 +88,18 @@ function AdminUserUpdate() {
         }, 2000);
       } else {
         setAlert({
-          title: "Error",
-          message: "Failed to update profile. Please try again.",
+          title: "Failed",
+          message: "Failed to update personal Information. Try again.",
           isSuccess: false,
         });
-        setTimeout(() => setAlert(null), 3000);
+        setTimeout(() => {setAlert(null); navigate("/admin")}, 3000);
+        return;
       }
     } catch (error) {
       console.error("Error updating profile:", error);
       setAlert({
         title: "Error",
-        message: "An error occurred while updating your profile.",
+        message: "An error occurred while updating user profile.",
         isSuccess: false,
       });
       setTimeout(() => setAlert(null), 3000);

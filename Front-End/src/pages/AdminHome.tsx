@@ -31,7 +31,6 @@ const AdminHome: React.FC = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        // const token = 10;
 
         const response = await fetch("http://localhost:3003/cart/orders", {
           method: "GET",
