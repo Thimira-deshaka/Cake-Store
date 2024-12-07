@@ -63,11 +63,18 @@ function Cart() {
 
   const handleCheckout = () => {
     if (cartData.Orders.length === 0) {
-      alert("Your cart is empty. Please add items to proceed.");
+        alert("Your cart is empty. Please add items to proceed.");
     } else {
-      window.location.href = "/Checkout"; // Proceed to the checkout page
+        // Convert the total to cents (multiply by 100)
+        const amountInCents = Math.round(cartData.total * 100);
+
+        // Pass the amount as a query parameter in the URL
+        const checkoutUrl = `http://localhost:7000/?amount=${amountInCents}`;
+        window.location.href = checkoutUrl; // Redirect to the checkout page with the amount in cents
     }
-  };
+};
+
+  
 
   const deleteOrder = async (orderId: any) => {
     try {
