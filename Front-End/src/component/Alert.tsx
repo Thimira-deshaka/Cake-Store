@@ -18,7 +18,7 @@ const Alert = ({ title, message, isSuccess }: Props) => {
   return (
     <div style={alertStyle} role="alert">
       <h4 style={{ marginBottom: "0.5rem" }}>{title}</h4>
-      <p>{message}</p>
+      <p style={{color:"white"}}>{message}</p>
     </div>
   );
 };
