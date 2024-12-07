@@ -3,10 +3,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Fragment, useState, useEffect } from "react";
 import AdminNavBar from "../component/AdminNavBar";
 import Footer from "../component/Footer";
+import Alert from "../component/Alert"; // Import Alert component
 
 function ProductInfo() {
   const [inputValue, setInputValue] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
   const productID = localStorage.getItem("productID");
 
   useEffect(() => {
@@ -40,7 +42,12 @@ function ProductInfo() {
 
     // Prevent negative values for price and quantity
     if ((name === "price" || name === "quantity") && value < 0) {
-      alert(`${name} cannot be negative.`);
+      setAlert({
+        title: "Error",
+        message: `${name} cannot be negative.`,
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
       return;
     }
 
@@ -60,13 +67,67 @@ function ProductInfo() {
       });
 
       if (response.ok) {
-        alert("Product updated successfully!");
+        setAlert({
+          title: "Success",
+          message: "Product updated successfully!",
+          isSuccess: true,
+        });
+        setTimeout(() => setAlert(null), 3000);
         setEditMode(false); // Exit edit mode after saving
       } else {
-        alert("Failed to update product");
+        setAlert({
+          title: "Error",
+          message: "Failed to update product.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
       }
     } catch (error) {
       console.error("Error:", error);
+      setAlert({
+        title: "Error",
+        message: "An error occurred while updating the product.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
+    }
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3002/products/${productID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setAlert({
+          title: "Success",
+          message: "Product deleted successfully!",
+          isSuccess: true,
+        });
+        setTimeout(() => setAlert(null), 3000);
+        window.location.href = "/admin/products"; // Navigate to the products page after deleting the product
+      } else {
+        setAlert({
+          title: "Error",
+          message: "Failed to delete product.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setAlert({
+        title: "Error",
+        message: "An error occurred while deleting the product.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
@@ -137,20 +198,36 @@ function ProductInfo() {
                                 Save
                               </button>
                             ) : (
-                              <button
-                                className="searchButton"
-                                type="button"
-                                style={{
-                                  padding: "5px 20px",
-                                  fontSize: "20px",
-                                  backgroundColor: "gray",
-                                  color: "white",
-                                  borderRadius: "5px",
-                                }}
-                                onClick={handleEditClick}
-                              >
-                                Edit
-                              </button>
+                              <>
+                                <button
+                                  className="searchButton"
+                                  type="button"
+                                  style={{
+                                    padding: "5px 20px",
+                                    fontSize: "20px",
+                                    backgroundColor: "gray",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  }}
+                                  onClick={handleEditClick}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className="searchButton"
+                                  type="button"
+                                  style={{
+                                    padding: "5px 20px",
+                                    fontSize: "20px",
+                                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                                    color: "white",
+                                    borderRadius: "5px",
+                                  }}
+                                  onClick={handleDeleteClick}
+                                >
+                                  Delete
+                                </button>
+                              </>
                             )}
                           </div>
                         </div>
@@ -228,7 +305,19 @@ function ProductInfo() {
           </div>
         </div>
       </div>
-   
+
+      
+      {alert && (
+        <div style={{position: "fixed",
+          top: "15%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1000, }}>
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
+
+      <Footer />
     </Fragment>
   );
 }

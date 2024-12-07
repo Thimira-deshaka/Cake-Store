@@ -1,9 +1,8 @@
-//Update.jsx
-
 import React, { useState, useEffect, Fragment } from "react";
-import "../Style/Update.css"; 
+import "../Style/Update.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../component/NavBar";
+import Alert from "../component/Alert";
 
 interface User {
   firstName: string;
@@ -21,7 +20,7 @@ function Update() {
     age: 0,
     phone: "",
   });
-  const [message, setMessage] = useState<string>("");
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,7 +36,14 @@ function Update() {
         .then((data) => setUser(data))
         .catch((error) => console.error("Error fetching user data:", error));
     } else {
-      window.location.href = "/login";
+      setAlert({
+        title: "Authentication Error",
+        message: "Please log in to update your profile.",
+        isSuccess: false,
+      });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
     }
   }, []);
 
@@ -51,6 +57,16 @@ function Update() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+
+    if (!token) {
+      setAlert({
+        title: "Authentication Error",
+        message: "Please log in to save changes.",
+        isSuccess: false,
+      });
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/users/update", {
         method: "PUT",
@@ -62,14 +78,29 @@ function Update() {
       });
 
       if (response.ok) {
-        setMessage("Profile updated successfully!");
-        window.location.href = "/profile";
+        setAlert({
+          title: "Success",
+          message: "Profile updated successfully!",
+          isSuccess: true,
+        });
+
+        setTimeout(() => {
+          window.location.href = "/profile";
+        }, 1500);
       } else {
-        setMessage("Failed to update profile. Please try again.");
+        setAlert({
+          title: "Error",
+          message: "Failed to update profile. Please try again.",
+          isSuccess: false,
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      setMessage("An error occurred while updating your profile.");
+      setAlert({
+        title: "Error",
+        message: "An error occurred while updating your profile.",
+        isSuccess: false,
+      });
     }
   };
 
@@ -78,7 +109,6 @@ function Update() {
       <NavBar />
       <div className="update-page-container mt-5">
         <h2 className="text-center">Update Your Profile</h2>
-        {message && <div className="alert alert-info">{message}</div>}
         <form onSubmit={handleSubmit} className="profile-update-form">
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>
@@ -147,6 +177,20 @@ function Update() {
           </div>
         </form>
       </div>
+
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "15%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }

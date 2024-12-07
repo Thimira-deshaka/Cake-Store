@@ -12,12 +12,13 @@ const Alert = ({ title, message, isSuccess }: Props) => {
     padding: "1rem",
     borderRadius: "15px",
     margin: "1rem 0",
+    width:"50vh",
   };
 
   return (
     <div style={alertStyle} role="alert">
       <h4 style={{ marginBottom: "0.5rem" }}>{title}</h4>
-      <p>{message}</p>
+      <p style={{color:"white"}}>{message}</p>
     </div>
   );
 };
