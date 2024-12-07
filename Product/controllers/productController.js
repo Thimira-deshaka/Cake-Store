@@ -56,7 +56,7 @@ const createProduct = async (req, res) => {
       imageUrl,
     });
     res.status(201).json(product);
-    console.log(imageUrl);
+    // console.log(imageUrl);
   } catch (error) {
     console.error("Error creating product:", error);
     res.status(500).json({ message: "Internal Server Error", error: error.message });
