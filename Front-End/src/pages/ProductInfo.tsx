@@ -45,6 +45,7 @@ function ProductInfo() {
           if (response.ok) {
             console.log("Added to cart");
             alert("Added to cart");
+            window.location.href = "/cart";
           } else {
             console.log("Failed to add to cart");
             console.log(response);

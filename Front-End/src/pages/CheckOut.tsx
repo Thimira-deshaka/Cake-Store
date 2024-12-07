@@ -18,14 +18,14 @@ function CheckOut() {
         response.json().then((data) => {
           console.log(data);
           alert("Your order has been placed!");
-          // window.location.href = "/";
+          window.location.href = "/myorders";
         });
       } else {
         console.log("Error");
       }
     });
   } else {
-    // window.location.href = "/login";
+    window.location.href = "/login";
   }
 }
 
