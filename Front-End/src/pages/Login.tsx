@@ -5,6 +5,7 @@ import Footer from "../component/Footer";
 import NavBar from "../component/NavBar";
 import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import axios from "axios";
+import photo from '../assets/login2.jpg';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -104,7 +105,13 @@ function Login() {
   
   return (
     <Fragment>
-      <div className="bg-img">
+      <div style={{ backgroundImage: `url(${photo})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "0",
+            margin: "0",
+            height: "100vh",}}>
+        
         <div className="content">
           <header>Login Form</header>
           <form onSubmit={handleSubmit}>
@@ -139,7 +146,7 @@ function Login() {
             <a href="/register">Signup Now</a>
           </div>
           <div className="signup space">
-            <a onClick={handleForgotPassword}>Forget Password</a>
+            <a onClick={handleForgotPassword}>Forgot Password</a>
           </div>
         </div>
       </div>

@@ -44,7 +44,6 @@ function UserLayout() {
 function AdminLayout() {
   return (
     <Fragment>
-      <NavBar /> {/* Optional: Use a different NavBar for Admin if needed */}
       <main>
         <Outlet />
       </main>

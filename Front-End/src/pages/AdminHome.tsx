@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "../component/NavBar";
+import AdminNavBar from "../component/AdminNavBar";
 
 interface Order {
   id: number;
@@ -105,6 +105,7 @@ const Home: React.FC = () => {
 
   return (
     <Fragment>
+      <AdminNavBar/>
       <div
         className="wid"
         style={{
