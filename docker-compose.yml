@@ -1,90 +1,125 @@
-# services:
-#   cart:
-#     build: ./Cart
-#     ports:
-#       - "3003:3003"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-      
-#     networks:
-#       cakestore-network:
-
-#   product:
-#     build: ./Product
-#     ports:
-#       - "3002:3002"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   order:
-#     build: ./Admin
-#     ports:
-#       - "3004:3004"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   user:
-#     build: ./User
-#     ports:
-#       - "3001:3001"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   db:
-#     image: mongo:4.0-xenial
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - CAKESTORE-Microservice:/data/db
-#     networks:
-#       cakestore-network:
-
-# networks:
-#   cakestore-network:
-
-# volumes:
-#   CAKESTORE-Microservice:
-
+version: '3.7'
 
 services:
-  cart:
+  # User service
+  user-service:
     build:
-      context: ./Cart
+      context: ./user
     ports:
-      - "3003:3003"
+      - "9001:3001"  # Map container port 3001 to host port 9001
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/cakeStore-UsersDB
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - USER_SERVER_BASE=http://user-service:3001
+      - PRODUCT_SERVER_BASE=http://product-service:3002
+      - CART_SERVER_BASE=http://cart-service:3003
+      - ADMIN_SERVER_BASE=http://admin-service:3004
+    depends_on:
+      - mongodb
     networks:
-      - my-network
+      - app-network
 
-  user:
+  # Product service
+  product-service:
     build:
-      context: ./User
+      context: ./product
     ports:
-      - "3001:3001"
+      - "9002:3002"  # Map container port 3002 to host port 9002
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/cakeStore-ProductDB
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - USER_SERVER_BASE=http://user-service:3001
+      - PRODUCT_SERVER_BASE=http://product-service:3002
+      - CART_SERVER_BASE=http://cart-service:3003
+      - ADMIN_SERVER_BASE=http://admin-service:3004
+    depends_on:
+      - mongodb
     networks:
-      - my-network
+      - app-network
 
-  admin:
+  # Cart service
+  cart-service:
     build:
-      context: ./Admin
+      context: ./cart
     ports:
-      - "3004:3004"
+      - "9003:3003"  # Map container port 3003 to host port 9003
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/cakeStore-CartDB
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - USER_SERVER_BASE=http://user-service:3001
+      - PRODUCT_SERVER_BASE=http://product-service:3002
+      - CART_SERVER_BASE=http://cart-service:3003
+      - ADMIN_SERVER_BASE=http://admin-service:3004
+    depends_on:
+      - mongodb
     networks:
-      - my-network
+      - app-network
 
-  product:
+  # Admin service
+  admin-service:
     build:
-      context: ./Product
+      context: ./admin
     ports:
-      - "3002:3002"
+      - "9004:3004"  # Map container port 3004 to host port 9004
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/cakeStore-AdminDB
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - USER_SERVER_BASE=http://user-service:3001
+      - PRODUCT_SERVER_BASE=http://product-service:3002
+      - CART_SERVER_BASE=http://cart-service:3003
+      - ADMIN_SERVER_BASE=http://admin-service:3004
+    depends_on:
+      - mongodb
     networks:
-      - my-network
+      - app-network
 
+  # Payment Gateway
+  payment-gateway:
+    build:
+      context: ./payment-gateway
+    ports:
+      - "7000:7000"  # Map container port 7000 to host port 7000
+    environment:
+      - PAYMENT_API_KEY=${PAYMENT_API_KEY}
+      - PAYMENT_SERVER_BASE=http://payment-gateway:7000
+    networks:
+      - app-network
+
+  # MongoDB service
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DBNAME}
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - app-network
+
+  # Frontend (React) service
+  frontend:
+    build:
+      context: ./Front-End
+    ports:
+      - "9000:5173"  # Map container port 5173 to host port 9000
+    environment:
+      - FRONT_END_BASE=http://localhost:5173
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - admin-service
+    networks:
+      - app-network
+
+# Define a custom network for inter-service communication
 networks:
-  my-network:
+  app-network:
     driver: bridge
+
+# Define persistent volume for MongoDB
+volumes:
+  mongodb-data:
