@@ -40,6 +40,7 @@ const UserOrdersView: React.FC = () => {
         setOrders(data);
       } catch (err: any) {
         setError(err.message || "Something went wrong");
+        console.log(err.message)
       } finally {
         setLoading(false);
       }
@@ -147,7 +148,18 @@ const UserOrdersView: React.FC = () => {
                           <td>{order.date}</td>
                           <td>{order.quantity}</td>
                           <td>{`Rs. ${order.price}`}</td>
-                          <td>{order.status}</td>
+                          <td> <span className={`text-center align-middle ${
+                              order.status === "Accepted"
+                                ? "bg-secondary text-white"
+                                : order.status === "Ready"
+                                ? "bg-primary text-white"
+                                : order.status === "Pickup"
+                                ? "bg-warning text-white"
+                                : "bg-success text-white"
+                            }`}
+                            style={{ padding: "10px 20px", borderRadius: "8px" }}
+                            >{order.status}</span>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

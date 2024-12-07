@@ -73,12 +73,12 @@ const getOrderHistory = async (id) => {
           date: order.createdAt, 
           quantity: order.Quantity,
           price: product.price,
-          status: order.status, 
+          status: order.Status, 
         };
     })
   )
   // console.log(orders);
-  // return enrichedOrders;
+  return enrichedOrders;
 };
 
 const getAllOrderHistory = async () => {

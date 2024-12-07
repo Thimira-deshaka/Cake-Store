@@ -39,9 +39,11 @@ const AdminHome: React.FC = () => {
         }
 
         const jsonData: Order[] = await response.json();
+        
         setOrders(jsonData);
       } catch (err: any) {
         console.log(err);
+        setError("Error: "+ err);
         alert("Error: "+ err);
       } finally {
         setLoading(false);

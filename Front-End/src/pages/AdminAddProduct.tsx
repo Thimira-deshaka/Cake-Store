@@ -62,7 +62,7 @@ function AdminAddProduct() {
     }
 
     try {
-      const response = await fetch("http://localhost:3004/admin/addproduct", {
+      const response = await fetch("http://localhost:3002/products/", {
         method: "POST",
         body: formData,
       });
