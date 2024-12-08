@@ -1,90 +1,89 @@
-# services:
-#   cart:
-#     build: ./Cart
-#     ports:
-#       - "3003:3003"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-      
-#     networks:
-#       cakestore-network:
-
-#   product:
-#     build: ./Product
-#     ports:
-#       - "3002:3002"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   order:
-#     build: ./Admin
-#     ports:
-#       - "3004:3004"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   user:
-#     build: ./User
-#     ports:
-#       - "3001:3001"
-#     environment:
-#       DB_URL: mongodb+srv://CakeStore:cakeStore123@cakestorecluster.flk46.mongodb.net/?retryWrites=true&w=majority&appName=CakeStoreCluster
-#     networks:
-#       cakestore-network:
-
-#   db:
-#     image: mongo:4.0-xenial
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - CAKESTORE-Microservice:/data/db
-#     networks:
-#       cakestore-network:
-
-# networks:
-#   cakestore-network:
-
-# volumes:
-#   CAKESTORE-Microservice:
-
+version: "3.8"
 
 services:
-  cart:
+  frontend:
     build:
-      context: ./Cart
+      context: ./Front-End
     ports:
-      - "3003:3003"
+      - "9000:5173"  # Expose frontend React app on port 9000
     networks:
-      - my-network
+      - app-network
+    depends_on:
+      - product-service
+      - user-service
+      - cart-service
+      - admin-service
+      - payment-gateway
 
-  user:
-    build:
-      context: ./User
-    ports:
-      - "3001:3001"
-    networks:
-      - my-network
-
-  admin:
+  admin-service:
     build:
       context: ./Admin
     ports:
-      - "3004:3004"
+      - "9004:3004"  # Expose admin service on port 9004
     networks:
-      - my-network
+      - app-network
+    environment:
+      - NODE_ENV=production
 
-  product:
+  cart-service:
+    build:
+      context: ./Cart
+    ports:
+      - "9003:3003"  # Expose cart service on port 9003
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+
+  product-service:
     build:
       context: ./Product
     ports:
-      - "3002:3002"
+      - "9002:3002"  # Expose product service on port 9002
     networks:
-      - my-network
+      - app-network
+    environment:
+      - NODE_ENV=production
+
+  user-service:
+    build:
+      context: ./User
+    ports:
+      - "9001:3001"  # Expose user service on port 9001
+    networks:
+      - app-network
+    environment:
+      - NODE_ENV=production
+
+  payment-gateway:
+    build:
+      context: ./Payment-Gateway
+    ports:
+      - "7000:7000"  # Expose payment gateway on port 7000
+    networks:
+      - app-network
+    env_file:
+      - ./Payment-Gateway/.env
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: cake-store-mongodb
+    ports:
+      - "27017:27017"  # Expose MongoDB on port 27017
+    volumes:
+      - mongodb-data:/data/db  # Persistent storage for MongoDB data
+    networks:
+      - app-network
+
+volumes:
+  mongodb-data:
+    driver: local
 
 networks:
-  my-network:
+  app-network:
     driver: bridge
+
+
+    

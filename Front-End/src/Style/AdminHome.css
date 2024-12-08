@@ -8,13 +8,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-a {
-  color: #ccc;
-  text-decoration: none !important;
-}
-a:hover {
-  color: #f99;
-}
 
 h1,
 h2,
@@ -65,7 +58,6 @@ img {
 .most-popular {
   padding: 30px;
   margin-top: 20px;
-  border-radius: 23px;
   background-color: #1d120a;
 }
 
@@ -74,15 +66,9 @@ img {
   padding: 30px 15px;
   border-radius: 23px;
   margin-bottom: 30px;
-  overflow: hidden;
   /* Added transition for smooth hover effects */
   transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
     box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-    align-items: center;
-    box-sizing: border-box;
 }
 
 .most-popular .item:hover {
@@ -99,19 +85,12 @@ img {
 
 .most-popular .item img {
   border-radius: 23px;
-  max-width: 100%;
-  width: auto;
-  height: 200px;
-  object-fit: cover;
-  margin: 0 auto; 
-  padding: 0 10px; 
   /* Added smoother hover transition for images */
   transition: transform 0.4s ease;
 }
 
 .most-popular .item img:hover {
   transform: scale(1.03); /* Slight zoom effect on hover */
-  border-radius: 23px;
 }
 
 .most-popular .item h4 {

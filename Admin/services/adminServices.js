@@ -2,11 +2,16 @@ const adminModel = require("../models/adminModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const axios = require("axios");
 
 const loginAdmin = async (email, password) => {
   const user = await adminModel.findOne({ email });
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
-  console.log(hashedPassword);
+  
+  if (user && user.isFirstTimeLogin) {
+    // If it's the first time, return a flag indicating a password reset is needed
+    return { firstTimeLogin: true };
+  }
+
   if (user && (await bcrypt.compare(password, user.password))) {
     const accessToken = jwt.sign(
       {
@@ -20,17 +25,104 @@ const loginAdmin = async (email, password) => {
         },
       },
       process.env.ACCESS_TOKEN
-      // { expiresIn: "5m" }
     );
 
-    return accessToken;
+    return { accessToken, firstTimeLogin: false };
   }
   return null;
 };
 
+const resetPasswordAdmin = async (email, newPassword) => {
+  try {
+    // Find the admin by email
+    const user = await adminModel.findOne({ email });
+
+    // Check if the user exists
+    if (!user) {
+      return { error: "User not found" };
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password and set passwordResetRequired to false
+    user.password = hashedPassword;
+    user.isFirstTimeLogin = false;  // Mark the first-time login as done
+
+    // Save the updated user
+    await user.save();
+
+    return { message: "Password reset successfully" };
+  } catch (error) {
+    return { error: "Internal Server Error", details: error.message };
+  }
+};
+
+// Fetch product details from the Product server
+const fetchProductDetails = async (productId) => {
+  try {
+    const response = await axios.get(`${process.env.PRODUCT_SERVER_BASE}/products/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching product details for ID ${productId}:`, error.message);
+    throw new Error("Failed to fetch product details.");
+  }
+};
+
+// Fetch user details from the User server
+const fetchUserDetails = async (userId) => {
+  try {
+    const response = await axios.get(`${process.env.USER_SERVER_BASE}/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user details for ID ${userId}:`, error.message);
+    throw new Error("Failed to fetch user details.");
+  }
+};
+
+// Fetch order details from the User server
+const fetchOrderDetails = async (userId) => {
+  try {
+    console.log("this is Admin Service");
+    const response = await axios.get(`${process.env.CART_SERVER_BASE}/cart/history`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching user details for ID ${userId}:`, error.message);
+    throw new Error("Failed to fetch user details.");
+  }
+};
+
+const getOrderDetails = async () => {
+    // Fetch all orders from the OrderHistories table
+    const orders = await fetchOrderDetails;
+
+    if (!Array.isArray(orders)) {
+      return false;
+    }
+
+    // Enrich orders with product and user details
+    const enrichedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const product = await fetchProductDetails(order.ProductId);
+        const user = await fetchUserDetails(order.UserId);
+
+        return {
+          id: order._id,
+          quantity: order.Quantity,
+          productId: product.id,
+          ProductNanme: product.name,
+          productImage: product.image,
+          status: order.Status,
+          customerName: user.name,
+        };
+      })
+    );
+
+    return enrichedOrders;
+};
+
 module.exports = {
-  // getUsers,
-  // getUser,
-  // createAdmin,
   loginAdmin,
+  resetPasswordAdmin,
+  getOrderDetails,
 };

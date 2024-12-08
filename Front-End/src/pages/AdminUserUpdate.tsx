@@ -1,80 +1,63 @@
 import React, { useState, useEffect, Fragment } from "react";
-import "../Style/Update.css";
+import "../Style/Update.css"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "../component/NavBar";
-import Alert from "../component/Alert";
+import { useNavigate } from "react-router-dom";
+import Alert from "../component/Alert";  // Import the Alert component
 
-interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  age: number;
-  phone: string;
-}
-
-function Update() {
-  const [user, setUser] = useState<User>({
+function AdminUserUpdate() {
+  const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
     email: "",
     age: 0,
     phone: "",
+    gender: "",
   });
-  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);  // State for alert
+  const userID = localStorage.getItem("userID"); // Fetch userID from localStorage
 
+  // Fetch user data
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch("http://localhost:3001/users/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => setUser(data))
-        .catch((error) => console.error("Error fetching user data:", error));
-    } else {
-      setAlert({
-        title: "Authentication Error",
-        message: "Please log in to update your profile.",
-        isSuccess: false,
-      });
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1500);
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/users/all/${userID}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+        if (response.ok) {
+          const data = await response.json();
+          setUserDetails(data); // Populate form with fetched data
+        } else {
+          console.error("Failed to fetch user details");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchData();
+  }, [userID]);
+
+  // Handle input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUserDetails({ ...userDetails, [name]: value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      setAlert({
-        title: "Authentication Error",
-        message: "Please log in to save changes.",
-        isSuccess: false,
-      });
-      return;
-    }
-
     try {
-      const response = await fetch("http://localhost:3001/users/update", {
+      const response = await fetch(`http://localhost:3001/users/update/${userID}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify(userDetails),
       });
 
       if (response.ok) {
@@ -83,16 +66,17 @@ function Update() {
           message: "Profile updated successfully!",
           isSuccess: true,
         });
-
         setTimeout(() => {
-          window.location.href = "/profile";
-        }, 1500);
+          setAlert(null);
+          navigate("/admin/users");
+        }, 2000);
       } else {
         setAlert({
           title: "Error",
           message: "Failed to update profile. Please try again.",
           isSuccess: false,
         });
+        setTimeout(() => setAlert(null), 3000);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -101,14 +85,27 @@ function Update() {
         message: "An error occurred while updating your profile.",
         isSuccess: false,
       });
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
   return (
     <Fragment>
-      <NavBar />
       <div className="update-page-container mt-5">
         <h2 className="text-center">Update Your Profile</h2>
+        {alert && (
+          <div
+            style={{
+              position: "fixed",
+              top: "15%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1000,
+            }}
+          >
+            <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="profile-update-form">
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>
@@ -116,7 +113,7 @@ function Update() {
               type="text"
               id="firstName"
               name="firstName"
-              value={user.firstName}
+              value={userDetails.firstName}
               onChange={handleInputChange}
               className="form-control"
               required
@@ -128,7 +125,7 @@ function Update() {
               type="text"
               id="lastName"
               name="lastName"
-              value={user.lastName}
+              value={userDetails.lastName}
               onChange={handleInputChange}
               className="form-control"
               required
@@ -140,7 +137,7 @@ function Update() {
               type="email"
               id="email"
               name="email"
-              value={user.email}
+              value={userDetails.email}
               onChange={handleInputChange}
               className="form-control"
               required
@@ -152,7 +149,7 @@ function Update() {
               type="number"
               id="age"
               name="age"
-              value={user.age}
+              value={userDetails.age}
               onChange={handleInputChange}
               className="form-control"
               required
@@ -164,10 +161,21 @@ function Update() {
               type="text"
               id="phone"
               name="phone"
-              value={user.phone}
+              value={userDetails.phone}
               onChange={handleInputChange}
               className="form-control"
               required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="gender">Gender</label>
+            <input
+              type="text"
+              id="gender"
+              name="gender"
+              value={userDetails.gender}
+              onChange={handleInputChange}
+              className="form-control"
             />
           </div>
           <div className="form-group text-center mt-4">
@@ -177,22 +185,8 @@ function Update() {
           </div>
         </form>
       </div>
-
-      {alert && (
-        <div
-          style={{
-            position: "fixed",
-            top: "15%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 1000,
-          }}
-        >
-          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-        </div>
-      )}
     </Fragment>
   );
 }
 
-export default Update;
+export default AdminUserUpdate;

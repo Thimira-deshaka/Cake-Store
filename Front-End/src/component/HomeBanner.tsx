@@ -14,6 +14,7 @@ const HomeBanner = () => {
         height: "100vh",
         color: "#fff",
         padding: "0 50px",
+        marginTop: "50px",
       }}
     >
       {/* Text Section */}

@@ -57,6 +57,15 @@ function UserDetails() {
                           className="profile-image"
                         />
                       </div>
+                      <div className="col-lg-4 align-self-center">
+                        <div className="main-info header-text">
+                          <h1 id="firstname">Hey!</h1>
+                          <h5>Want to update {userDetails.firstName}'s profile</h5>
+                        <div className="main-border-button">
+                            <a href="/AdminUserUpdate">Update</a>
+                          </div>
+                        </div>
+                      </div>
                       {/* Right Section: Additional Info */}
                       <div className="col-lg-4 align-self-center">
                         <ul>

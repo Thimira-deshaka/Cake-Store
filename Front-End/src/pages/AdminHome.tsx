@@ -1,174 +1,210 @@
 import React, { Fragment, useEffect, useState } from "react";
-import "../Style/home.css";
+import "../Style/AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Card from "../component/card";
-import HomeBanner from "../component/HomeBanner";
-import NavBar from "../component/NavBar";
-import Footer from "../component/Footer";
 
-function Home() {
-  const [data, setData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("idle");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+interface Order {
+  id: string;
+  productImage: string;
+  productId: string;
+  productName: string;
+  date: string;
+  quantity: number;
+  customerName: string;
+  status: "Accepted" | "Ready" | "Pickup" | "Delivery Done";
+}
 
+const AdminHome: React.FC = () => {
+  const [hoveredRow, setHoveredRow] = useState<string | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch orders on component mount
   useEffect(() => {
-    fetchData();
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+
+        const response = await fetch("http://localhost:3003/cart/orders", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          alert("Failed to fetch orders.");
+        }
+
+        const jsonData: Order[] = await response.json();
+        
+        setOrders(jsonData);
+      } catch (err: any) {
+        console.log(err);
+        setError("Error: "+ err);
+        alert("Error: "+ err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
   }, []);
 
-  const fetchData = async () => {
+  // Handle status change with server update
+  const handleStatusChange = async (
+    id: string,
+    newStatus: "Accepted" | "Ready" | "Pickup" | "Delivery Done"
+  ) => {
+    if (!window.confirm("Are you sure you want to change the order status?")) {
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:3002/products", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const token = localStorage.getItem("token");
 
-      if (response.ok) {
-        const jsonData = await response.json();
-        setData(jsonData);
-      } else {
-        console.log("Failed to fetch products");
+      const response = await fetch(
+        `http://localhost:3003/cart/orders/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ orderId: id, newStatus }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update order status.");
       }
-    } catch (error) {
-      console.error("Error:", error);
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === id ? { ...order, status: newStatus } : order
+        )
+      );
+
+      alert("Order status updated successfully!");
+    } catch (err: any) {
+      console.log("Error updating order status:", err.message || err);
+      alert("Failed to update order status.");
     }
   };
 
-  const handleLinkClick = (productID: any) => {
-    localStorage.setItem("productID", productID);
-    window.location.href = `/productinfo/${productID}`;
-  };
+  // Handle row hover
+  const handleMouseEnter = (id: string) => setHoveredRow(id);
+  const handleMouseLeave = () => setHoveredRow(null);
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCategory = event.target.value;
-    setSelectedOption(selectedCategory);
-    if (selectedCategory === "idle") {
-      fetchData();
-    } else {
-      fetch(`http://localhost:3002/filter/category/${selectedCategory}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to retrieve filtered data from server");
-          }
-        })
-        .then((responseData) => {
-          setData(responseData.filteredProducts);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  };
-
-  const handleSearch = () => {
-    const filteredResults = data.filter((product: any) =>
-      product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+  // Render loading or error state
+  if (loading) {
+    return (
+      <div className="text-center" style={{ marginTop: "150px" }}>
+        <p>Loading your orders...</p>
+      </div>
     );
-    setFilteredData(filteredResults);
-  };
+  }
+
+  if (error) {
+    return (
+      <div className="text-center" style={{ marginTop: "150px", color: "red" }}>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <Fragment>
-      <NavBar />
-      <div className="wid">
+      <div
+        className="wid"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+        }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="page-content">
-                <div className="">
-                  <HomeBanner />
-                </div>
-                <div className="most-popular">
-                  <div className="row">
-                    <div className="col-lg-12">
-                      <div className="heading-section">
-                        <div className="txt">
-                          <h4>
-                            <em>Order</em> Right Now
-                          </h4>
-                        </div>
-
-                        <div className="selct">
-                          <select
-                            value={selectedOption}
-                            onChange={handleSelectChange}
-                          >
-                            <option value="idle">ALL</option>
-                            <option value="Birthday Cakes">
-                              Birthday Cakes
-                            </option>
-                            <option value="Wedding Cakes">Wedding Cakes</option>
-                            <option value="Anniversary Cakes">
-                              Anniversary Cakes
-                            </option>
-                            <option value="Chocolate Cakes">
-                              Chocolate Cakes
-                            </option>
-                            <option value="Seasonal Cakes">
-                              Seasonal Cakes
-                            </option>
-                          </select>
-                          <span className="margleft">
-                            <i className="fa fa-search"></i>
-                          </span>
-
-                          <input
-                            className="newSearch"
-                            style={{ backgroundColor: "#2a1b10" }}
-                            type="text"
-                            id="searchText"
-                            name="searchKeyword"
-                            placeholder="Search"
-                            value={searchKeyword}
-                            onChange={(e) => setSearchKeyword(e.target.value)}
-                          />
-                          <button
-                            className="searchButton"
-                            style={{ backgroundColor: "#2a1b10" }}
-                            onClick={handleSearch}
-                          >
-                            Search
-                          </button>
-                        </div>
-                      </div>
-                      <div className="row">
-                        {(filteredData.length > 0 ? filteredData : data).map(
-                          (product: any) => (
-                            <div
-                              className="col-lg-3 col-sm-6 pt-5"
-                              onClick={() => handleLinkClick(product._id)}
-                              style={{ cursor: "pointer" }}
-                              key={product._id}
-                            >
-                              <Card
-                                name={product.name}
-                                price={product.price}
-                                imgsrc={product.image}
-                                category={product.category}
+              <div className="page-content" style={{ marginTop: "10px", backgroundColor: "#1e1e1e" }}>
+                <div className="container mt-4 pb-5" style={{ backgroundColor: "#1f2122", borderRadius: "5%" }}>
+                  <h2 className="mb-4 pt-4 text-center" style={{ color: "#ffcf86" }}>
+                    Manage Orders
+                  </h2>
+                  <table className="table table-bordered text-center align-middle text-white">
+                    <thead className="thead-light">
+                      <tr>
+                        <th>Product</th>
+                        <th>Product Name</th>
+                        <th>Date</th>
+                        <th>Quantity</th>
+                        <th>Customer Name</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.map((order) => (
+                        <tr
+                          key={order.id}
+                          onMouseEnter={() => handleMouseEnter(order.id)}
+                          onMouseLeave={handleMouseLeave}
+                          style={{
+                            color: hoveredRow === order.id ? "#ff7eb3" : "inherit",
+                          }}
+                        >
+                          <td>
+                            <div className="d-flex align-items-center justify-content-center">
+                              <img
+                                src={order.productImage}
+                                alt="Product"
+                                style={{ width: "50px", height: "50px", marginRight: "10px" }}
                               />
                             </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                          </td>
+                          <td>{order.productName}</td>
+                          <td>{order.date}</td>
+                          <td>{order.quantity}</td>
+                          <td>{order.customerName}</td>
+                          <td>
+                            <select
+                              className={`form-select ${
+                                order.status === "Accepted"
+                                  ? "bg-secondary text-white"
+                                  : order.status === "Ready"
+                                  ? "bg-primary text-white"
+                                  : order.status === "Pickup"
+                                  ? "bg-warning text-white"
+                                  : "bg-success text-white"
+                              }`}
+                              value={order.status}
+                              onChange={(e) =>
+                                handleStatusChange(
+                                  order.id,
+                                  e.target.value as "Accepted" | "Ready" | "Pickup" | "Delivery Done"
+                                )
+                              }
+                            >
+                              <option value="Accepted">Accepted</option>
+                              <option value="Ready">Ready</option>
+                              <option value="Pickup">Pickup</option>
+                              <option value="Delivery Done">Delivery Done</option>
+                            </select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
-}
+};
 
-export default Home;
+export default AdminHome;

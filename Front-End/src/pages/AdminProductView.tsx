@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Card from "../component/card";
+import AdminproductCard from "../component/AdminproductCard";
 import HomeBanner from "../component/HomeBanner";
-import NavBar from "../component/NavBar";
+import AdminNavBar from "../component/AdminNavBar";
 import Footer from "../component/Footer";
 
 function Home() {
@@ -11,6 +12,7 @@ function Home() {
   const [selectedOption, setSelectedOption] = useState("idle");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -37,7 +39,7 @@ function Home() {
 
   const handleLinkClick = (productID: any) => {
     localStorage.setItem("productID", productID);
-    window.location.href = `/productinfo/${productID}`;
+    navigate(`/admin/adminproductInfo/${productID}`);
   };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,13 +68,9 @@ function Home() {
           console.error("Error:", error);
         });
     }
-  };
-
-  const handleSearch = () => {
-    const filteredResults = data.filter((product: any) =>
-      product.name.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-    setFilteredData(filteredResults);
+   };
+   const handleAddProductClick = () => {
+    navigate("/admin/addproduct"); // Navigate to add product page
   };
 
   return (
@@ -86,54 +84,19 @@ function Home() {
                   <div className="row">
                     <div className="col-lg-12">
                       <div className="heading-section">
-                        <div className="txt">
-                          <h4>
-                            <em>Order</em> Right Now
-                          </h4>
-                        </div>
-
-                        <div className="selct">
-                          <select
-                            value={selectedOption}
-                            onChange={handleSelectChange}
+                      <button
+                          onClick={handleAddProductClick}
+                          className="btn"
+                          style={{
+                            backgroundColor: "#fff",
+                            color: "black",
+                            fontWeight: "bold",
+                            marginBottom: "20px",
+                          }}
+                          
                           >
-                            <option value="idle">ALL</option>
-                            <option value="Birthday Cakes">
-                              Birthday Cakes
-                            </option>
-                            <option value="Wedding Cakes">Wedding Cakes</option>
-                            <option value="Anniversary Cakes">
-                              Anniversary Cakes
-                            </option>
-                            <option value="Chocolate Cakes">
-                              Chocolate Cakes
-                            </option>
-                            <option value="Seasonal Cakes">
-                              Seasonal Cakes
-                            </option>
-                          </select>
-                          <span className="margleft">
-                            <i className="fa fa-search"></i>
-                          </span>
-
-                          <input
-                            className="newSearch"
-                            style={{ backgroundColor: "#2a1b10" }}
-                            type="text"
-                            id="searchText"
-                            name="searchKeyword"
-                            placeholder="Search"
-                            value={searchKeyword}
-                            onChange={(e) => setSearchKeyword(e.target.value)}
-                          />
-                          <button
-                            className="searchButton"
-                            style={{ backgroundColor: "#2a1b10" }}
-                            onClick={handleSearch}
-                          >
-                            Search
-                          </button>
-                        </div>
+                          Add Product
+                        </button>
                       </div>
                       <div className="row">
                         {(filteredData.length > 0 ? filteredData : data).map(
@@ -144,7 +107,7 @@ function Home() {
                               style={{ cursor: "pointer" }}
                               key={product._id}
                             >
-                              <Card
+                              <AdminproductCard
                                 name={product.name}
                                 price={product.price}
                                 imgsrc={product.image}
@@ -154,6 +117,7 @@ function Home() {
                           )
                         )}
                       </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -162,7 +126,6 @@ function Home() {
           </div>
         </div>
       </div>
-      <Footer />
     </Fragment>
   );
 }

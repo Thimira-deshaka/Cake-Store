@@ -1,7 +1,10 @@
 import Footer from "../component/Footer";
 import NavBar from "../component/NavBar";
 import "../Style/Register.css";
+import Alert from "../component/Alert";
+
 import { Fragment, useState } from "react";
+
 function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -11,9 +14,22 @@ function Register() {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setconfPassword] = useState("");
+  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (password !== confpassword) {
+      setAlert({
+        title: "Error",
+        message: "Passwords do not match.",
+        isSuccess: false,
+      });
+      setTimeout(() => {
+        window.location.href = "/register" ;
+      }, 2000);
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:3001/users", {
@@ -33,35 +49,40 @@ function Register() {
       });
 
       if (response.ok) {
-        alert("Registered successful");
-        window.location.href = "/";
+        setAlert({
+          title: "Registration Successful",
+          message: "Your account has been created. Please log in.",
+          isSuccess: true,
+        });
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
       } else {
-        const errorData = await response.json();
-        alert("Register failed: " + errorData.message);
+        const data = await response.json();
+        setAlert({
+          title: "Registration Failed",
+          message: data.message || "An error occurred during registration.",
+          isSuccess: false,
+        });
+        setTimeout(() => {
+          window.location.href = "/register" ;
+        }, 2000);
       }
     } catch (error) {
-      alert("Error:" + error);
-    }
-
-    if (password === confpassword) {
-      const data = {
-        email,
-        password,
-        firstName,
-        lastName,
-        age,
-        phone,
-        gender,
-      };
-      const dataString = JSON.stringify(data);
-      window.location.href = "/login";
-    } else {
-      alert("passwords doesn't match");
+      console.error("Error:", error);
+      setAlert({
+        title: "Error",
+        message: "An unexpected error occurred. Please try again later.",
+        isSuccess: false,
+      });
+      setTimeout(() => {
+        window.location.href = "/register" ;
+      }, 2000);
     }
   }
+
   return (
     <Fragment>
-      <NavBar />
       <div className="bg-img">
         <div className="registerContent">
           <header>Register Form</header>
@@ -195,21 +216,11 @@ function Register() {
               </div>
               <div className="col">
                 <div className="row">
-                  <div className="col inline">
+                  <div className="field">
                     <label className="radio-inline">
                       <input type="text" name="gender"></input>
                     </label>
                   </div>
-                  {/* <div className="col inline">
-                  <label className="radio-inline">
-                    <input type="radio" name="gender" value="male" />
-                    Male
-                  </label>
-                  <label className="radio-inline">
-                    <input type="radio" name="gender" value="female" />
-                    Female
-                  </label>
-                </div> */}
                 </div>
               </div>
             </div>
@@ -219,11 +230,24 @@ function Register() {
           </form>
           <div className="signup space">
             Already have an account?
-            <a href="/">Login</a>
+            <a href="/login">Login</a>
           </div>
         </div>
       </div>
-      <Footer />
+
+      {alert && (
+        <div
+          style={{
+            position: "fixed",
+            top: "15%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+          }}
+        >
+          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
+        </div>
+      )}
     </Fragment>
   );
 }
