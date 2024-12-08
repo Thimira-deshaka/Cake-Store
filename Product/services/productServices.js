@@ -11,7 +11,7 @@ const getProducts = async () => {
 };
 
 const createProduct = async (productData) => {
-  console.log(productData);
+  // console.log(productData);
   const product = await productModel.create(productData);
     return product; 
 };
