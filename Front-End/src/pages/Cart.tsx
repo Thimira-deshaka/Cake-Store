@@ -69,7 +69,21 @@ function Cart() {
     fetchCartData();
   }, []);
 
-  const handleCheckout = () => {
+  const submitHandler = async () => {
+    const token = localStorage.getItem("token");
+
+    // Check if user is authenticated
+    if (!token) {
+      setAlert({
+        title: "Authentication Error",
+        message: "You need to be logged in to proceed with checkout.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
+      return;
+    }
+
+    // Check if the cart is empty
     if (cartData.Orders.length === 0) {
       setAlert({
         title: "Empty Cart",
@@ -77,13 +91,45 @@ function Cart() {
         isSuccess: false,
       });
       setTimeout(() => setAlert(null), 3000);
-    } else {
-      window.location.href = "/Checkout";
-
+      return;
     }
-};
 
-  
+    // Send DELETE request to backend to complete checkout
+    try {
+      const response = await fetch("http://localhost:3003/cart/checkout", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (response.ok) {
+        // After successful checkout, calculate the amount
+        const amountInCents = Math.round(cartData.total * 100);
+
+        // Create the checkout URL with the amount as a query parameter
+        const checkoutUrl = `http://localhost:7000/?amount=${amountInCents}`;
+
+        // Redirect to the new checkout page
+        window.location.href = checkoutUrl;
+      } else {
+        setAlert({
+          title: "Error",
+          message: "An error occurred while placing your order. Please try again.",
+          isSuccess: false,
+        });
+        setTimeout(() => setAlert(null), 3000);
+      }
+    } catch (error) {
+      setAlert({
+        title: "Error",
+        message: "An unexpected error occurred. Please try again.",
+        isSuccess: false,
+      });
+      setTimeout(() => setAlert(null), 3000);
+    }
+  };
 
   const deleteOrder = async (orderId: any) => {
     try {
@@ -202,7 +248,7 @@ function Cart() {
                 <button
                   className="cart-header-cta red-bg"
                   type="button"
-                  onClick={handleCheckout}
+                  onClick={submitHandler} // Call the updated submitHandler
                 >
                   Proceed to Checkout
                 </button>
