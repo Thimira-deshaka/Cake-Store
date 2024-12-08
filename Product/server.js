@@ -8,8 +8,8 @@ require('dotenv').config();
 require('./config/db_conn');
 const port = process.env.PORT || 9000;
 
-// Serve static files from 'uploads' directory
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static files from the 'public' directory
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 app.use(express.json());

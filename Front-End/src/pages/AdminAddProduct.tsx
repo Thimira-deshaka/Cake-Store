@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import photo6 from '../assets/photo6.jpg';
+import photo6 from "../assets/photo6.jpg";
 import Alert from "../component/Alert"; // Import Alert component
 
-function AdminAddProduct() {
+const AdminAddProduct: React.FC = () => {
   const [inputValue, setInputValue] = useState<{
     name: string;
     description: string;
@@ -21,7 +21,11 @@ function AdminAddProduct() {
     image: null,
   });
 
-  const [alert, setAlert] = useState<{ title: string; message: string; isSuccess: boolean } | null>(null); // State for alerts
+  const [alert, setAlert] = useState<{
+    title: string;
+    message: string;
+    isSuccess: boolean;
+  } | null>(null); // State for alerts
 
   const navigate = useNavigate();
 
@@ -50,9 +54,9 @@ function AdminAddProduct() {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
-    // Check if any input field is empty
+    // Validation for empty fields
     if (
       !inputValue.name ||
       !inputValue.description ||
@@ -66,10 +70,11 @@ function AdminAddProduct() {
         message: "All fields are required. Please fill in all fields.",
         isSuccess: false,
       });
-      setTimeout(() => setAlert(null), 3000); 
-      return; 
+      setTimeout(() => setAlert(null), 3000);
+      return;
     }
 
+    // Prepare form data
     const formData = new FormData();
     formData.append("name", inputValue.name);
     formData.append("description", inputValue.description);
@@ -82,7 +87,7 @@ function AdminAddProduct() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3002/products/", {
+      const response = await fetch("http://localhost:3002/products", {
         method: "POST",
         body: formData,
         headers: {
@@ -96,14 +101,17 @@ function AdminAddProduct() {
           message: "Product added successfully!",
           isSuccess: true,
         });
-        setTimeout(() => {setAlert(null); navigate("/admin/products");}, 3000);  
+        setTimeout(() => {
+          setAlert(null);
+          navigate("/admin/products");
+        }, 3000);
       } else {
         setAlert({
           title: "Error",
           message: "Failed to add product. Please try again.",
           isSuccess: false,
         });
-        setTimeout(() => setAlert(null), 3000); 
+        setTimeout(() => setAlert(null), 3000);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -112,7 +120,7 @@ function AdminAddProduct() {
         message: "An error occurred while adding the product.",
         isSuccess: false,
       });
-      setTimeout(() => setAlert(null), 3000); 
+      setTimeout(() => setAlert(null), 3000);
     }
   };
 
@@ -154,52 +162,52 @@ function AdminAddProduct() {
                       boxShadow: "-1px 4px 28px 0px rgba(0, 0, 0, 0.75)",
                     }}
                   >
-                    <div className="row">
-                      <div
-                        className="col-lg-4"
-                        style={{
-                          marginTop: "75px",
-                        }}
-                      >
+                    <form onSubmit={handleSubmit}>
+                      <div className="row">
                         <div
-                          className="drag-and-drop"
-                          onDragOver={handleDragOver}
-                          onDrop={handleDrop}
+                          className="col-lg-4"
                           style={{
-                            border: "1px dashed gray",
-                            padding: "50px",
-                            textAlign: "center",
-                            backgroundColor: "rgba(255, 255, 255, 0.1)",
-                            borderRadius: "25px",
-                            marginBottom: "20px",
-                            marginTop: "-75px",
-                            height: "30vh",
+                            marginTop: "75px",
                           }}
                         >
-                          {inputValue.image ? (
-                            <img
-                              src={URL.createObjectURL(inputValue.image)}
-                              alt="Product"
-                              className="img-fluid"
-                            />
-                          ) : (
-                            <p>Drag & Drop Product Image Here</p>
-                          )}
+                          <div
+                            className="drag-and-drop"
+                            onDragOver={handleDragOver}
+                            onDrop={handleDrop}
+                            style={{
+                              border: "1px dashed gray",
+                              padding: "50px",
+                              textAlign: "center",
+                              backgroundColor: "rgba(255, 255, 255, 0.1)",
+                              borderRadius: "25px",
+                              marginBottom: "20px",
+                              marginTop: "-75px",
+                              height: "30vh",
+                            }}
+                          >
+                            {inputValue.image ? (
+                              <img
+                                src={URL.createObjectURL(inputValue.image)}
+                                alt="Product"
+                                className="img-fluid"
+                              />
+                            ) : (
+                              <p>Drag & Drop Product Image Here</p>
+                            )}
+                          </div>
+                          <input
+                            type="file"
+                            name="image"
+                            onChange={handleImageChange}
+                            className="form-control"
+                            style={{
+                              backgroundColor: "rgba(255, 255, 255, 0.5)",
+                              border: "1px solid gray",
+                              borderRadius: "5px",
+                            }}
+                          />
                         </div>
-                        <input
-                          type="file"
-                          name="image"
-                          onChange={handleImageChange}
-                          className="form-control"
-                          style={{
-                            backgroundColor: "rgba(255, 255, 255, 0.5)",
-                            border: "1px solid gray",
-                            borderRadius: "5px",
-                          }}
-                        />
-                      </div>
-                      <div className="col-lg-4 align-self-center">
-                        <form onSubmit={handleSubmit}>
+                        <div className="col-lg-4 align-self-center">
                           <input
                             type="text"
                             name="name"
@@ -225,92 +233,100 @@ function AdminAddProduct() {
                               borderRadius: "5px",
                             }}
                           ></textarea>
-                        </form>
+                        </div>
+                        <div className="col-lg-4 align-self-center">
+                          <ul>
+                            <li>
+                              Category:{" "}
+                              <input
+                                type="text"
+                                name="category"
+                                value={inputValue.category}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                style={{
+                                  backgroundColor: "rgba(255, 255, 255, 0.5)",
+                                  border: "1px solid gray",
+                                  borderRadius: "5px",
+                                }}
+                              />
+                            </li>
+                            <li>
+                              Price:{" "}
+                              <input
+                                type="number"
+                                name="price"
+                                value={inputValue.price}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                style={{
+                                  backgroundColor: "rgba(255, 255, 255, 0.5)",
+                                  border: "1px solid gray",
+                                  borderRadius: "5px",
+                                }}
+                              />
+                            </li>
+                            <li>
+                              Quantity:{" "}
+                              <input
+                                type="number"
+                                name="quantity"
+                                value={inputValue.quantity}
+                                onChange={handleInputChange}
+                                className="form-control"
+                                style={{
+                                  backgroundColor: "rgba(255, 255, 255, 0.5)",
+                                  border: "1px solid gray",
+                                  borderRadius: "5px",
+                                }}
+                              />
+                            </li>
+                          </ul>
+                          <button
+                            className="searchButton"
+                            type="submit"
+                            style={{
+                              padding: "5px 20px",
+                              fontSize: "20px",
+                              background:
+                                "-webkit-linear-gradient(left, #a445b2, #fa4299)",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "40px",
+                              zIndex: 9999,
+                            }}
+                          >
+                            Add Product
+                          </button>
+                        </div>
                       </div>
-                      <div className="col-lg-4 align-self-center">
-                        <ul>
-                          <li>
-                            Category:{" "}
-                            <input
-                              type="text"
-                              name="category"
-                              value={inputValue.category}
-                              onChange={handleInputChange}
-                              className="form-control"
-                              style={{
-                                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                                border: "1px solid gray",
-                                borderRadius: "5px",
-                              }}
-                            />
-                          </li>
-                          <li>
-                            Price:{" "}
-                            <input
-                              type="number"
-                              name="price"
-                              value={inputValue.price}
-                              onChange={handleInputChange}
-                              className="form-control"
-                              style={{
-                                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                                border: "1px solid gray",
-                                borderRadius: "5px",
-                              }}
-                            />
-                          </li>
-                          <li>
-                            Quantity:{" "}
-                            <input
-                              type="number"
-                              name="quantity"
-                              value={inputValue.quantity}
-                              onChange={handleInputChange}
-                              className="form-control"
-                              style={{
-                                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                                border: "1px solid gray",
-                                borderRadius: "5px",
-                              }}
-                            />
-                          </li>
-                        </ul>
-                        <button
-                          className="searchButton"
-                          type="submit"
-                          style={{
-                            padding: "5px 20px",
-                            fontSize: "20px",
-                            background:
-                              "-webkit-linear-gradient(left, #a445b2, #fa4299)",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "40px",
-                            zIndex: 9999, // Ensure the button is on top
-                          }}
-                        >
-                          Add Product
-                        </button>
-                      </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           {alert && (
-        <div style={{position: "fixed",
-          top: "15%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1000, }}>
-          <Alert title={alert.title} message={alert.message} isSuccess={alert.isSuccess} />
-        </div>
-      )}
+            <div
+              style={{
+                position: "fixed",
+                top: "15%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 1000,
+              }}
+            >
+              <Alert
+                title={alert.title}
+                message={alert.message}
+                isSuccess={alert.isSuccess}
+              />
+            </div>
+          )}
         </div>
       </div>
     </Fragment>
   );
-}
+};
 
 export default AdminAddProduct;

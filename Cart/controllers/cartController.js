@@ -41,7 +41,6 @@ const updateStatus = async (req, res) => {
 const addCartProduct = async (req, res) => {
   try {
     const productID = req.params;
-    console.log(req.user.id, productID.productid);
     const cartProduct = await cartService.addCartProduct(
       req.user.id,
       productID.productid,

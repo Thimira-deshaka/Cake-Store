@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "../Style/home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AdminproductCard from "../component/AdminproductCard";
-import HomeBanner from "../component/HomeBanner";
-import AdminNavBar from "../component/AdminNavBar";
-import Footer from "../component/Footer";
 
 function Home() {
   const [data, setData] = useState([]);
@@ -72,7 +69,7 @@ function Home() {
     }
    };
    const handleAddProductClick = () => {
-    navigate("/admin/addproduct"); // Navigate to add product page
+    navigate("/admin/addproduct"); 
   };
 
   return (

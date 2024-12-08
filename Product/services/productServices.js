@@ -10,18 +10,10 @@ const getProducts = async () => {
   return products;
 };
 
-const createProduct = async ({ name, description, price, quantity, category, imageUrl }) => {
-  const product = new productModel({
-    name,
-    description,
-    price,
-    quantity,
-    category,
-    imageUrl, 
-  });
-
-  await product.save(); 
-  return product;
+const createProduct = async (productData) => {
+  console.log(productData);
+  const product = await productModel.create(productData);
+    return product; 
 };
 
 const findProduct = async (id) => {

@@ -45,20 +45,23 @@ const findProduct = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, quantity, category } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null; 
+    console.log(req.name, req.description);
 
+    const image = req.file ? `${process.env.PRODUCT_SERVER_BASE}/public/${req.file.filename}` : null; 
     const product = await productService.createProduct({
       name,
       description,
       price,
       quantity,
       category,
-      imageUrl,
+      image,
     });
-    res.status(201).json(product);
-    // console.log(imageUrl);
+    res.status(201).json({
+      message: "Product created successfully",
+      product,
+    });
   } catch (error) {
-    console.error("Error creating product:", error);
+    console.log("Error creating product:", error);
     res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
